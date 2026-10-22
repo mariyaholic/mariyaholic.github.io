@@ -15,62 +15,52 @@ _____|░░░░░░░░░░░░░░░░░░░░░░░░�
   you found the stairwell. it is quiet here.
   plain html, no trackers. the lights stay on.
 -->
-<html lang="en" class="no-js" data-view="light" data-motion="on">
+<html lang="en" class="no-js" data-motion="on">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta name="color-scheme" content="light">
-<meta name="theme-color" content="#f3efe4">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#120c24">
 <meta name="description" content="Thirteen single-file arcade games and a Godot port.">
 <title>The play shelf | mariyaholic</title>
 <link rel="icon" href="data:,">
 <script>
-/* View + motion before first paint: ?view=/?motion= (or #) > saved > light, on. See README.md. */
+/* Motion before first paint: ?motion= (or #motion=) > on; reduced motion is handled in CSS. See README.md. */
 (function(){
-var d=document.documentElement,L=location,q=new URLSearchParams(L.search),h=new URLSearchParams(L.hash.slice(1)),
-v=q.get('view')||h.get('view'),m=q.get('motion')||h.get('motion'),T='ao-persona-theme',M='ao-persona-motion',l;
-function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
-function put(k,x){try{localStorage.setItem(k,x)}catch(e){}}
+var d=document.documentElement,q=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.slice(1)),m=q.get('motion')||h.get('motion');
 function on(){return d.getAttribute('data-motion')==='on'}
-function press(id,p){var b=document.getElementById(id);if(b)b.setAttribute('aria-pressed',p?'true':'false')}
-function view(x){var t=document.querySelector('meta[name=theme-color]');d.setAttribute('data-view',x);press('theme',x==='night');if(t)t.content=x==='night'?'#211e1a':'#f3efe4'}
-function motion(x){d.setAttribute('data-motion',x);press('motion',x!=='on')}
 d.classList.remove('no-js');
-view(v==='light'||v==='night'?v:get(T)==='dark'?'night':'light');
-motion(m==='on'||m==='off'?m:'on');  /* a saved pause reopens as off: end frames */
-if(d.getAttribute('data-view')==='light'){l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href='fonts/Fraunces.woff2';document.head.appendChild(l)}
-window.AO={T:T,M:M,put:put,on:on,view:view,motion:motion};
+d.setAttribute('data-motion',m==='off'?'off':'on');
+window.AO={on:on};
 document.addEventListener('DOMContentLoaded',function(){
 var els=document.querySelectorAll('[data-anim]'),io,i;
-if(!on())for(i=0;i<els.length;i++)els[i].classList.remove('in-view');  /* off at load: hero rests, never replays */
-if(!('IntersectionObserver' in window))return;  /* no observer: below-fold blocks keep end frames */
+if(!on())for(i=0;i<els.length;i++)els[i].classList.remove('in-view');
+if(!('IntersectionObserver' in window))return;
 io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){io.unobserve(e.target);if(on())e.target.classList.add('in-view')}})});
 for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els[i]);
 });
 })();
 </script>
-<link rel="preload" href="fonts/Newsreader.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/site.css">
 <script src="js/site.js" defer></script>
 </head>
 <body id="top">
-<span id="night"></span>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-header wrap">
-  <a class="wordmark" href="index.html" aria-label="mariyaholic home">mariyaholic</a>
+<header class="site-header">
+  <a class="wordmark" href="index.html" aria-label="mariyaholic home">◆ mariyaholic-98</a>
   <nav class="site-nav" aria-label="Primary">
     <a href="works.html">Portfolio</a>
     <a href="marketplace.html" aria-current="true">Marketplace</a>
     <a href="about.html">About</a>
     <a href="sitemap.html">Index</a>
-    <button class="view-toggle" id="theme" type="button" aria-pressed="false">Night</button>
-    <noscript><a class="view-toggle" href="#night">Night</a><a class="view-toggle" href="#top">Day</a></noscript>
   </nav>
+  <span class="path" aria-hidden="true">A:\MARKET\ARCADE&gt;</span>
 </header>
 <main id="main">
-<section class="page-hero page-hero--quiet wrap in-view" data-anim><div class="reveal"><p class="eyebrow">Small games, strict budgets</p><h1>The play <em>shelf.</em></h1><p class="intro">Thirteen arcade games, one file each, and later a Godot port. They open straight in the browser, load nothing from outside, and each carries a copy of a shared kit.</p></div><div class="reveal delay-1"><div class="number-plate" role="img" aria-label="Thirteen">13</div><div class="plate-caption"><span>originals</span><span>one Godot port</span></div></div></section>
-<section class="section section--rule wrap" aria-labelledby="arcade-title">
+<section class="page-hero page-hero--quiet wrap in-view win" data-win="MARKET\ARCADE\README.TXT" data-anim><div class="reveal"><p class="eyebrow">Small games, strict budgets</p><h1>The play <em>shelf.</em></h1><p class="intro">Thirteen arcade games, one file each, and later a Godot port. They open straight in the browser, load nothing from outside, and each carries a copy of a shared kit.</p></div><div class="reveal delay-1"><div class="number-plate" role="img" aria-label="Thirteen">13</div><div class="plate-caption"><span>originals</span><span>one Godot port</span></div></div></section>
+<section class="section section--rule wrap win" data-win="MARKET\ARCADE\GAMES.LST" aria-labelledby="arcade-title">
   <figure class="ascii-art ascii-art--hdr">
 <pre class="ascii" style="--cols:64" aria-hidden="true">
     ·                               ·     <span class="lit">*</span>
@@ -81,9 +71,9 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 </pre>
 </figure>
   <div class="section-head"><div><p class="eyebrow">The kit</p><h2 id="arcade-title">Everything's in the file.</h2></div><p>Progression, ranks, onboarding, achievements, reduced motion and colour-blind toggles are all inside each file. No service behind them.</p></div><div class="manifest"><article><h3>Five originals</h3><p>The first batch. Each one opens in a browser and keeps its own score.</p></article><article><h3>Thirteen scenes</h3><p>The Godot port moves the games into a bigger engine and keeps how they play.</p></article><article><h3>Ambient layer</h3><p>A deploy skin and generative ambient music, and the player can pause.</p></article><article><h3>Budget as style</h3><p>Keeping file size and dependencies down ends up shaping how they look.</p></article></div></section>
-<section class="section wrap" aria-labelledby="arcade-next-title"><div class="feature-grid feature-grid--reverse"><div class="feature-copy"><p class="eyebrow">Why keep making them</p><h2 id="arcade-next-title">Games are the fun part.</h2><p>The bigger projects need careful records. These get the same care. They're just sillier.</p><a class="text-link" href="hearth.html">See the bigger game <span aria-hidden="true">↗</span></a><p><span class="todo-slot">TODO: store / download link — Manager to supply</span></p></div><div class="pullout">One shared kit, thirteen games.</div></div></section>
+<section class="section wrap win" data-win="MARKET\ARCADE\NEXT.TXT" aria-labelledby="arcade-next-title"><div class="feature-grid feature-grid--reverse"><div class="feature-copy"><p class="eyebrow">Why keep making them</p><h2 id="arcade-next-title">Games are the fun part.</h2><p>The bigger projects need careful records. These get the same care. They're just sillier.</p><a class="text-link" href="hearth.html">See the bigger game <span aria-hidden="true">↗</span></a><p><span class="todo-slot">TODO: store / download link — Manager to supply</span></p></div><div class="pullout">One shared kit, thirteen games.</div></div></section>
 </main>
-<footer class="footer wrap">
+<footer class="footer">
   <p>mariyaholic · plain html, no trackers</p>
   <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
 </footer>

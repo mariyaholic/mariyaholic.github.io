@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en" data-view="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Study D · Almanac / Console | mariyaholic</title>
+<link rel="icon" href="data:,">
+<style>
+/* Study D. Light = "Almanac": an editorial field journal (masthead, standfirst, columns, figures, a sidebar).
+   Night = "Console": the same markup as an observatory instrument panel (hairline panels, readouts, Cygnus gold). */
+@font-face{font-family:Fraunces;src:url("../fonts/Fraunces.woff2") format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:Fraunces;src:url("../fonts/Fraunces-Italic.woff2") format("woff2");font-weight:100 900;font-style:italic;font-display:swap}
+@font-face{font-family:Newsreader;src:url("../fonts/Newsreader.woff2") format("woff2");font-weight:300 700;font-display:swap}
+@font-face{font-family:"JetBrains Mono";src:url("../fonts/JetBrainsMono-VariableFont_wght.ttf") format("truetype");font-weight:100 800;font-display:swap}
+:root{
+  color-scheme:light;
+  --bg:#f4efe3;--panel:transparent;--ink:#211d17;--muted:#6a5f50;--faint:#a3967f;--accent:#94301f;--rule:#cfc3ad;--hair:#211d17;
+  --mw:#b9ab92;--line:#94301f;--gold:#94301f;
+  --f-head:Fraunces,Georgia,serif;--f-body:Newsreader,Georgia,serif;--f-label:Newsreader,Georgia,serif;--f-mono:"JetBrains Mono",ui-monospace,monospace;
+  --head-w:400;--label-case:uppercase;--label-track:.16em;--radius:0;
+}
+[data-view=night]{
+  color-scheme:dark;
+  --bg:#0a0d12;--panel:#10151d;--ink:#dfe5ee;--muted:#8e9aab;--faint:#4d5868;--accent:#f2b84b;--rule:#1d2531;--hair:#2a3442;
+  --mw:#5d6e88;--line:#f2b84b;--gold:#f2b84b;
+  --f-head:"JetBrains Mono",ui-monospace,monospace;--f-label:"JetBrains Mono",ui-monospace,monospace;--head-w:500;--label-track:.12em;--radius:6px;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.6 var(--f-body);transition:background .3s,color .3s}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+img{display:block;max-width:100%;height:auto}
+figure,h1,h2,h3,p,ul{margin:0}
+.wrap{width:min(1180px,calc(100% - 40px));margin-inline:auto}
+.label{font:500 11px/1.4 var(--f-label);letter-spacing:var(--label-track);text-transform:var(--label-case);color:var(--muted)}
+
+/* masthead */
+.mast{border-bottom:3px double var(--hair);padding:22px 0 14px}
+.mast-top{display:flex;justify-content:space-between;gap:16px;align-items:baseline;border-bottom:1px solid var(--hair);padding-bottom:10px}
+.mast-name{font:italic 300 clamp(40px,7vw,86px)/1 var(--f-head);letter-spacing:-.04em;text-align:center;padding:18px 0 8px}
+.mast-name b{font-style:normal;font-weight:500}
+[data-view=light] .night,[data-view=night] .day{display:none}
+.mast nav{display:flex;justify-content:center;flex-wrap:wrap;gap:6px 26px;font:15px var(--f-body)}
+.mast nav a[aria-current]{text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:5px}
+.view{border:1px solid var(--hair);background:none;color:inherit;font:12px var(--f-mono);padding:4px 10px;cursor:pointer;border-radius:var(--radius)}
+.view:hover{color:var(--accent);border-color:var(--accent)}
+
+/* lead */
+.lead{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:48px;padding:44px 0 40px;border-bottom:1px solid var(--rule)}
+.lead h1{font:var(--head-w) clamp(46px,6vw,84px)/.98 var(--f-head);letter-spacing:-.045em;margin:12px 0 18px}
+.lead h1 em{font-weight:300;color:var(--accent)}
+.standfirst{font-size:22px;line-height:1.45;color:var(--muted);max-width:30ch}
+.byline{margin-top:22px;padding-top:12px;border-top:1px solid var(--rule)}
+
+/* ASCII plates */
+.plate{container-type:inline-size;background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius);padding:14px 16px 12px}
+.plate-bar{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px}
+.plate pre{margin:0;font-family:var(--f-mono);font-size:min(13px,calc((100cqi - 2px) / var(--cols) / .6));line-height:1.18;white-space:pre;color:var(--faint);font-variant-ligatures:none;overflow:hidden}
+.plate .mw{color:var(--mw)}.plate .fs{color:var(--faint)}.plate .gr,.plate .gl,.plate .ax{color:var(--muted)}
+.plate .ln{color:var(--line);opacity:.75}.plate .lit{color:var(--gold);font-weight:700}.plate .st1{color:var(--ink);font-weight:700}.plate .st2{color:var(--ink)}.plate .st3{color:var(--muted)}
+.plate .lbl{color:var(--ink)}.plate .kp,.plate .kl{color:var(--accent)}.plate .pt{color:var(--muted)}.plate .fit{color:var(--accent);font-weight:700}
+figcaption{margin-top:10px;font:italic 15px/1.5 var(--f-body);color:var(--muted)}
+[data-view=night] figcaption{font:12px/1.5 var(--f-mono);font-style:normal}
+
+/* feature article */
+.feature{display:grid;grid-template-columns:minmax(0,2fr) minmax(260px,1fr);gap:48px;padding:48px 0;border-bottom:1px solid var(--rule)}
+.kicker{color:var(--accent)}
+.feature h2{font:var(--head-w) clamp(34px,4.2vw,56px)/1.02 var(--f-head);letter-spacing:-.035em;margin:10px 0 16px}
+.feature h2 em{font-weight:300}
+.cols{columns:2 280px;column-gap:36px;margin-top:20px}
+.cols p+p{margin-top:12px}
+.cols p:first-child::first-letter{font:400 3.4em/.8 var(--f-head);float:left;margin:6px 8px 0 0;color:var(--accent)}
+.shot{margin-top:28px}
+.shot img{border:1px solid var(--rule);border-radius:var(--radius)}
+aside.sidebar{display:flex;flex-direction:column;gap:22px}
+.box{border-top:3px double var(--hair);padding-top:12px}
+[data-view=night] .box{border:1px solid var(--rule);background:var(--panel);border-radius:var(--radius);padding:14px}
+.leads{width:100%;border-collapse:collapse;margin-top:10px;font-size:15px}
+.leads td{border-top:1px solid var(--rule);padding:9px 8px 9px 0;vertical-align:top}
+.leads td:first-child{font:600 13px var(--f-mono);white-space:nowrap;color:var(--accent)}
+.leads td:last-child{color:var(--muted)}
+.readout{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:10px}
+.readout div{background:var(--bg);padding:10px 12px}
+[data-view=night] .readout div{background:var(--panel)}
+.readout b{display:block;font:500 26px/1.1 var(--f-mono);color:var(--ink)}
+.readout span{font:12px var(--f-mono);color:var(--muted)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-right:6px;box-shadow:0 0 0 0 var(--gold)}
+[data-view=night] .dot{animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,184,75,.6)}70%{box-shadow:0 0 0 8px rgba(242,184,75,0)}100%{box-shadow:0 0 0 0 rgba(242,184,75,0)}}
+
+/* also in this issue */
+.issue{padding:44px 0;border-bottom:1px solid var(--rule)}
+.issue-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-bottom:1px solid var(--hair);padding-bottom:10px;margin-bottom:26px}
+.issue-head h2{font:var(--head-w) 28px var(--f-head);letter-spacing:-.02em}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px}
+.trio article{display:flex;flex-direction:column;gap:10px}
+[data-view=night] .trio article{background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius);padding:14px}
+.trio img{aspect-ratio:16/10;object-fit:cover;object-position:top;border:1px solid var(--rule);border-radius:var(--radius)}
+.trio h3{font:var(--head-w) 26px/1.1 var(--f-head);letter-spacing:-.02em}
+.trio p{font-size:16px;color:var(--muted)}
+.trio a.more{font:13px var(--f-mono);color:var(--accent)}
+.aria-card{aspect-ratio:16/10;border:1px solid var(--rule);border-radius:var(--radius);display:grid;grid-template-columns:1.1fr 1fr;background:#121015;color:#d9d2c7;overflow:hidden}
+.aria-card .cue{padding:12px;font:11px/1.9 var(--f-mono);background:repeating-linear-gradient(#121015 0 20px,#1d1a22 20px 21px)}
+.aria-card .cue b{color:#e9b46a;font-weight:500}
+.aria-card .art{background:radial-gradient(circle at 40% 35%,#c76b4f,#5a2638 45%,#16121a 75%);display:grid;place-items:end start;padding:10px;font:11px var(--f-mono)}
+
+/* marketplace strip */
+.market{padding:44px 0}
+.shelf{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.shelf figure img{aspect-ratio:16/10;object-fit:cover;border:1px solid var(--rule);border-radius:var(--radius)}
+.shelf figcaption{font-style:normal}
+.shelf figcaption b{display:block;font:var(--head-w) 18px var(--f-head);color:var(--ink)}
+.status{display:inline-block;font:11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--rule);padding:2px 8px;margin-top:6px;border-radius:var(--radius)}
+
+footer{border-top:3px double var(--hair);padding:18px 0 40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-size:14px;color:var(--muted)}
+@media (max-width:860px){.lead,.feature{grid-template-columns:1fr;gap:32px}.trio{grid-template-columns:1fr}.shelf{grid-template-columns:1fr 1fr}.mast-top .label:last-child{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="mast wrap">
+  <div class="mast-top"><span class="label">Vol. 1 · No. 3</span><button class="view" id="view" type="button" aria-pressed="false">Night console</button><span class="label">22 October 2026 · Cygnus high in the west</span></div>
+  <p class="mast-name"><b>mariyaholic</b> <span class="day">almanac</span><span class="night">console</span></p>
+  <nav aria-label="Primary"><a href="#" aria-current="page">Portfolio</a><a href="../marketplace.html">Marketplace</a><a href="../about.html">About</a><a href="../sitemap.html">Index</a></nav>
+</header>
+<main class="wrap">
+<section class="lead">
+  <div>
+    <p class="label kicker">This issue</p>
+    <h1>I make <em>things.</em></h1>
+    <p class="standfirst">Mostly software and an astronomy project. Some of it is public. Most of it is still early.</p>
+    <p class="byline label">Written and set by mariyaholic · plain html, no trackers</p>
+  </div>
+  <figure>
+    <div class="plate"><div class="plate-bar"><span class="label">Plate I · the sky this issue</span><span class="label">J2000 · 80 × 32</span></div>
+<pre aria-hidden="true" style="--cols:80">                                                         <span class="mw">·</span>    <span class="mw">·</span> <span class="mw">.</span>  <span class="gl">CYGNUS·J2000</span>
+                                              <span class="mw">·</span>                  <span class="mw">·</span>     <span class="mw">·</span>       <span class="mw">.</span>
+                       <span class="fs">.</span>            <span class="fs">·</span>                   <span class="mw">.</span>     <span class="mw">·</span>         <span class="mw">.</span>  <span class="fs">·</span> <span class="mw">.</span>
+         <span class="fs">.</span>                                        <span class="mw">.</span>  <span class="mw">.·</span>     <span class="mw">:</span> <span class="mw">:</span> <span class="mw">·..</span>      <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.</span>
+                  <span class="fs">·</span>                        <span class="mw">:</span>     <span class="mw">.</span>  <span class="mw">.</span> <span class="mw">·:</span> <span class="st3">·</span> <span class="lbl">κ</span> <span class="mw">.</span> <span class="mw">..·</span>       <span class="mw">.</span>
+                                              <span class="mw">·</span>     <span class="st3">·</span> <span class="lbl">ι</span>   <span class="mw">·</span>        <span class="mw">·</span> <span class="mw">.</span>  <span class="mw">·</span>
+      <span class="fs">.</span>                 <span class="fs">·</span>        <span class="fs">·</span>              <span class="mw">.</span>  <span class="ln">/</span><span class="mw">.:</span>   <span class="mw">.</span>   <span class="mw">·</span>  <span class="mw">·</span>            <span class="mw">:</span>
+<span class="gl">+50° -</span>                        <span class="mw">·</span>  <span class="mw">·</span>        <span class="mw">.</span>   <span class="mw">·:</span>  <span class="ln">/</span>      <span class="mw">·.·:</span>             <span class="mw">·.</span>   <span class="gr">-</span>
+<span class="fs">.</span>                                                <span class="ln">/</span>     <span class="fs">.</span><span class="mw">.</span>               <span class="mw">·</span>
+        <span class="fs">.</span>                     <span class="mw">·</span>     <span class="mw">.</span>           <span class="ln">/</span>     <span class="mw">:</span>        <span class="mw">·</span>        <span class="mw">:</span>     <span class="mw">:</span>
+             <span class="mw">.</span> <span class="fs">.</span>                            <span class="fs">·</span>  <span class="ln">/</span> <span class="mw">·</span>   <span class="mw">:</span>       <span class="mw">·</span>  <span class="mw">:</span> <span class="mw">.</span>      <span class="mw">.</span> <span class="mw">·</span>  <span class="mw">·</span>
+                   <span class="fs">·</span><span class="mw">.</span>     <span class="lit">@</span> <span class="lbl">α Deneb</span>      <span class="mw">·</span> <span class="mw">:</span>   <span class="st2">+</span><span class="mw">:</span><span class="lbl">δ</span> <span class="mw">.</span>           <span class="mw">.</span> <span class="mw">.</span>  <span class="mw">.</span>
+                 <span class="st3">·</span>          <span class="ln">\</span>    <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.::</span> <span class="ln">/</span> <span class="mw">:</span>        <span class="kp">[ ]</span> <span class="kl">Kepler field</span>
+  <span class="mw">.</span>             <span class="mw">:</span>    <span class="mw">·</span>       <span class="fs">·</span><span class="ln">\</span>    <span class="mw">:</span>   <span class="mw">.</span>        <span class="mw">·</span>          <span class="mw">·</span>   <span class="mw">.</span>         <span class="mw">:</span>
+      <span class="fs">·</span>     <span class="mw">·</span>   <span class="mw">:</span> <span class="mw">:</span>    <span class="mw">·</span>   <span class="mw">:.</span>    <span class="mw">.</span>    <span class="mw">.</span> <span class="ln">/</span> <span class="fs">.</span>       <span class="mw">:</span>  <span class="mw">.</span>       <span class="mw">.</span> <span class="mw">·</span>
+                    <span class="st3">·</span> <span class="mw">·</span> <span class="mw">·.</span>    <span class="mw">·</span><span class="ln">\</span>  <span class="mw">:·</span><span class="ln">/</span>     <span class="fs">·</span>   <span class="mw">.</span>     <span class="mw">.:</span> <span class="mw">.</span> <span class="mw">.</span>
+<span class="gl">+40° -</span>      <span class="mw">··</span>  <span class="mw">·</span>  <span class="mw">:</span> <span class="mw">·.</span>          <span class="st1">*</span> <span class="lbl">γ Sadr</span> <span class="mw">.</span>   <span class="mw">·</span>  <span class="mw">.:</span> <span class="mw">.</span>       <span class="mw">·</span>    <span class="mw">·</span>             <span class="gr">-</span>
+           <span class="mw">·</span>         <span class="mw">:.</span> <span class="mw">··</span> <span class="mw">·</span> <span class="mw">.</span> <span class="ln">/</span>   <span class="ln">\</span>      <span class="mw">.</span> <span class="mw">.</span> <span class="mw">·</span> <span class="mw">·</span>   <span class="fs">.</span>      <span class="mw">.</span>           <span class="lit">@</span> <span class="lbl">Vega</span>
+                  <span class="mw">·</span> <span class="mw">.</span>   <span class="mw">:.</span>  <span class="mw">.</span> <span class="ln">/</span> <span class="mw">:</span>     <span class="ln">\</span><span class="mw">·</span>     <span class="mw">·</span>  <span class="mw">.</span>        <span class="mw">.</span>          <span class="fs">·</span>
+       <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.</span>   <span class="mw">·</span> <span class="mw">:</span> <span class="mw">.</span>    <span class="mw">:</span> <span class="ln">/</span> <span class="mw">.</span>     <span class="mw">·</span>  <span class="mw">.</span><span class="ln">\</span>         <span class="mw">·</span>   <span class="fs">.</span>
+       <span class="mw">..·</span>   <span class="mw">:</span><span class="fs">.</span><span class="mw">··</span>   <span class="mw">·</span>     <span class="ln">/</span><span class="mw">·</span> <span class="mw">.</span>    <span class="mw">··</span>    <span class="mw">·</span>     <span class="mw">.</span>  <span class="mw">·</span>     <span class="fs">.</span>
+  <span class="mw">.</span>  <span class="mw">.</span> <span class="mw">.</span>   <span class="fs">.</span> <span class="mw">.</span> <span class="mw">··</span>         <span class="mw">:</span> <span class="mw">·</span>       <span class="mw">·</span>     <span class="st3">·</span> <span class="lbl">η</span>                         <span class="mw">.</span>
+         <span class="mw">.·</span>  <span class="mw">.</span>        <span class="mw">·</span> <span class="st1">*</span> <span class="lbl">ε Gienah</span>          <span class="ln">\</span>  <span class="mw">:</span>                   <span class="st3">·</span>
+<span class="mw">:.</span>  <span class="mw">.</span>              <span class="mw">.</span> <span class="ln">/</span>    <span class="mw">.·</span>                  <span class="ln">\</span>                <span class="st2">+</span>
+    <span class="mw">.</span>    <span class="mw">·</span> <span class="mw">.</span>   <span class="mw">:..</span><span class="ln">/</span>        <span class="mw">·</span> <span class="mw">..</span>           <span class="mw">.</span>    <span class="ln">\</span>
+<span class="gl">+30° -</span>   <span class="mw">..·</span>   <span class="st2">+</span> <span class="lbl">ζ</span><span class="mw">.</span> <span class="mw">.</span>    <span class="mw">:</span>  <span class="fs">.</span>  <span class="mw">:</span>                 <span class="ln">\</span>               <span class="fs">.</span>             <span class="gr">-</span>
+<span class="mw">..·</span>       <span class="mw">:·</span>             <span class="fs">.</span>       <span class="mw">·</span>                <span class="ln">\</span><span class="fs">·</span>
+ <span class="mw">:.</span>   <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">··</span>                                      <span class="st2">+</span> <span class="lbl">β Albireo</span>  <span class="fs">.</span>
+    <span class="mw">·</span>    <span class="mw">·</span>                                              <span class="fs">.</span>        <span class="fs">.</span>      <span class="fs">·</span>
+ <span class="mw">.</span>   <span class="mw">·</span>    <span class="mw">·</span>         <span class="mw">·</span>         <span class="fs">.</span>  <span class="fs">.</span>
+ <span class="mw">·</span>  <span class="mw">..</span>  <span class="fs">.</span>         <span class="mw">·</span><span class="gr">|</span>                     <span class="gr">|</span>                     <span class="gr">|</span>
+                  <span class="gl">21h</span>                   <span class="gl">20h</span>                   <span class="gl">19h</span></pre></div>
+    <figcaption>Cygnus, plotted from real positions. Brightness sets the glyph; the Milky Way runs through Sadr with the Great Rift cutting it in two.</figcaption>
+  </figure>
+</section>
+
+<article class="feature" id="ad-astra">
+  <div>
+    <p class="label kicker">Astronomy · Ad Astra / Cygnus</p>
+    <h2>The sky, <em>on record.</em></h2>
+    <div class="cols">
+      <p>I go back through public archives looking for signals the standard pipelines might have missed. Then I try to explain them away before calling anything a lead.</p>
+      <p>Ad Astra stores the patches, field images and Gaia stars, plus the record that links them. It reads from TESS, Kepler, Gaia, WISE, ZTF and the Legacy Surveys, each with source notes.</p>
+      <p>Cygnus is the part you can browse. Open leads stay unverified by definition, and retractions stay visible: sixty-five first leads were narrowed down, and the rejection notes are part of the result.</p>
+    </div>
+    <figure class="shot"><img src="../img/cygnus-filtered.jpg" width="1440" height="900" alt="Cygnus Sky filtered to the active, unverified leads, with TOI-2666.01 and TOI-224.01 circled in gold." loading="lazy"><figcaption>Cygnus Sky, filtered to active leads. 3 of 1,294 targets shown.</figcaption></figure>
+  </div>
+  <aside class="sidebar" aria-label="Ad Astra at a glance">
+    <div class="box"><p class="label">At a glance</p>
+      <div class="readout"><div><b>1,294</b><span>targets on the map</span></div><div><b>3</b><span>open leads</span></div><div><b>65</b><span>first leads narrowed</span></div><div><b>6</b><span>public archives</span></div></div></div>
+    <div class="box"><p class="label"><span class="dot" aria-hidden="true"></span>Open leads</p>
+      <table class="leads"><tbody><tr><td>TOI-224</td><td>new coverage, resolve the host</td></tr><tr><td>TOI-2666</td><td>phase spread and radial velocity decide it</td></tr><tr><td>TOI-3500</td><td>calibrated imaging before any submission</td></tr></tbody></table></div>
+    <figure class="box"><div class="plate"><div class="plate-bar"><span class="label">Fig. 1 · a transit, folded</span></div>
+<pre aria-hidden="true" style="--cols:64">
+      <span class="ax">│</span>
+      <span class="ax">│</span> <span class="pt">·</span>   <span class="pt">·</span>      <span class="pt">·</span>  <span class="pt">··</span>  <span class="pt">·</span>                       <span class="pt">.</span>  <span class="pt">·</span>  <span class="pt">·..</span>
+<span class="gl">1.000</span> <span class="ax">│</span> <span class="fit">──────────────────────</span>            <span class="fit">─────────────────────</span>
+      <span class="ax">│</span>      <span class="pt">.</span> <span class="pt">.</span>    <span class="pt">·.</span>        <span class="pt">·</span>           <span class="pt">··</span>       <span class="pt">·</span>   <span class="pt">·</span>  <span class="pt">·</span>  <span class="pt">·.</span>
+      <span class="ax">│</span>
+      <span class="ax">│</span>                       <span class="fit">\</span>          <span class="fit">/</span>
+      <span class="ax">│</span>
+      <span class="ax">│</span>
+      <span class="ax">│</span>                        <span class="fit">\</span>   <span class="pt">.</span>    <span class="fit">/</span>
+      <span class="ax">│</span>                        <span class="pt">·</span>  <span class="pt">·</span>     <span class="pt">.</span>
+<span class="gl">0.995</span> <span class="ax">│</span>                         <span class="fit">────────</span>
+      <span class="ax">│</span>                         <span class="pt">·</span>
+      <span class="ax">└─────────────────────────────────────────────────────────</span>
+        <span class="gl">phase  −0.1</span>               <span class="gl">0</span>                      <span class="gl">+0.1</span></pre></div>
+      <figcaption>What a lead looks like before anyone believes it. Illustrative shape, not data from these targets.</figcaption></figure>
+    <a class="label kicker" href="https://cygnus-sky.pages.dev">Open Cygnus Sky ↗</a>
+  </aside>
+</article>
+
+<section class="issue" aria-labelledby="also">
+  <div class="issue-head"><h2 id="also">Also in this issue</h2><span class="label">Tools · research · music</span></div>
+  <div class="trio">
+    <article><img src="../img/uika.png" width="1440" height="900" alt="The Uika estate manual in its Doloris theme" loading="lazy"><p class="label kicker">Tools</p><h3>Uika</h3><p>An early personal lab for coordinating coding tools across my repos: a manual, a machine-readable contract and a decision register.</p><a class="more" href="../works.html#uika">Read more →</a></article>
+    <article><img src="../img/tickatlas.jpg" width="1280" height="800" alt="TickAtlas home page: market statistics you can recompute yourself, with headline counts and three study charts" loading="lazy"><p class="label kicker">Research</p><h3>TickAtlas</h3><p>Market studies written up as pages you can check. Each one has a method page, and failures stay up. Not a promise about future performance.</p><a class="more" href="https://tickatlas.neocities.org">Open TickAtlas ↗</a></article>
+    <article><div class="aria-card" role="img" aria-label="Sketch of the Aria layout: a ruled cue sheet on the left and album art on the right"><div class="cue">CUE SHEET<br><b>▸ now playing</b><br>02 · slow orbit<br>03 · night shift<br>04 · deneb</div><div class="art">no art yet · empty state</div></div><p class="label kicker">Music</p><h3>Aria</h3><p>A dark UI for listening to music, one track at a time. Cue sheet on one side, album art on the other, with a proper empty state.</p><a class="more" href="../works.html#aria">Read more →</a></article>
+  </div>
+</section>
+
+<section class="market" aria-labelledby="mk">
+  <div class="issue-head"><h2 id="mk">From the marketplace</h2><a class="label kicker" href="../marketplace.html">All games →</a></div>
+  <div class="shelf">
+    <figure><img src="../img/games/stellar_fusion.jpg" width="1280" height="800" alt="Stellar Fusion: a tall jar where falling bodies merge, with score panels" loading="lazy"><figcaption><b>Stellar Fusion</b>Merge falling bodies up to a black hole.<br><span class="status">Launch prep</span></figcaption></figure>
+    <figure><img src="../img/games/chromasort.jpg" width="1280" height="800" alt="ChromaSort: a three by three board of pink and peach gradient tiles" loading="lazy"><figcaption><b>ChromaSort</b>Swap tiles back into a colour gradient.<br><span class="status">Launch prep</span></figcaption></figure>
+    <figure><img src="../img/games/gridlock_metro.jpg" width="1280" height="800" alt="Gridlock Metro: coloured terminals joined by switchable track joints" loading="lazy"><figcaption><b>Gridlock Metro</b>Switch the joints, route each train home.<br><span class="status">Launch prep</span></figcaption></figure>
+    <figure><img src="../img/games/market_maker.jpg" width="1280" height="800" alt="Market Maker: a candlestick chart with buy and sell buttons" loading="lazy"><figcaption><b>Market Maker</b>Quote bid and offer across five desks.<br><span class="status">Launch prep</span></figcaption></figure>
+  </div>
+</section>
+</main>
+<footer class="wrap"><span>mariyaholic almanac · plain html, no trackers</span><span><a href="../sitemap.html">Index</a> · <a href="../colophon.html">Colophon</a></span></footer>
+<script>
+document.getElementById('view').addEventListener('click', function () {
+  var d = document.documentElement, night = d.dataset.view !== 'night';
+  d.dataset.view = night ? 'night' : 'light';
+  this.setAttribute('aria-pressed', night);
+  this.textContent = night ? 'Day almanac' : 'Night console';
+});
+</script>
+</body>
+</html>

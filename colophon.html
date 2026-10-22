@@ -15,62 +15,52 @@ _____|░░░░░░░░░░░░░░░░░░░░░░░░�
   you found the stairwell. it is quiet here.
   plain html, no trackers. the lights stay on.
 -->
-<html lang="en" class="no-js" data-view="light" data-motion="on">
+<html lang="en" class="no-js" data-motion="on">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta name="color-scheme" content="light">
-<meta name="theme-color" content="#f3efe4">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#120c24">
 <meta name="description" content="Fonts, sources, motion, image credits and rights notes for this site.">
 <title>Colophon | mariyaholic</title>
 <link rel="icon" href="data:,">
 <script>
-/* View + motion before first paint: ?view=/?motion= (or #) > saved > light, on. See README.md. */
+/* Motion before first paint: ?motion= (or #motion=) > on; reduced motion is handled in CSS. See README.md. */
 (function(){
-var d=document.documentElement,L=location,q=new URLSearchParams(L.search),h=new URLSearchParams(L.hash.slice(1)),
-v=q.get('view')||h.get('view'),m=q.get('motion')||h.get('motion'),T='ao-persona-theme',M='ao-persona-motion',l;
-function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
-function put(k,x){try{localStorage.setItem(k,x)}catch(e){}}
+var d=document.documentElement,q=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.slice(1)),m=q.get('motion')||h.get('motion');
 function on(){return d.getAttribute('data-motion')==='on'}
-function press(id,p){var b=document.getElementById(id);if(b)b.setAttribute('aria-pressed',p?'true':'false')}
-function view(x){var t=document.querySelector('meta[name=theme-color]');d.setAttribute('data-view',x);press('theme',x==='night');if(t)t.content=x==='night'?'#211e1a':'#f3efe4'}
-function motion(x){d.setAttribute('data-motion',x);press('motion',x!=='on')}
 d.classList.remove('no-js');
-view(v==='light'||v==='night'?v:get(T)==='dark'?'night':'light');
-motion(m==='on'||m==='off'?m:'on');  /* a saved pause reopens as off: end frames */
-if(d.getAttribute('data-view')==='light'){l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href='fonts/Fraunces.woff2';document.head.appendChild(l)}
-window.AO={T:T,M:M,put:put,on:on,view:view,motion:motion};
+d.setAttribute('data-motion',m==='off'?'off':'on');
+window.AO={on:on};
 document.addEventListener('DOMContentLoaded',function(){
 var els=document.querySelectorAll('[data-anim]'),io,i;
-if(!on())for(i=0;i<els.length;i++)els[i].classList.remove('in-view');  /* off at load: hero rests, never replays */
-if(!('IntersectionObserver' in window))return;  /* no observer: below-fold blocks keep end frames */
+if(!on())for(i=0;i<els.length;i++)els[i].classList.remove('in-view');
+if(!('IntersectionObserver' in window))return;
 io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){io.unobserve(e.target);if(on())e.target.classList.add('in-view')}})});
 for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els[i]);
 });
 })();
 </script>
-<link rel="preload" href="fonts/Newsreader.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/site.css">
 <script src="js/site.js" defer></script>
 </head>
 <body id="top">
-<span id="night"></span>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-header wrap">
-  <a class="wordmark" href="index.html" aria-label="mariyaholic home">mariyaholic</a>
+<header class="site-header">
+  <a class="wordmark" href="index.html" aria-label="mariyaholic home">◆ mariyaholic-98</a>
   <nav class="site-nav" aria-label="Primary">
     <a href="works.html">Portfolio</a>
     <a href="marketplace.html">Marketplace</a>
     <a href="about.html">About</a>
     <a href="sitemap.html" aria-current="true">Index</a>
-    <button class="view-toggle" id="theme" type="button" aria-pressed="false">Night</button>
-    <noscript><a class="view-toggle" href="#night">Night</a><a class="view-toggle" href="#top">Day</a></noscript>
   </nav>
+  <span class="path" aria-hidden="true">A:\INDEX\COLOPHON&gt;</span>
 </header>
 <main id="main">
-<section class="page-hero page-hero--quiet wrap in-view" data-anim><div class="reveal"><p class="eyebrow">Colophon</p><h1>How this site <em>is made.</em></h1><p class="intro">Warm paper colours, Fraunces and Newsreader, one oxblood accent, and plain HTML, CSS and JavaScript.</p></div><div class="reveal delay-1"><p class="kicker">One rule</p><p class="hero-note">Things can move, but everything has to read fine with motion off.</p></div></section>
-<section class="section section--rule wrap" aria-labelledby="design-title"><div class="section-head"><div><p class="eyebrow">Design notes</p><h2 id="design-title">Laid out like a magazine, not a dashboard.</h2></div><p>The look comes from the approved combo draft: paper colours, open margins, wide images and oxblood rules. The other pages change up the layout a bit.</p></div><div class="manifest"><article><h3>Type</h3><p>Fraunces for headings, Newsreader for body text and labels, JetBrains Mono for the ASCII drawings. Night view only swaps the colours.</p></article><article><h3>Motion</h3><p>Animations only use transform and opacity, and they switch off when your system asks for reduced motion.</p></article><article><h3>Interaction</h3><p>Links are real links. Three in the header, two in the footer, and everything else in the index.</p></article><article><h3>Fallback</h3><p>With JavaScript off, every page still has its text, links, images and reading order.</p></article></div>
+<section class="page-hero page-hero--quiet wrap in-view win" data-win="INDEX\COLOPHON\README.TXT" data-anim><div class="reveal"><p class="eyebrow">Colophon</p><h1>How this site <em>is made.</em></h1><p class="intro">Sixteen colours, one bitmap font, dithered pictures, and plain HTML, CSS and JavaScript.</p></div><div class="reveal delay-1"><p class="kicker">One rule</p><p class="hero-note">Things can move, but everything has to read fine with motion off.</p></div></section>
+<section class="section section--rule wrap win" data-win="INDEX\COLOPHON\DESIGN.TXT" aria-labelledby="design-title"><div class="section-head"><div><p class="eyebrow">Design notes</p><h2 id="design-title">A desktop from about 1992.</h2></div><p>The look borrows from NEC PC-98 software: a fixed palette, a checkered desktop, and every section in its own window. The home page is the desktop itself.</p></div><div class="manifest"><article><h3>Type</h3><p>Departure Mono for everything you read, JetBrains Mono for the text-mode star charts. Every picture is dithered to the same sixteen colours.</p></article><article><h3>Motion</h3><p>Animations step instead of glide, and they switch off when your system asks for reduced motion.</p></article><article><h3>Interaction</h3><p>Links are real links. Three in the header, two in the footer, and everything else in the index.</p></article><article><h3>Fallback</h3><p>With JavaScript off, every page still has its text, links, images and reading order.</p></article></div>
 <div class="ascii-panel colo">
   <figure class="ascii-art ascii-art--colo">
 <pre class="ascii" style="--cols:46" aria-hidden="true">
@@ -90,36 +80,31 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
   <h3>Colophon</h3>
   <dl>
     <dt>build</dt><dd>static HTML, no framework</dd>
-    <dt>fonts</dt><dd>self-hosted, OFL 1.1 and Apache 2.0</dd>
-    <dt>subsets</dt><dd>of Major Mono Display, Special Elite and JetBrains Mono</dd>
+    <dt>fonts</dt><dd>self-hosted, OFL 1.1</dd>
+    <dt>subsets</dt><dd>of JetBrains Mono</dd>
     <dt>credits</dt><dd><a href="#credits">full list and licences</a></dd>
-    <dt>views</dt><dd>light and night, one stylesheet</dd>
+    <dt>palette</dt><dd>16 colours, one stylesheet</dd>
     <dt>trackers</dt><dd>none</dd>
     <dt>cookies</dt><dd>none</dd>
-    <dt>storage</dt><dd>your light or night choice only (localStorage)</dd>
+    <dt>storage</dt><dd>none</dd>
   </dl>
 </div>
 </section>
-<section class="section wrap" aria-labelledby="source-title"><div class="feature-grid"><div class="feature-copy"><p class="eyebrow">Sources and limits</p><h2 id="source-title">Where the content comes from.</h2><p>Project text comes from my persona drafts, the READMEs, the public sites and dated notes. Screenshots are local captures of Cygnus, Uika, TickAtlas, and Starfire concept art.</p><div class="rights-note"><strong>Rights gate</strong><br>The portrait and character art are for private review only. Their sources don't allow public redistribution, so they need to be swapped for cleared art before publishing.</div></div><div class="timeline"><article><h3>Approved direction</h3><p>The combo draft gave the site its paper colours, Fraunces, the oxblood accent, wide images and light motion.</p></article><article><h3>One system</h3><p>Every page uses the same stylesheet and layout.</p></article><article><h3>Still unverified</h3><p>Not checked yet: Safari, Firefox, screen readers, real hosting, and publication rights.</p></article></div></div></section>
-<section class="section section--tight wrap" aria-labelledby="proposal-colophon-title"><div class="section-head"><div><p class="eyebrow">Methods &amp; boundaries</p><h2 id="proposal-colophon-title">Four draft pages.</h2></div><p>Drafts of how I'd show methods, cost, privacy and evidence. Read these before taking any chart here as a claim.</p></div><div class="proposal-links"><a href="method.html">Method ↗</a><a href="efficiency.html">Efficiency ↗</a><a href="privacy.html">Privacy ↗</a><a href="evidence.html">Evidence ↗</a></div></section>
-<section class="section section--rule wrap" id="credits" aria-labelledby="credits-title">
-  <div class="section-head"><div><p class="eyebrow">Credits · every font, its licence and any change</p><h2 id="credits-title">Font <em>credits.</em></h2></div><p>All fonts are self-hosted from fonts/, with their licence texts next to them. The subsets count as modified versions and are labelled that way. OFL 1.1 allows that because none of these fonts has a Reserved Font Name, and Apache 2.0 §4 asks for the change notice.</p></div>
+<section class="section wrap win" data-win="INDEX\COLOPHON\SOURCE.TXT" aria-labelledby="source-title"><div class="feature-grid"><div class="feature-copy"><p class="eyebrow">Sources and limits</p><h2 id="source-title">Where the content comes from.</h2><p>Project text comes from my persona drafts, the READMEs, the public sites and dated notes. Screenshots are local captures of Cygnus, Uika, TickAtlas, and Starfire concept art.</p><div class="rights-note"><strong>Rights gate</strong><br>The portrait and character art are for private review only. Their sources don't allow public redistribution, so they need to be swapped for cleared art before publishing.</div></div><div class="timeline"><article><h3>Approved direction</h3><p>The combo draft gave the site its paper colours, Fraunces, the oxblood accent, wide images and light motion.</p></article><article><h3>One system</h3><p>Every page uses the same stylesheet and layout.</p></article><article><h3>Still unverified</h3><p>Not checked yet: Safari, Firefox, screen readers, real hosting, and publication rights.</p></article></div></div></section>
+<section class="section section--tight wrap win" data-win="INDEX\COLOPHON\PROPOSAL.TXT" aria-labelledby="proposal-colophon-title"><div class="section-head"><div><p class="eyebrow">Methods &amp; boundaries</p><h2 id="proposal-colophon-title">Four draft pages.</h2></div><p>Drafts of how I'd show methods, cost, privacy and evidence. Read these before taking any chart here as a claim.</p></div><div class="proposal-links"><a href="method.html">Method ↗</a><a href="efficiency.html">Efficiency ↗</a><a href="privacy.html">Privacy ↗</a><a href="evidence.html">Evidence ↗</a></div></section>
+<section class="section section--rule wrap win" data-win="INDEX\COLOPHON\CREDITS.TXT" id="credits" aria-labelledby="credits-title">
+  <div class="section-head"><div><p class="eyebrow">Credits · every font, its licence and any change</p><h2 id="credits-title">Font <em>credits.</em></h2></div><p>Both fonts are self-hosted from fonts/, with their licence texts next to them. The JetBrains Mono subset counts as a modified version and is labelled that way. OFL 1.1 allows that because the font has no Reserved Font Name.</p></div>
   <table class="credits">
     <caption>Fonts used by this site</caption>
     <thead><tr><th scope="col">Family</th><th scope="col">Designer / project</th><th scope="col">Licence</th><th scope="col">File in fonts/</th><th scope="col">Modification notice</th><th scope="col">Licence text</th></tr></thead>
     <tbody>
-      <tr><td>Fraunces (upright, italic)</td><td>Undercase Type · © 2018 The Fraunces Project Authors</td><td>SIL OFL 1.1</td><td>Fraunces.woff2, Fraunces-Italic.woff2</td><td>Google Fonts Latin subset, as Confluence ships it; not changed here</td><td><a href="fonts/Fraunces-OFL.txt">Fraunces-OFL.txt</a></td></tr>
-      <tr><td>Newsreader</td><td>Production Type · © 2020 The Newsreader Project Authors</td><td>SIL OFL 1.1</td><td>Newsreader.woff2</td><td>Google Fonts Latin subset, as Confluence ships it; not changed here</td><td><a href="fonts/Newsreader-OFL.txt">Newsreader-OFL.txt</a></td></tr>
-      <tr><td>Major Mono Display</td><td>© 2018 The Major Mono Project Authors</td><td>SIL OFL 1.1</td><td>MajorMonoDisplay-Regular.subset.woff2 (full TTF as fallback)</td><td><strong>subset of Major Mono Display</strong>: Basic Latin, · – —, arrows U+2190–2199</td><td><a href="fonts/MajorMonoDisplay-OFL.txt">MajorMonoDisplay-OFL.txt</a></td></tr>
-      <tr><td>Special Elite</td><td>Astigmatic</td><td>Apache License 2.0</td><td>SpecialElite-Regular.subset.woff2 (full TTF as fallback)</td><td><strong>subset of Special Elite</strong>: Basic Latin, · – — ‘ ’ “ ” …</td><td><a href="fonts/SpecialElite-LICENSE.txt">SpecialElite-LICENSE.txt</a></td></tr>
-      <tr><td>JetBrains Mono (also the “Arrows” face)</td><td>JetBrains · © 2020 The JetBrains Mono Project Authors</td><td>SIL OFL 1.1</td><td>JetBrainsMono-ascii.subset.woff2 (full variable TTF as fallback)</td><td><strong>subset of JetBrains Mono</strong>: Basic Latin, a few symbols, arrows, box drawing, block elements; hinting and layout features removed</td><td><a href="fonts/JetBrainsMono-OFL.txt">JetBrainsMono-OFL.txt</a></td></tr>
-      <tr><td>Departure Mono (ASCII fallback only)</td><td>Helena Zhang · © 2022–2024</td><td>SIL OFL 1.1</td><td>DepartureMono-Regular.woff2 (OTF as fallback)</td><td>not changed</td><td><a href="fonts/DepartureMono-OFL.txt">DepartureMono-OFL.txt</a></td></tr>
-      <tr><td>Arial (light labels)</td><td>system font</td><td>not distributed</td><td>none</td><td>n/a</td><td>n/a</td></tr>
+      <tr><td>Departure Mono (all text)</td><td>Helena Zhang · © 2022–2024</td><td>SIL OFL 1.1</td><td>DepartureMono-Regular.woff2 (OTF as fallback)</td><td>not changed</td><td><a href="fonts/DepartureMono-OFL.txt">DepartureMono-OFL.txt</a></td></tr>
+      <tr><td>JetBrains Mono (star charts)</td><td>JetBrains · © 2020 The JetBrains Mono Project Authors</td><td>SIL OFL 1.1</td><td>JetBrainsMono-ascii.subset.woff2 (full variable TTF as fallback)</td><td><strong>subset of JetBrains Mono</strong>: Basic Latin, a few symbols, arrows, box drawing, block elements; hinting and layout features removed</td><td><a href="fonts/JetBrainsMono-OFL.txt">JetBrainsMono-OFL.txt</a></td></tr>
     </tbody>
   </table>
 </section>
 </main>
-<footer class="footer wrap">
+<footer class="footer">
   <p>mariyaholic · plain html, no trackers</p>
   <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
 </footer>

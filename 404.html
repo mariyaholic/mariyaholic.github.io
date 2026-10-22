@@ -15,32 +15,24 @@ _____|░░░░░░░░░░░░░░░░░░░░░░░░�
   you found the stairwell. it is quiet here.
   plain html, no trackers. the lights stay on.
 -->
-<html lang="en" class="no-js" data-view="light" data-motion="on">
+<html lang="en" class="no-js" data-motion="on">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta name="color-scheme" content="light">
-<meta name="theme-color" content="#f3efe4">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#120c24">
 <meta name="description" content="This page doesn't exist. It moved, or it was never here.">
 <title>Not on the shelf | mariyaholic</title>
 <link rel="icon" href="data:,">
 <script>
-/* View + motion before first paint: ?view=/?motion= (or #) > saved > light, on. See README.md. */
+/* Motion before first paint: ?motion= (or #motion=) > on; reduced motion is handled in CSS. See README.md. */
 (function(){
-var d=document.documentElement,L=location,q=new URLSearchParams(L.search),h=new URLSearchParams(L.hash.slice(1)),
-v=q.get('view')||h.get('view'),m=q.get('motion')||h.get('motion'),T='ao-persona-theme',M='ao-persona-motion',l;
-function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
-function put(k,x){try{localStorage.setItem(k,x)}catch(e){}}
+var d=document.documentElement,q=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.slice(1)),m=q.get('motion')||h.get('motion');
 function on(){return d.getAttribute('data-motion')==='on'}
-function press(id,p){var b=document.getElementById(id);if(b)b.setAttribute('aria-pressed',p?'true':'false')}
-function view(x){var t=document.querySelector('meta[name=theme-color]');d.setAttribute('data-view',x);press('theme',x==='night');if(t)t.content=x==='night'?'#211e1a':'#f3efe4'}
-function motion(x){d.setAttribute('data-motion',x);press('motion',x!=='on')}
 d.classList.remove('no-js');
-view(v==='light'||v==='night'?v:get(T)==='dark'?'night':'light');
-motion(m==='on'||m==='off'?m:'on');
-if(d.getAttribute('data-view')==='light'){l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href='/fonts/Fraunces.woff2';document.head.appendChild(l)}
-window.AO={T:T,M:M,put:put,on:on,view:view,motion:motion};
+d.setAttribute('data-motion',m==='off'?'off':'on');
+window.AO={on:on};
 document.addEventListener('DOMContentLoaded',function(){
 var els=document.querySelectorAll('[data-anim]'),io,i;
 if(!on())for(i=0;i<els.length;i++)els[i].classList.remove('in-view');
@@ -50,51 +42,66 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 });
 })();
 </script>
-<link rel="preload" href="/fonts/Newsreader.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/css/site.css">
 <script src="/js/site.js" defer></script>
 </head>
 <body id="top">
-<span id="night"></span>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-header wrap">
-  <a class="wordmark" href="/index.html" aria-label="mariyaholic home">mariyaholic</a>
+<header class="site-header">
+  <a class="wordmark" href="/index.html" aria-label="mariyaholic home">◆ mariyaholic-98</a>
   <nav class="site-nav" aria-label="Primary">
     <a href="/works.html">Portfolio</a>
     <a href="/marketplace.html">Marketplace</a>
     <a href="/about.html">About</a>
     <a href="/sitemap.html">Index</a>
-    <button class="view-toggle" id="theme" type="button" aria-pressed="false">Night</button>
-    <noscript><a class="view-toggle" href="#night">Night</a><a class="view-toggle" href="#top">Day</a></noscript>
   </nav>
+  <span class="path" aria-hidden="true">A:\&gt;</span>
 </header>
 <main id="main">
-<section class="section wrap" aria-labelledby="e404-title">
+<section class="section wrap win" data-win="NOTFOUND.ERR" aria-labelledby="e404-title">
 <div class="ascii-panel e404">
-  <figure class="ascii-art ascii-art--404">
-<pre class="ascii" style="--cols:58" aria-hidden="true">
-  .                                            .
-              ·               <span class="lit">@</span>  <span class="lbl">deneb</span>
-                              :                        ·
-      ·                       :         ·
-                              :
-                              :
-      <span class="lbl">δ</span> + · · · · · · · · · · + · · · · · · · · · + <span class="lbl">ε</span>
-                              :  <span class="lbl">sadr</span>
-                              :
-         .                    :                     ·
-                 .            :
-   ·                         <span class="lit">(</span> <span class="lit">)</span> <span class="lbl">albireo?</span>
-                                            .
-</pre>
+  <figure class="ascii-art ascii-art--404 screen">
+<pre class="ascii" style="--cols:80" aria-hidden="true">                                                         <span class="mw">·</span>    <span class="mw">·</span> <span class="mw">.</span>  <span class="gl">CYGNUS·J2000</span>
+                                              <span class="mw">·</span>                  <span class="mw">·</span>     <span class="mw">·</span>       <span class="mw">.</span>
+                       <span class="fs">.</span>            <span class="fs">·</span>                   <span class="mw">.</span>     <span class="mw">·</span>         <span class="mw">.</span>  <span class="fs">·</span> <span class="mw">.</span>
+         <span class="fs">.</span>                                        <span class="mw">.</span>  <span class="mw">.·</span>     <span class="mw">:</span> <span class="mw">:</span> <span class="mw">·..</span>      <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.</span>
+                  <span class="fs">·</span>                        <span class="mw">:</span>     <span class="mw">.</span>  <span class="mw">.</span> <span class="mw">·:</span> <span class="st3">·</span> <span class="lbl">κ</span> <span class="mw">.</span> <span class="mw">..·</span>       <span class="mw">.</span>
+                                              <span class="mw">·</span>     <span class="st3">·</span> <span class="lbl">ι</span>   <span class="mw">·</span>        <span class="mw">·</span> <span class="mw">.</span>  <span class="mw">·</span>
+      <span class="fs">.</span>                 <span class="fs">·</span>        <span class="fs">·</span>              <span class="mw">.</span>  <span class="ln">/</span><span class="mw">.:</span>   <span class="mw">.</span>   <span class="mw">·</span>  <span class="mw">·</span>            <span class="mw">:</span>
+<span class="gl">+50° -</span>                        <span class="mw">·</span>  <span class="mw">·</span>        <span class="mw">.</span>   <span class="mw">·:</span>  <span class="ln">/</span>      <span class="mw">·.·:</span>             <span class="mw">·.</span>   <span class="gr">-</span>
+<span class="fs">.</span>                                                <span class="ln">/</span>     <span class="fs">.</span><span class="mw">.</span>               <span class="mw">·</span>
+        <span class="fs">.</span>                     <span class="mw">·</span>     <span class="mw">.</span>           <span class="ln">/</span>     <span class="mw">:</span>        <span class="mw">·</span>        <span class="mw">:</span>     <span class="mw">:</span>
+             <span class="mw">.</span> <span class="fs">.</span>                            <span class="fs">·</span>  <span class="ln">/</span> <span class="mw">·</span>   <span class="mw">:</span>       <span class="mw">·</span>  <span class="mw">:</span> <span class="mw">.</span>      <span class="mw">.</span> <span class="mw">·</span>  <span class="mw">·</span>
+                   <span class="fs">·</span><span class="mw">.</span>     <span class="lit">@</span> <span class="lbl">α Deneb</span>      <span class="mw">·</span> <span class="mw">:</span>   <span class="st2">+</span><span class="mw">:</span><span class="lbl">δ</span> <span class="mw">.</span>           <span class="mw">.</span> <span class="mw">.</span>  <span class="mw">.</span>
+                 <span class="st3">·</span>          <span class="ln">\</span>    <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.::</span> <span class="ln">/</span> <span class="mw">:</span>        <span class="kp">[ ]</span> <span class="kl">Kepler field</span>
+  <span class="mw">.</span>             <span class="mw">:</span>    <span class="mw">·</span>       <span class="fs">·</span><span class="ln">\</span>    <span class="mw">:</span>   <span class="mw">.</span>        <span class="mw">·</span>          <span class="mw">·</span>   <span class="mw">.</span>         <span class="mw">:</span>
+      <span class="fs">·</span>     <span class="mw">·</span>   <span class="mw">:</span> <span class="mw">:</span>    <span class="mw">·</span>   <span class="mw">:.</span>    <span class="mw">.</span>    <span class="mw">.</span> <span class="ln">/</span> <span class="fs">.</span>       <span class="mw">:</span>  <span class="mw">.</span>       <span class="mw">.</span> <span class="mw">·</span>
+                    <span class="st3">·</span> <span class="mw">·</span> <span class="mw">·.</span>    <span class="mw">·</span><span class="ln">\</span>  <span class="mw">:·</span><span class="ln">/</span>     <span class="fs">·</span>   <span class="mw">.</span>     <span class="mw">.:</span> <span class="mw">.</span> <span class="mw">.</span>
+<span class="gl">+40° -</span>      <span class="mw">··</span>  <span class="mw">·</span>  <span class="mw">:</span> <span class="mw">·.</span>          <span class="st1">*</span> <span class="lbl">γ Sadr</span> <span class="mw">.</span>   <span class="mw">·</span>  <span class="mw">.:</span> <span class="mw">.</span>       <span class="mw">·</span>    <span class="mw">·</span>             <span class="gr">-</span>
+           <span class="mw">·</span>         <span class="mw">:.</span> <span class="mw">··</span> <span class="mw">·</span> <span class="mw">.</span> <span class="ln">/</span>   <span class="ln">\</span>      <span class="mw">.</span> <span class="mw">.</span> <span class="mw">·</span> <span class="mw">·</span>   <span class="fs">.</span>      <span class="mw">.</span>           <span class="lit">@</span> <span class="lbl">Vega</span>
+                  <span class="mw">·</span> <span class="mw">.</span>   <span class="mw">:.</span>  <span class="mw">.</span> <span class="ln">/</span> <span class="mw">:</span>     <span class="ln">\</span><span class="mw">·</span>     <span class="mw">·</span>  <span class="mw">.</span>        <span class="mw">.</span>          <span class="fs">·</span>
+       <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.</span>   <span class="mw">·</span> <span class="mw">:</span> <span class="mw">.</span>    <span class="mw">:</span> <span class="ln">/</span> <span class="mw">.</span>     <span class="mw">·</span>  <span class="mw">.</span><span class="ln">\</span>         <span class="mw">·</span>   <span class="fs">.</span>
+       <span class="mw">..·</span>   <span class="mw">:</span><span class="fs">.</span><span class="mw">··</span>   <span class="mw">·</span>     <span class="ln">/</span><span class="mw">·</span> <span class="mw">.</span>    <span class="mw">··</span>    <span class="mw">·</span>     <span class="mw">.</span>  <span class="mw">·</span>     <span class="fs">.</span>
+  <span class="mw">.</span>  <span class="mw">.</span> <span class="mw">.</span>   <span class="fs">.</span> <span class="mw">.</span> <span class="mw">··</span>         <span class="mw">:</span> <span class="mw">·</span>       <span class="mw">·</span>     <span class="st3">·</span> <span class="lbl">η</span>                         <span class="mw">.</span>
+         <span class="mw">.·</span>  <span class="mw">.</span>        <span class="mw">·</span> <span class="st1">*</span> <span class="lbl">ε Gienah</span>          <span class="ln">\</span>  <span class="mw">:</span>                   <span class="st3">·</span>
+<span class="mw">:.</span>  <span class="mw">.</span>              <span class="mw">.</span> <span class="ln">/</span>    <span class="mw">.·</span>                  <span class="ln">\</span>                <span class="st2">+</span>
+    <span class="mw">.</span>    <span class="mw">·</span> <span class="mw">.</span>   <span class="mw">:..</span><span class="ln">/</span>        <span class="mw">·</span> <span class="mw">..</span>           <span class="mw">.</span>    <span class="ln">\</span>
+<span class="gl">+30° -</span>   <span class="mw">..·</span>   <span class="st2">+</span> <span class="lbl">ζ</span><span class="mw">.</span> <span class="mw">.</span>    <span class="mw">:</span>  <span class="fs">.</span>  <span class="mw">:</span>                 <span class="ln">\</span>               <span class="fs">.</span>             <span class="gr">-</span>
+<span class="mw">..·</span>       <span class="mw">:·</span>             <span class="fs">.</span>       <span class="mw">·</span>                <span class="ln">\</span><span class="fs">·</span>
+ <span class="mw">:.</span>   <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">··</span>                                      <span class="lost">?</span> <span class="lost">β Albireo · 404</span>  <span class="fs">.</span>
+    <span class="mw">·</span>    <span class="mw">·</span>                                              <span class="fs">.</span>        <span class="fs">.</span>      <span class="fs">·</span>
+ <span class="mw">.</span>   <span class="mw">·</span>    <span class="mw">·</span>         <span class="mw">·</span>         <span class="fs">.</span>  <span class="fs">.</span>
+ <span class="mw">·</span>  <span class="mw">..</span>  <span class="fs">.</span>         <span class="mw">·</span><span class="gr">|</span>                     <span class="gr">|</span>                     <span class="gr">|</span>
+                  <span class="gl">21h</span>                   <span class="gl">20h</span>                   <span class="gl">19h</span></pre>
 </figure>
-  <h1 id="e404-title">404 · not on the shelf</h1>
+  <h1 id="e404-title">404 · not in the sky</h1>
   <p>This page doesn't exist. It moved, or it was never here.</p>
   <a class="primary-link" href="/index.html">Back to the home page <span aria-hidden="true">↗</span></a>
 </div>
 </section>
 </main>
-<footer class="footer wrap">
+<footer class="footer">
   <p>mariyaholic · plain html, no trackers</p>
   <nav aria-label="Footer"><a href="/sitemap.html">Index</a><a href="/colophon.html">Colophon</a></nav>
 </footer>
