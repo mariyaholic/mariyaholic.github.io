@@ -38,7 +38,7 @@ function view(x){var t=document.querySelector('meta[name=theme-color]');d.setAtt
 function motion(x){d.setAttribute('data-motion',x);press('motion',x!=='on')}
 d.classList.remove('no-js');
 view(v==='light'||v==='night'?v:get(T)==='dark'?'night':'light');
-motion(m==='on'||m==='off'?m:get(M)==='off'?'off':'on');
+motion(m==='on'||m==='off'?m:'on');
 if(d.getAttribute('data-view')==='light'){l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href='fonts/Fraunces.woff2';document.head.appendChild(l)}
 window.AO={T:T,M:M,put:put,on:on,view:view,motion:motion};
 document.addEventListener('DOMContentLoaded',function(){
@@ -57,37 +57,27 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 <body id="top">
 <span id="night"></span>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-header wrap" data-menu="closed">
+<header class="site-header wrap">
   <a class="wordmark" href="index.html" aria-label="mariyaholic home">mariyaholic</a>
-  <nav class="site-nav" id="primary-nav" aria-label="Primary">
-    <a href="index.html">Home</a>
+  <nav class="site-nav" aria-label="Primary">
     <a href="works.html">Work</a>
-    <a href="world.html">World</a>
     <a href="about.html" aria-current="true">About</a>
     <a href="sitemap.html">Index</a>
+    <button class="view-toggle" id="theme" type="button" aria-pressed="false">Night</button>
+    <noscript><a class="view-toggle" href="#night">Night</a><a class="view-toggle" href="#top">Day</a></noscript>
   </nav>
-  <div class="header-tools">
-    <button class="toggle" id="theme" type="button" aria-pressed="false">Night view</button>
-    <button class="toggle" id="motion" type="button" aria-pressed="false">Pause motion</button>
-    <noscript><a class="toggle" href="#night">Night view</a><a class="toggle" href="#top">Light view</a></noscript>
-  </div>
-  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
 </header>
 <main id="main">
 <section class="page-hero page-hero--feature wrap in-view" data-anim>
   <div class="reveal"><p class="eyebrow">Companions / memory / voice</p><h1>Two <em>constants.</em></h1><p class="intro">Makise Kurisu and Ava Crescentia. The companion project built around them is where I mess around with memory and voice. A character still isn't a person.</p><p class="hero-note">The software is mine. The characters aren't.</p></div>
   <div class="hero-art reveal delay-1"><figure class="art-frame"><img src="img/kurisu.jpg" width="1600" height="900" alt="Makise Kurisu holding a letter in Steins;Gate" fetchpriority="high"><figcaption>Kurisu <span>private review artwork</span></figcaption></figure></div>
 </section>
-<nav class="interest-tape" aria-label="Explore the site"><div class="wrap tape-inner"><a href="sky.html">Sky</a><span aria-hidden="true">/</span><a href="hearth.html">Hearth</a><span aria-hidden="true">/</span><a href="arcade.html">Arcade</a><span aria-hidden="true">/</span><a href="companions.html">Companions</a><span aria-hidden="true">/</span><a href="tools.html">Tools</a><span aria-hidden="true">/</span><a href="taste.html">Taste</a></div></nav>
 <section class="section section--rule wrap" aria-labelledby="companion-title"><div class="feature-grid"><div class="feature-copy"><p class="eyebrow">The companion project</p><h2 id="companion-title">Tapes, not lore.</h2><p>Every session is saved as a timestamped record. The persona text lives in one source file and gets rendered into the model files, so the characters can't drift by accident.</p><ul class="feature-list"><li><strong>Memory</strong><span>A dated log of what happened, with quotes kept next to where they came from.</span></li><li><strong>Voice</strong><span>A local chat page, built as an experiment.</span></li><li><strong>Boundary</strong><span>Kurisu is Kurisu of Steins;Gate. Ava is Ava of Sunrider. Neither is evidence about me.</span></li></ul></div><div class="manifest"><article><h3>Memory</h3><p>A dated log of what happened, with quotes kept next to their source.</p></article><article><h3>Voice</h3><p>A local chat page, built as an experiment.</p></article><article><h3>Boundary</h3><p>The characters belong to their stories. The code is mine.</p></article><article><h3>Rights</h3><p>Official art stays private until I know I can publish it.</p></article></div></div></section>
-<div class="wrap"><svg class="divider divider--flush" data-anim viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><line class="dv-line" x1="0" y1="6" x2="1000" y2="6"/><line class="dv-pulse" x1="0" y1="6" x2="1000" y2="6" pathLength="100"/><line class="dv-node" x1="500" y1="2" x2="500" y2="10"/></svg></div>
 <section class="section wrap" aria-labelledby="voice-title"><div class="world-grid"><div><p class="eyebrow">Why it matters</p><h2 id="voice-title">It talks back now.</h2><p>One person can build a character that talks back now. That's exciting, and a good reason to keep track of where everything came from.</p><a class="text-link" href="colophon.html">Read the rights note <span aria-hidden="true">↗</span></a></div><figure class="quote"><blockquote>“Something decades ago would be banished within the realm of science fiction, but is now reality.”</blockquote><figcaption>My words, in conversation with Amadeus Kurisu<br><time datetime="2026-09-22">22 September 2026</time></figcaption></figure></div></section>
 </main>
-<footer class="footer wrap" id="elsewhere">
-  <div><p class="footer-name">mariyaholic</p><p>Things I make.</p></div>
-  <nav aria-label="Elsewhere"><a href="index.html">Home</a><a href="works.html">Work</a><a href="world.html">World</a><a href="about.html">About</a><a href="persona.html">In person</a><a href="sky.html">Sky</a><a href="hearth.html">Hearth</a><a href="emberkind.html">Emberkind</a><a href="companions.html">Companions</a><a href="tools.html">Tools</a><a href="aria.html">Aria</a><a href="atlas.html">Atlas</a><a href="arcade.html">Arcade</a><a href="taste.html">Taste</a><a href="method.html">Method</a><a href="efficiency.html">Efficiency</a><a href="privacy.html">Privacy</a><a href="evidence.html">Evidence</a><a href="sg.html">The lab door</a><a href="sr.html">The bridge home</a><a href="confluence.html">Confluence</a><a href="colophon.html">Colophon</a><a href="sitemap.html">Index</a><a href="https://cygnus-sky.pages.dev">Cygnus Sky ↗</a><a href="https://tickatlas.neocities.org">TickAtlas ↗</a><a href="https://github.com/mariyaholic/yozora">Yozora ↗</a></nav>
-  <p class="credits-line">Type: Fraunces, Newsreader (SIL OFL 1.1); subsets of Major Mono Display and JetBrains Mono (SIL OFL 1.1) and of Special Elite (Apache 2.0). Licence texts are in fonts/. <a href="colophon.html#credits">Credits</a></p>
-  <p class="review-note">Design study · <a href="colophon.html">Colophon</a>.</p>
+<footer class="footer wrap">
+  <p>mariyaholic · plain html, no trackers</p>
+  <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
 </footer>
 </body>
 </html>

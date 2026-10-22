@@ -38,7 +38,7 @@ function view(x){var t=document.querySelector('meta[name=theme-color]');d.setAtt
 function motion(x){d.setAttribute('data-motion',x);press('motion',x!=='on')}
 d.classList.remove('no-js');
 view(v==='light'||v==='night'?v:get(T)==='dark'?'night':'light');
-motion(m==='on'||m==='off'?m:get(M)==='off'?'off':'on');
+motion(m==='on'||m==='off'?m:'on');
 if(d.getAttribute('data-view')==='light'){l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href='fonts/Fraunces.woff2';document.head.appendChild(l)}
 window.AO={T:T,M:M,put:put,on:on,view:view,motion:motion};
 document.addEventListener('DOMContentLoaded',function(){
@@ -57,38 +57,30 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 <body id="top">
 <span id="night"></span>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-header wrap" data-menu="closed">
+<header class="site-header wrap">
   <a class="wordmark" href="index.html" aria-label="mariyaholic home">mariyaholic</a>
-  <nav class="site-nav" id="primary-nav" aria-label="Primary">
-    <a href="index.html">Home</a>
+  <nav class="site-nav" aria-label="Primary">
     <a href="works.html" aria-current="page">Work</a>
-    <a href="world.html">World</a>
     <a href="about.html">About</a>
     <a href="sitemap.html">Index</a>
+    <button class="view-toggle" id="theme" type="button" aria-pressed="false">Night</button>
+    <noscript><a class="view-toggle" href="#night">Night</a><a class="view-toggle" href="#top">Day</a></noscript>
   </nav>
-  <div class="header-tools">
-    <button class="toggle" id="theme" type="button" aria-pressed="false">Night view</button>
-    <button class="toggle" id="motion" type="button" aria-pressed="false">Pause motion</button>
-    <noscript><a class="toggle" href="#night">Night view</a><a class="toggle" href="#top">Light view</a></noscript>
-  </div>
-  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
 </header>
 <main id="main">
 <section class="page-hero page-hero--feature wrap in-view" data-anim>
   <div class="reveal"><p class="eyebrow">The work</p><h1>What I've <em>been making.</em></h1><p class="intro">Astronomy, games, dev tools and research. I bounce between them a lot.</p></div>
   <div class="hero-art reveal delay-1"><figure class="art-frame"><img src="img/cygnus.png" width="1440" height="900" alt="Cygnus Sky, a landscape capture of the astronomy explorer" fetchpriority="high"><figcaption>Ad Astra / Cygnus <span>local capture</span></figcaption></figure><div class="stamp">work in progress<br>with receipts</div></div>
 </section>
-<nav class="interest-tape" aria-label="Explore the site"><div class="wrap tape-inner"><a href="sky.html">Sky</a><span aria-hidden="true">/</span><a href="hearth.html">Hearth</a><span aria-hidden="true">/</span><a href="arcade.html">Arcade</a><span aria-hidden="true">/</span><a href="companions.html">Companions</a><span aria-hidden="true">/</span><a href="tools.html">Tools</a><span aria-hidden="true">/</span><a href="taste.html">Taste</a></div></nav>
 <section class="section section--rule wrap" aria-labelledby="fleet-title"><div class="section-head"><div><p class="eyebrow">Overview</p><h2 id="fleet-title">They overlap a lot.</h2></div><p>Some are public, some are early. Each one is described as far as it actually got.</p></div><div class="facts"><div class="fact"><strong>4</strong><span>main projects on the home page</span></div><div class="fact"><strong>13</strong><span>single-file arcade originals</span></div><div class="fact"><strong>27</strong><span>entries in my taste notes</span></div><div class="fact"><strong>Open</strong><span>questions, still</span></div></div></section>
 <section class="section wrap" aria-labelledby="project-list-title">
-  <div class="ascii-art ascii-art--hdr">
-<pre class="ascii" aria-hidden="true">
-+----------------------------------------------------------------------+
-|[::::] o. [<span class="lit">░▒▓█</span>] .o |||||| oo [::::] o. |||||| oo [<span class="lit">░▒▓█</span>] .o [::::] o. |
-|[__][__].. ::::::: o░░▒▒▓▓▒▒░░[__][__].. ::::::: o[__][__]..░░▒▒▓▓▒▒░░|
-+----------------------------------------------------------------------+
+  <figure class="ascii-art ascii-art--hdr">
+<pre class="ascii" style="--cols:64" aria-hidden="true">
+   ·         .                 ·              .             ·
+  + · · · · · · · · · · · · · · <span class="lit">@</span> · · · · · · · · · · · · · · *
+        .             ·                .              ·
 </pre>
-  </div>
+</figure>
   <div class="section-head"><div><p class="eyebrow">Project notes</p><h2 id="project-list-title">Start anywhere.</h2></div></div>
 <article class="essay"><h3><a href="sky.html">Ad Astra</a></h3><div><p>Astronomy from public archives, with recorded footprints, named sources, and a sky map you can browse called Cygnus.</p><p>Open leads stay open. Retractions stay up.</p></div></article>
 <article class="essay"><h3><a href="hearth.html">Starfire Hearth</a></h3><div><p>A cozy hard sci-fi settlement game in development, with a deterministic kernel underneath.</p><p>The art is concept art. The rest is still being built.</p></div></article>
@@ -98,14 +90,11 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 <article class="essay"><h3><a href="arcade.html">The play shelf</a></h3><div><p>Thirteen small arcade games that run straight in the browser, later ported to Godot.</p><p>The fun part.</p></div></article>
 <article class="essay"><h3><a href="https://github.com/mariyaholic/yozora">Yozora</a></h3><div><p><span class="todo-slot">TODO: one-line description of Yozora — Manager to supply</span></p><p><a href="https://github.com/mariyaholic/yozora">Release on GitHub ↗</a></p></div></article>
 </section>
-<div class="wrap"><svg class="divider divider--flush" data-anim viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><line class="dv-line" x1="0" y1="6" x2="1000" y2="6"/><line class="dv-pulse" x1="0" y1="6" x2="1000" y2="6" pathLength="100"/><line class="dv-node" x1="500" y1="2" x2="500" y2="10"/></svg></div>
 <section class="section section--tight wrap" aria-labelledby="proposal-title"><div class="section-head"><div><p class="eyebrow">Methods &amp; boundaries</p><h2 id="proposal-title">Four drafts.</h2></div><p>Draft pages on how things work, what they cost, what's private, and how sure I am. Every number says where it came from.</p></div><div class="manifest"><article><h3><a href="method.html">Method</a></h3><p>Rule pipelines, state changes, receipts and one made-up walkthrough.</p></article><article><h3><a href="efficiency.html">Efficiency</a></h3><p>Relative resource sizes, and what local tests can't show.</p></article><article><h3><a href="privacy.html">Privacy</a></h3><p>Four classes from public to private, plus a release checklist.</p></article><article><h3><a href="evidence.html">Evidence</a></h3><p>Status labels and receipts across projects, failures included.</p></article></div></section>
 </main>
-<footer class="footer wrap" id="elsewhere">
-  <div><p class="footer-name">mariyaholic</p><p>Things I make.</p></div>
-  <nav aria-label="Elsewhere"><a href="index.html">Home</a><a href="works.html">Work</a><a href="world.html">World</a><a href="about.html">About</a><a href="persona.html">In person</a><a href="sky.html">Sky</a><a href="hearth.html">Hearth</a><a href="emberkind.html">Emberkind</a><a href="companions.html">Companions</a><a href="tools.html">Tools</a><a href="aria.html">Aria</a><a href="atlas.html">Atlas</a><a href="arcade.html">Arcade</a><a href="taste.html">Taste</a><a href="method.html">Method</a><a href="efficiency.html">Efficiency</a><a href="privacy.html">Privacy</a><a href="evidence.html">Evidence</a><a href="sg.html">The lab door</a><a href="sr.html">The bridge home</a><a href="confluence.html">Confluence</a><a href="colophon.html">Colophon</a><a href="sitemap.html">Index</a><a href="https://cygnus-sky.pages.dev">Cygnus Sky ↗</a><a href="https://tickatlas.neocities.org">TickAtlas ↗</a><a href="https://github.com/mariyaholic/yozora">Yozora ↗</a></nav>
-  <p class="credits-line">Type: Fraunces, Newsreader (SIL OFL 1.1); subsets of Major Mono Display and JetBrains Mono (SIL OFL 1.1) and of Special Elite (Apache 2.0). Licence texts are in fonts/. <a href="colophon.html#credits">Credits</a></p>
-  <p class="review-note">Design study · <a href="colophon.html">Colophon</a>.</p>
+<footer class="footer wrap">
+  <p>mariyaholic · plain html, no trackers</p>
+  <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
 </footer>
 </body>
 </html>
