@@ -5,14 +5,33 @@
   const root = document.documentElement;
   const motionOn = () => root.dataset.motion === 'on';
 
-  /* Home desktop: from 1200px the windows sit at fixed spots; drag one by its title bar (the top
-     --bar-h pixels, drawn by CSS), click one to bring it to the front, or use the status-bar buttons. */
+  /* Home desktop: from 1200px CSS lays the windows out in two columns, then pin() fixes each one where
+     it landed (absolute, .pinned) so it can be dragged by its title bar (the top --bar-h pixels, drawn by
+     CSS). Click a window to bring it to the front, or use the status-bar buttons. Resizing re-pins until
+     something has been dragged; going below 1200px unpins. */
   const desk = document.querySelector('.desk');
   if (desk) {
     const wide = matchMedia('(min-width:1200px)');
     const wins = [...desk.querySelectorAll('.win')];
     const tasks = [...document.querySelectorAll('.tasks button')];
-    let z = 20;
+    let z = 20, dragged = false;
+    const unpin = () => {
+      desk.classList.remove('pinned'); desk.style.height = '';
+      wins.forEach(w => { w.style.left = w.style.top = w.style.width = ''; });
+    };
+    const pin = () => {
+      unpin();
+      if (!wide.matches) return;
+      const d = desk.getBoundingClientRect();
+      const spots = wins.map(w => { const r = w.getBoundingClientRect(); return [r.left - d.left, r.top - d.top, r.width]; });
+      desk.style.height = d.height + 'px';
+      wins.forEach((w, i) => { w.style.left = spots[i][0] + 'px'; w.style.top = spots[i][1] + 'px'; w.style.width = spots[i][2] + 'px'; });
+      desk.classList.add('pinned');
+    };
+    let timer;
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(pin);
+    wide.addEventListener('change', () => { dragged = false; pin(); });
+    addEventListener('resize', () => { clearTimeout(timer); timer = setTimeout(() => { if (!dragged) pin(); }, 150); });
     const front = w => {
       wins.forEach(x => x.classList.toggle('top', x === w));
       w.style.zIndex = ++z;
@@ -21,8 +40,8 @@
     wins.forEach(w => {
       w.addEventListener('pointerdown', e => {
         front(w);
-        if (!wide.matches || e.button !== 0 || e.clientY - w.getBoundingClientRect().top > 30 || e.target.closest('a')) return;
-        e.preventDefault();
+        if (!desk.classList.contains('pinned') || e.button !== 0 || e.clientY - w.getBoundingClientRect().top > 30 || e.target.closest('a')) return;
+        e.preventDefault(); dragged = true;
         const sx = e.clientX - w.offsetLeft, sy = e.clientY - w.offsetTop;
         const move = ev => {
           w.style.left = Math.max(0, Math.min(desk.clientWidth - 80, ev.clientX - sx)) + 'px';
