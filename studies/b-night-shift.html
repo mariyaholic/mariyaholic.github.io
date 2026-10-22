@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Study B · Night shift | mariyaholic</title>
+<link rel="icon" href="data:,">
+<style>
+/* Study B: "Night shift". Dark only, an observatory after hours. Mono for structure, serif for voice. */
+@font-face{font-family:"Departure Mono";src:url("../fonts/DepartureMono-Regular.woff2") format("woff2");font-display:swap}
+@font-face{font-family:Newsreader;src:url("../fonts/Newsreader.woff2") format("woff2");font-weight:300 700;font-display:swap}
+@font-face{font-family:"JetBrains Mono";src:url("../fonts/JetBrainsMono-VariableFont_wght.ttf") format("truetype");font-weight:100 800;font-display:swap}
+:root{
+  color-scheme:dark;
+  --night:#16140f;--ink:#efe5d3;--muted:#a99b87;--faint:#5f5546;--accent:#e98a70;--rule:#2c2720;
+  --f-mono:"Departure Mono","JetBrains Mono",ui-monospace,monospace;--f-art:"JetBrains Mono",ui-monospace,monospace;--f-body:Newsreader,Georgia,serif;
+}
+*{box-sizing:border-box}
+html{background:var(--night)}
+body{margin:0;background:var(--night);color:var(--ink);font:18px/1.6 var(--f-body)}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--accent)}
+:focus-visible{outline:1px dashed var(--accent);outline-offset:4px}
+.page{width:min(44rem,calc(100% - 32px));margin-inline:auto}
+
+header{display:flex;align-items:center;gap:16px;padding-block:28px;font:13px var(--f-mono);color:var(--muted)}
+.wordmark{color:var(--ink)}
+.wordmark::before{content:"~/";color:var(--faint)}
+nav{margin-left:auto;display:flex;gap:4px}
+nav a{padding:6px 8px}
+nav a[aria-current]{color:var(--accent)}
+nav a+a::before{content:"/";color:var(--faint);margin-right:12px;margin-left:-4px}
+
+.dome{container-type:inline-size;margin:56px 0 0}
+.dome pre{margin:0;font-family:var(--f-art);font-size:min(13px,calc(100cqi / 60 / .6));line-height:1.2;color:var(--muted);white-space:pre;font-variant-ligatures:none}
+.dome .lit{color:var(--accent)}
+.dome .hz{color:var(--faint)}
+
+h1{font:400 clamp(30px,6vw,46px)/1.15 var(--f-mono);letter-spacing:-.02em;margin:40px 0 0}
+.lede{color:var(--muted);margin:16px 0 0;max-width:34ch;font-size:19px}
+
+.log{margin-top:72px}
+h2{font:12px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:0 0 12px}
+.work{list-style:none;margin:0;padding:0}
+.work a{display:grid;grid-template-columns:3ch minmax(0,auto) 1fr;gap:0 14px;align-items:baseline;padding:12px 0;border-top:1px solid var(--rule)}
+.work li:last-child a{border-bottom:1px solid var(--rule)}
+.work .n{font:13px var(--f-mono);color:var(--faint)}
+.work b{font:400 17px var(--f-mono);white-space:nowrap}
+.work i{font-style:normal;color:var(--muted);font-size:16px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.work a:hover .n{color:var(--accent)}
+.more{margin:20px 0 0;font:13px var(--f-mono);color:var(--muted)}
+.more a{color:var(--ink)}
+.more a::after{content:" _";color:var(--accent);animation:blink 1.2s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+footer{margin-block:96px 32px;font:12px var(--f-mono);color:var(--faint);display:flex;flex-wrap:wrap;gap:8px 18px}
+footer span{margin-right:auto}
+footer a:hover{color:var(--accent)}
+@media (max-width:560px){.work a{grid-template-columns:3ch 1fr}.work i{grid-column:2;white-space:normal}}
+@media (prefers-reduced-motion:reduce){.more a::after{animation:none}}
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <a class="wordmark" href="#">mariyaholic</a>
+  <nav aria-label="Primary">
+    <a href="#" aria-current="page">work</a>
+    <a href="../about.html">about</a>
+    <a href="../sitemap.html">index</a>
+  </nav>
+</header>
+<main>
+<figure class="dome" aria-label="An observatory dome at night, drawn in text">
+<pre aria-hidden="true">
+   .         ·              .        <span class="lit">/</span>          <span class="lit">*</span>
+                   ·                <span class="lit">/</span>
+                                   <span class="lit">/</span>
+         ·                   _.--"<span class="lit">/</span>"--._              .
+                          .-'           '-.   ·
+     .                   /                 \             ·
+                         |       .-.       |
+<span class="hz">_________________________|_______| |_______|________________</span>
+</pre>
+</figure>
+<h1>I make things.</h1>
+<p class="lede">Mostly software, an astronomy project, and games. Most of it is still early.</p>
+<section class="log" aria-labelledby="w">
+  <h2 id="w">Tonight's log</h2>
+  <ul class="work">
+    <li><a href="../sky.html"><span class="n">01</span><b>ad astra / cygnus</b><i>a sky map you can browse</i></a></li>
+    <li><a href="../hearth.html"><span class="n">02</span><b>starfire hearth</b><i>a space settlement game, in development</i></a></li>
+    <li><a href="../tools.html"><span class="n">03</span><b>uika</b><i>coding tools, in sync across repos</i></a></li>
+    <li><a href="../atlas.html"><span class="n">04</span><b>tickatlas</b><i>market studies, published</i></a></li>
+  </ul>
+  <p class="more">everything else: <a href="../sitemap.html">ls ./index</a></p>
+</section>
+</main>
+<footer>
+  <span>plain html · no trackers · the lights stay on</span>
+  <a href="../colophon.html">colophon</a>
+</footer>
+</div>
+</body>
+</html>
