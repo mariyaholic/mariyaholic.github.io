@@ -486,6 +486,8 @@ h1 em,h2 em,h3 em,.project-name em{color:var(--c11)}
 .ascii .st1{color:var(--c7)}.ascii .st2{color:var(--c6)}.ascii .st3{color:var(--c5)}.ascii .kp,.ascii .kl{color:var(--c11)}
 .ascii .pt{color:var(--c5)}.ascii .fit{color:var(--c11)}
 .ascii .lost{color:var(--c10)}
+.ascii .up{color:var(--c15)}.ascii .dn{color:var(--c11)}
+.ascii .blink{animation:blink 1s steps(1) infinite}
 .screen{background:var(--c0);padding:12px 14px;margin:0}
 .screen .ascii{font-size:min(15px,calc((100cqi - 1px) / var(--cols) / .6));line-height:1.2}
 .screen figcaption{margin-top:10px}
@@ -503,7 +505,7 @@ h1 em,h2 em,h3 em,.project-name em{color:var(--c11)}
 .desk{position:relative;max-width:1440px;margin-inline:auto;padding:22px 18px 0}
 .desk .win{padding:0;margin:0}
 .desk .win>.body{padding:calc(var(--bar-h) + 14px) 16px 14px}
-.desk .screen{margin-top:var(--bar-h)}
+.desk .win>.screen{margin-top:var(--bar-h)}
 .status{display:flex;flex-wrap:wrap;gap:4px 18px;padding:4px 10px;border-top:2px solid var(--c3);font-size:12px;color:var(--c5)}
 .status a{color:var(--c12)}
 .icons{display:flex;flex-wrap:wrap;gap:18px;margin-bottom:22px}
@@ -532,18 +534,32 @@ h1 em,h2 em,h3 em,.project-name em{color:var(--c11)}
 .thumbs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .thumbs img{border:2px solid var(--c0)}
 .pic figcaption{margin-top:8px;font-size:12px;color:var(--c5)}
+.ico.exe{background:var(--c6)}.ico.exe::before{content:"";position:absolute;inset:0 0 auto;height:7px;background:var(--c10)}.ico.exe::after{content:">_";position:absolute;inset:7px 0 0;display:grid;place-items:center;color:var(--c1);font-size:13px}
+.files img[src*="-icon"]{object-fit:contain;background:var(--c0)}
+.strip{margin:0 0 10px;padding:8px 10px}
+/* Two columns, in flow; from 1200px js/site.js pins every window where the columns put it (.pinned),
+   so they can be dragged. Without JS the columns simply stay. Below 1200px: one column, readme first. */
+.desk .col{display:contents}
+#w-readme{order:1}#w-cygnus{order:2}#w-progs{order:3}#w-files{order:4}#w-market{order:5}#w-pic{order:6}
+.desk{display:flex;flex-direction:column}
+.desk .icons{order:0}
 @media (min-width:1200px){
-  .desk{height:1110px}
-  .desk .icons{position:absolute;left:18px;top:22px;display:grid;width:84px;z-index:1}
-  .desk .win{position:absolute}
-  #w-readme{left:124px;top:24px;width:430px}
-  #w-cygnus{left:584px;top:40px;width:min(720px,calc(100% - 610px))}
-  #w-files{left:124px;top:330px;width:430px}
-  #w-pic{left:180px;top:700px;width:600px}
-  #w-market{left:810px;top:700px;width:min(460px,calc(100% - 836px))}
+  .desk{display:grid;grid-template-columns:84px 430px minmax(0,720px);gap:0 30px;align-items:start;padding-bottom:40px}
+  .desk .icons{display:grid;width:84px;margin:0;z-index:1}
+  .desk .col{display:flex;flex-direction:column;gap:26px}
+  .desk .col-b{padding-top:18px}
+  .desk.pinned .win{position:absolute}
   .home .footer{position:sticky;bottom:0;z-index:50}
   .home .tasks{display:flex}
 }
+
+/* ---------- programs page ---------- */
+.app-icon{width:64px;height:64px;margin-bottom:14px;border:2px solid var(--c0);background:var(--c0);box-shadow:3px 3px 0 var(--c0)}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;margin-top:26px}
+.actions .text-link{margin-top:0}
+.libs-tree{max-width:30rem;margin-bottom:28px}
+.feature-grid>.screen{align-self:center;width:100%}
+@media (max-width:767px){.feature-grid--reverse>.screen{order:2}}
 
 /* ---------- motion: stepped, like a 56 Hz screen ---------- */
 @media (prefers-reduced-motion:no-preference){
@@ -552,7 +568,7 @@ h1 em,h2 em,h3 em,.project-name em{color:var(--c11)}
 @media (prefers-reduced-motion:reduce){.prompt::after{animation:none}}
 
 /* ---------- small screens ---------- */
-@media (max-width:1199px){.desk .win{margin-bottom:24px}}
+@media (max-width:1199px){.desk .win{margin-bottom:24px}.desk .win{width:auto!important;left:auto!important;top:auto!important}}
 @media (max-width:767px){
   :root{--h1:33px;--h1-feature:33px;--h2:22px;--h2-lg:22px}
   body{font-size:15px}
