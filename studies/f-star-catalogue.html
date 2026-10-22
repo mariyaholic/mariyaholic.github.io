@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Study F · Star catalogue | mariyaholic</title>
+<link rel="icon" href="data:,">
+<style>
+/* Study F: "Catalogue of works". A Swiss grid read like a star catalogue: heavy mono display, numbered entries,
+   one large plate, figures numbered like a paper. Plates sit in greyscale and take colour on hover. */
+@font-face{font-family:"JetBrains Mono";src:url("../fonts/JetBrainsMono-VariableFont_wght.ttf") format("truetype");font-weight:100 800;font-display:swap}
+@font-face{font-family:Newsreader;src:url("../fonts/Newsreader.woff2") format("woff2");font-weight:300 700;font-display:swap}
+@font-face{font-family:Fraunces;src:url("../fonts/Fraunces-Italic.woff2") format("woff2");font-weight:100 900;font-style:italic;font-display:swap}
+:root{--paper:#ecebe5;--ink:#141414;--muted:#5d5d58;--faint:#a6a59c;--rule:#c9c8bf;--accent:#d2391b;--mono:"JetBrains Mono",ui-monospace,monospace;--serif:Newsreader,Georgia,serif}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.55 var(--serif)}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+img{display:block;max-width:100%;height:auto}
+h1,h2,h3,p,ul,figure,dl,dd{margin:0}
+.wrap{width:min(1320px,calc(100% - 40px));margin-inline:auto}
+.meta{font:500 11px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+header{display:grid;grid-template-columns:repeat(12,1fr);gap:0 20px;padding:18px 0 0}
+.strip{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;border-top:2px solid var(--ink);padding-top:8px}
+.strip nav{display:flex;gap:16px;justify-content:flex-end;grid-column:4}
+.strip nav a[aria-current]{color:var(--accent)}
+h1{grid-column:1/-1;font:800 clamp(56px,13.4vw,210px)/.82 var(--mono);letter-spacing:-.075em;margin:22px 0 0 -.04em}
+.sub{grid-column:1/7;margin-top:18px;font-size:22px;line-height:1.4;max-width:34ch}
+.sub em{font:italic 300 1.05em Fraunces,serif;color:var(--accent)}
+.facts{grid-column:8/-1;margin-top:20px;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--ink)}
+.facts div{padding:8px 10px 0 0}
+.facts b{display:block;font:700 34px/1 var(--mono);letter-spacing:-.04em}
+
+.main{display:grid;grid-template-columns:repeat(12,1fr);gap:0 20px;margin-top:46px;border-top:2px solid var(--ink)}
+.plate{grid-column:1/8;padding-top:10px}
+.plate-frame{container-type:inline-size;border:1px solid var(--ink);padding:14px 12px 10px;position:relative;background:
+  linear-gradient(var(--ink),var(--ink)) 0 0/10px 1px no-repeat,linear-gradient(var(--ink),var(--ink)) 100% 100%/10px 1px no-repeat}
+.plate pre{margin:0;font-family:var(--mono);font-size:min(13px,calc((100cqi - 2px) / var(--cols) / .6));line-height:1.18;white-space:pre;color:var(--faint);font-variant-ligatures:none;overflow:hidden}
+.plate .mw{color:#b9b8ad}.plate .fs{color:var(--faint)}.plate .gr,.plate .gl,.plate .ax{color:var(--muted)}
+.plate .ln{color:var(--accent)}.plate .lit{color:var(--accent);font-weight:800}.plate .st1{color:var(--ink);font-weight:800}.plate .st2{color:var(--ink);font-weight:600}.plate .st3{color:var(--muted)}
+.plate .lbl{color:var(--ink)}.plate .kp,.plate .kl{color:var(--accent)}.plate .pt{color:var(--muted)}.plate .fit{color:var(--accent);font-weight:800}
+.cap{display:grid;grid-template-columns:auto 1fr;gap:14px;margin-top:10px;font-size:15px;color:var(--muted)}
+.cap b{font:700 12px var(--mono);color:var(--ink);text-transform:uppercase;letter-spacing:.06em}
+
+.cat{grid-column:8/-1;padding-top:10px}
+.cat table{width:100%;border-collapse:collapse}
+.cat caption{text-align:left;padding-bottom:6px}
+.cat th{font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:left;border-bottom:1px solid var(--ink);padding:4px 8px 4px 0}
+.cat td{border-bottom:1px solid var(--rule);padding:9px 8px 9px 0;vertical-align:top}
+.cat td:first-child{font:600 13px var(--mono);white-space:nowrap}
+.cat td:nth-child(2) a{font:500 17px/1.25 var(--mono);letter-spacing:-.02em}
+.cat td:nth-child(2) span{display:block;font-size:14px;color:var(--muted)}
+.cat td:last-child{font:12px var(--mono);color:var(--muted);white-space:nowrap}
+.cat tr.g td:first-child{color:var(--accent)}
+.cat tr:hover td{background:#e3e2da}
+
+.figs{display:grid;grid-template-columns:repeat(12,1fr);gap:20px;margin-top:56px;border-top:2px solid var(--ink);padding-top:10px}
+.figs .head{grid-column:1/-1;display:flex;justify-content:space-between}
+.pl{grid-column:span 3}
+.pl img{aspect-ratio:4/3;object-fit:cover;object-position:top;filter:grayscale(1) contrast(1.08);transition:filter .3s;border:1px solid var(--ink)}
+.pl:hover img{filter:none}
+.pl figcaption{margin-top:8px;font-size:14px;color:var(--muted)}
+.pl figcaption b{font:700 12px var(--mono);color:var(--ink);margin-right:6px}
+.lc{grid-column:span 6}
+.lc .plate-frame{height:auto}
+
+.arcade{margin-top:56px;border-top:2px solid var(--ink);padding-top:10px;display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+.arcade .head{grid-column:1/4}
+.arcade .head h2{font:800 34px/1 var(--mono);letter-spacing:-.05em;margin-top:8px}
+.arcade .head p{margin-top:10px;color:var(--muted);font-size:15px}
+.arcade ol{grid-column:4/-1;list-style:none;padding:0;margin:0;columns:3 230px;column-gap:20px}
+.arcade li{break-inside:avoid;border-top:1px solid var(--rule);padding:7px 0 9px}
+.arcade li b{font:600 14px var(--mono)}
+.arcade li span{display:block;font-size:14px;color:var(--muted)}
+.arcade li i{font:normal 11px var(--mono);color:var(--accent);margin-right:6px}
+
+footer{margin-top:64px;border-top:2px solid var(--ink);padding:8px 0 40px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media (max-width:900px){
+  header>*,.main>*{grid-column:1/-1!important}
+  .strip{grid-template-columns:1fr 1fr}.strip nav{grid-column:1/-1;justify-content:flex-start}
+  .facts{margin-top:24px}.pl{grid-column:span 6}.lc{grid-column:1/-1}
+  .arcade .head,.arcade ol{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="strip meta"><span>Catalogue of works</span><span>Epoch 2026.8 · J2000 sky</span><span>19 entries · 2 classes</span><nav aria-label="Primary"><a href="#" aria-current="page">Portfolio</a><a href="../marketplace.html">Market</a><a href="../about.html">About</a><a href="../sitemap.html">Index</a></nav></div>
+  <h1>mariyaholic</h1>
+  <p class="sub">I make things. Mostly software and an astronomy project. Some of it is public. Most of it is <em>still early.</em></p>
+  <div class="facts meta"><div><b>04</b>works in the portfolio</div><div><b>15</b>games on the market shelf</div><div><b>03</b>open sky leads</div></div>
+</header>
+
+<section class="main wrap" aria-label="Plate and catalogue">
+  <figure class="plate">
+    <p class="meta" style="display:flex;justify-content:space-between"><span>Plate I</span><span>Cygnus · 80 × 32 characters</span></p>
+    <div class="plate-frame"><pre aria-hidden="true" style="--cols:80">                                                         <span class="mw">·</span>    <span class="mw">·</span> <span class="mw">.</span>  <span class="gl">CYGNUS·J2000</span>
+                                              <span class="mw">·</span>                  <span class="mw">·</span>     <span class="mw">·</span>       <span class="mw">.</span>
+                       <span class="fs">.</span>            <span class="fs">·</span>                   <span class="mw">.</span>     <span class="mw">·</span>         <span class="mw">.</span>  <span class="fs">·</span> <span class="mw">.</span>
+         <span class="fs">.</span>                                        <span class="mw">.</span>  <span class="mw">.·</span>     <span class="mw">:</span> <span class="mw">:</span> <span class="mw">·..</span>      <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.</span>
+                  <span class="fs">·</span>                        <span class="mw">:</span>     <span class="mw">.</span>  <span class="mw">.</span> <span class="mw">·:</span> <span class="st3">·</span> <span class="lbl">κ</span> <span class="mw">.</span> <span class="mw">..·</span>       <span class="mw">.</span>
+                                              <span class="mw">·</span>     <span class="st3">·</span> <span class="lbl">ι</span>   <span class="mw">·</span>        <span class="mw">·</span> <span class="mw">.</span>  <span class="mw">·</span>
+      <span class="fs">.</span>                 <span class="fs">·</span>        <span class="fs">·</span>              <span class="mw">.</span>  <span class="ln">/</span><span class="mw">.:</span>   <span class="mw">.</span>   <span class="mw">·</span>  <span class="mw">·</span>            <span class="mw">:</span>
+<span class="gl">+50° -</span>                        <span class="mw">·</span>  <span class="mw">·</span>        <span class="mw">.</span>   <span class="mw">·:</span>  <span class="ln">/</span>      <span class="mw">·.·:</span>             <span class="mw">·.</span>   <span class="gr">-</span>
+<span class="fs">.</span>                                                <span class="ln">/</span>     <span class="fs">.</span><span class="mw">.</span>               <span class="mw">·</span>
+        <span class="fs">.</span>                     <span class="mw">·</span>     <span class="mw">.</span>           <span class="ln">/</span>     <span class="mw">:</span>        <span class="mw">·</span>        <span class="mw">:</span>     <span class="mw">:</span>
+             <span class="mw">.</span> <span class="fs">.</span>                            <span class="fs">·</span>  <span class="ln">/</span> <span class="mw">·</span>   <span class="mw">:</span>       <span class="mw">·</span>  <span class="mw">:</span> <span class="mw">.</span>      <span class="mw">.</span> <span class="mw">·</span>  <span class="mw">·</span>
+                   <span class="fs">·</span><span class="mw">.</span>     <span class="lit">@</span> <span class="lbl">α Deneb</span>      <span class="mw">·</span> <span class="mw">:</span>   <span class="st2">+</span><span class="mw">:</span><span class="lbl">δ</span> <span class="mw">.</span>           <span class="mw">.</span> <span class="mw">.</span>  <span class="mw">.</span>
+                 <span class="st3">·</span>          <span class="ln">\</span>    <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.::</span> <span class="ln">/</span> <span class="mw">:</span>        <span class="kp">[ ]</span> <span class="kl">Kepler field</span>
+  <span class="mw">.</span>             <span class="mw">:</span>    <span class="mw">·</span>       <span class="fs">·</span><span class="ln">\</span>    <span class="mw">:</span>   <span class="mw">.</span>        <span class="mw">·</span>          <span class="mw">·</span>   <span class="mw">.</span>         <span class="mw">:</span>
+      <span class="fs">·</span>     <span class="mw">·</span>   <span class="mw">:</span> <span class="mw">:</span>    <span class="mw">·</span>   <span class="mw">:.</span>    <span class="mw">.</span>    <span class="mw">.</span> <span class="ln">/</span> <span class="fs">.</span>       <span class="mw">:</span>  <span class="mw">.</span>       <span class="mw">.</span> <span class="mw">·</span>
+                    <span class="st3">·</span> <span class="mw">·</span> <span class="mw">·.</span>    <span class="mw">·</span><span class="ln">\</span>  <span class="mw">:·</span><span class="ln">/</span>     <span class="fs">·</span>   <span class="mw">.</span>     <span class="mw">.:</span> <span class="mw">.</span> <span class="mw">.</span>
+<span class="gl">+40° -</span>      <span class="mw">··</span>  <span class="mw">·</span>  <span class="mw">:</span> <span class="mw">·.</span>          <span class="st1">*</span> <span class="lbl">γ Sadr</span> <span class="mw">.</span>   <span class="mw">·</span>  <span class="mw">.:</span> <span class="mw">.</span>       <span class="mw">·</span>    <span class="mw">·</span>             <span class="gr">-</span>
+           <span class="mw">·</span>         <span class="mw">:.</span> <span class="mw">··</span> <span class="mw">·</span> <span class="mw">.</span> <span class="ln">/</span>   <span class="ln">\</span>      <span class="mw">.</span> <span class="mw">.</span> <span class="mw">·</span> <span class="mw">·</span>   <span class="fs">.</span>      <span class="mw">.</span>           <span class="lit">@</span> <span class="lbl">Vega</span>
+                  <span class="mw">·</span> <span class="mw">.</span>   <span class="mw">:.</span>  <span class="mw">.</span> <span class="ln">/</span> <span class="mw">:</span>     <span class="ln">\</span><span class="mw">·</span>     <span class="mw">·</span>  <span class="mw">.</span>        <span class="mw">.</span>          <span class="fs">·</span>
+       <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.</span>   <span class="mw">·</span> <span class="mw">:</span> <span class="mw">.</span>    <span class="mw">:</span> <span class="ln">/</span> <span class="mw">.</span>     <span class="mw">·</span>  <span class="mw">.</span><span class="ln">\</span>         <span class="mw">·</span>   <span class="fs">.</span>
+       <span class="mw">..·</span>   <span class="mw">:</span><span class="fs">.</span><span class="mw">··</span>   <span class="mw">·</span>     <span class="ln">/</span><span class="mw">·</span> <span class="mw">.</span>    <span class="mw">··</span>    <span class="mw">·</span>     <span class="mw">.</span>  <span class="mw">·</span>     <span class="fs">.</span>
+  <span class="mw">.</span>  <span class="mw">.</span> <span class="mw">.</span>   <span class="fs">.</span> <span class="mw">.</span> <span class="mw">··</span>         <span class="mw">:</span> <span class="mw">·</span>       <span class="mw">·</span>     <span class="st3">·</span> <span class="lbl">η</span>                         <span class="mw">.</span>
+         <span class="mw">.·</span>  <span class="mw">.</span>        <span class="mw">·</span> <span class="st1">*</span> <span class="lbl">ε Gienah</span>          <span class="ln">\</span>  <span class="mw">:</span>                   <span class="st3">·</span>
+<span class="mw">:.</span>  <span class="mw">.</span>              <span class="mw">.</span> <span class="ln">/</span>    <span class="mw">.·</span>                  <span class="ln">\</span>                <span class="st2">+</span>
+    <span class="mw">.</span>    <span class="mw">·</span> <span class="mw">.</span>   <span class="mw">:..</span><span class="ln">/</span>        <span class="mw">·</span> <span class="mw">..</span>           <span class="mw">.</span>    <span class="ln">\</span>
+<span class="gl">+30° -</span>   <span class="mw">..·</span>   <span class="st2">+</span> <span class="lbl">ζ</span><span class="mw">.</span> <span class="mw">.</span>    <span class="mw">:</span>  <span class="fs">.</span>  <span class="mw">:</span>                 <span class="ln">\</span>               <span class="fs">.</span>             <span class="gr">-</span>
+<span class="mw">..·</span>       <span class="mw">:·</span>             <span class="fs">.</span>       <span class="mw">·</span>                <span class="ln">\</span><span class="fs">·</span>
+ <span class="mw">:.</span>   <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">··</span>                                      <span class="st2">+</span> <span class="lbl">β Albireo</span>  <span class="fs">.</span>
+    <span class="mw">·</span>    <span class="mw">·</span>                                              <span class="fs">.</span>        <span class="fs">.</span>      <span class="fs">·</span>
+ <span class="mw">.</span>   <span class="mw">·</span>    <span class="mw">·</span>         <span class="mw">·</span>         <span class="fs">.</span>  <span class="fs">.</span>
+ <span class="mw">·</span>  <span class="mw">..</span>  <span class="fs">.</span>         <span class="mw">·</span><span class="gr">|</span>                     <span class="gr">|</span>                     <span class="gr">|</span>
+                  <span class="gl">21h</span>                   <span class="gl">20h</span>                   <span class="gl">19h</span></pre></div>
+    <figcaption class="cap"><b>Pl. I</b><span>Cygnus from real positions. Glyph by magnitude, the Milky Way through Sadr, and the Kepler field boxed. Where Ad Astra started looking.</span></figcaption>
+  </figure>
+  <div class="cat">
+    <table>
+      <caption class="meta">Table 1 · works, by class</caption>
+      <thead><tr><th scope="col">No.</th><th scope="col">Object</th><th scope="col">State</th></tr></thead>
+      <tbody>
+        <tr><td>W-001</td><td><a href="../works.html#ad-astra">Ad Astra / Cygnus</a><span>Public archives, three open leads, retractions kept.</span></td><td>public</td></tr>
+        <tr><td>W-002</td><td><a href="../works.html#uika">Uika</a><span>A manual, a contract and a decision register for my repos.</span></td><td>early</td></tr>
+        <tr><td>W-003</td><td><a href="../works.html#tickatlas">TickAtlas</a><span>Market studies with method pages. Failures stay up.</span></td><td>public</td></tr>
+        <tr><td>W-004</td><td><a href="../works.html#aria">Aria</a><span>A dark listening UI. One track at a time.</span></td><td>early</td></tr>
+        <tr class="g"><td>G-001</td><td><a href="../hearth.html">Starfire Hearth</a><span>A cozy hard sci-fi settlement game.</span></td><td>in dev</td></tr>
+        <tr class="g"><td>G-002</td><td><a href="../emberkind.html">Emberkind</a><span>A colony game you play in one sitting.</span></td><td>experiment</td></tr>
+        <tr class="g"><td>G-003</td><td><a href="../arcade.html">The arcade</a><span>Thirteen single-file browser games. Table 2.</span></td><td>launch prep</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="figs wrap" aria-label="Plates">
+  <p class="head meta"><span>Plates II–V · photographs</span><span>hover for colour</span></p>
+  <figure class="pl"><img src="../img/cygnus-filtered.jpg" width="1440" height="900" alt="Cygnus Sky filtered to the active leads" loading="lazy"><figcaption><b>Pl. II</b>Cygnus Sky, active leads only.</figcaption></figure>
+  <figure class="pl"><img src="../img/uika.png" width="1440" height="900" alt="The Uika manual" loading="lazy"><figcaption><b>Pl. III</b>The Uika manual.</figcaption></figure>
+  <figure class="pl"><img src="../img/tickatlas.jpg" width="1280" height="800" alt="TickAtlas home page with study charts" loading="lazy"><figcaption><b>Pl. IV</b>TickAtlas, the public stats site.</figcaption></figure>
+  <figure class="pl"><img src="../img/games/stellar_fusion.jpg" width="1280" height="800" alt="Stellar Fusion in play" loading="lazy"><figcaption><b>Pl. V</b>Stellar Fusion, from the arcade.</figcaption></figure>
+  <figure class="lc"><p class="meta">Fig. 1</p><div class="plate plate-frame"><pre aria-hidden="true" style="--cols:64">
+      <span class="ax">│</span>
+      <span class="ax">│</span> <span class="pt">·</span>   <span class="pt">·</span>      <span class="pt">·</span>  <span class="pt">··</span>  <span class="pt">·</span>                       <span class="pt">.</span>  <span class="pt">·</span>  <span class="pt">·..</span>
+<span class="gl">1.000</span> <span class="ax">│</span> <span class="fit">──────────────────────</span>            <span class="fit">─────────────────────</span>
+      <span class="ax">│</span>      <span class="pt">.</span> <span class="pt">.</span>    <span class="pt">·.</span>        <span class="pt">·</span>           <span class="pt">··</span>       <span class="pt">·</span>   <span class="pt">·</span>  <span class="pt">·</span>  <span class="pt">·.</span>
+      <span class="ax">│</span>
+      <span class="ax">│</span>                       <span class="fit">\</span>          <span class="fit">/</span>
+      <span class="ax">│</span>
+      <span class="ax">│</span>
+      <span class="ax">│</span>                        <span class="fit">\</span>   <span class="pt">.</span>    <span class="fit">/</span>
+      <span class="ax">│</span>                        <span class="pt">·</span>  <span class="pt">·</span>     <span class="pt">.</span>
+<span class="gl">0.995</span> <span class="ax">│</span>                         <span class="fit">────────</span>
+      <span class="ax">│</span>                         <span class="pt">·</span>
+      <span class="ax">└─────────────────────────────────────────────────────────</span>
+        <span class="gl">phase  −0.1</span>               <span class="gl">0</span>                      <span class="gl">+0.1</span></pre></div><figcaption class="cap"><b>Fig. 1</b><span>A transit, folded in phase. Illustrative shape, not data from the open leads.</span></figcaption></figure>
+  <figure class="pl" style="grid-column:span 3"><img src="../img/games/chromasort.jpg" width="1280" height="800" alt="ChromaSort board" loading="lazy"><figcaption><b>Pl. VI</b>ChromaSort.</figcaption></figure>
+  <figure class="pl" style="grid-column:span 3"><img src="../img/games/gridlock_metro.jpg" width="1280" height="800" alt="Gridlock Metro track layout" loading="lazy"><figcaption><b>Pl. VII</b>Gridlock Metro.</figcaption></figure>
+</section>
+
+<section class="arcade wrap" aria-labelledby="t2">
+  <div class="head"><p class="meta">Table 2</p><h2 id="t2">The arcade</h2><p class="meta">G-003 · entries .01–.13</p><p>One source file each, built three ways: free with ads, ad-free, and Android. Nothing is on sale yet.</p></div>
+  <ol>
+    <li><i>.01</i><b>Aquifer Flow</b><span>Pump water without draining the aquifer.</span></li>
+    <li><i>.02</i><b>Blind Horizon</b><span>Sonar stealth: every ping wakes the cave.</span></li>
+    <li><i>.03</i><b>Borderline</b><span>Name a rotated country outline.</span></li>
+    <li><i>.04</i><b>ChromaSort</b><span>Swap tiles back into a gradient.</span></li>
+    <li><i>.05</i><b>Gridlock Metro</b><span>Switch joints, route trains home.</span></li>
+    <li><i>.06</i><b>Market Maker</b><span>Quote bid and offer on five desks.</span></li>
+    <li><i>.07</i><b>Market Mimic</b><span>Memorise a tape, then find it.</span></li>
+    <li><i>.08</i><b>N-Gram Hunter</b><span>Words that hold two letters.</span></li>
+    <li><i>.09</i><b>Rhythm Sync</b><span>Tap in time across eight tracks.</span></li>
+    <li><i>.10</i><b>Semantic Web</b><span>Bridge two words in four links.</span></li>
+    <li><i>.11</i><b>Shatterpoint</b><span>Cut the load-bearing links.</span></li>
+    <li><i>.12</i><b>Stellar Fusion</b><span>Merge bodies up to a black hole.</span></li>
+    <li><i>.13</i><b>Thread the Needle</b><span>One button, moving gates, gravity.</span></li>
+  </ol>
+</section>
+<footer class="wrap meta"><span>mariyaholic · catalogue of works · plain html, no trackers</span><span><a href="../sitemap.html">Index</a> · <a href="../colophon.html">Colophon</a></span></footer>
+</body>
+</html>
