@@ -38,7 +38,7 @@ function view(x){var t=document.querySelector('meta[name=theme-color]');d.setAtt
 function motion(x){d.setAttribute('data-motion',x);press('motion',x!=='on')}
 d.classList.remove('no-js');
 view(v==='light'||v==='night'?v:get(T)==='dark'?'night':'light');
-motion(m==='on'||m==='off'?m:get(M)==='off'?'off':'on');
+motion(m==='on'||m==='off'?m:'on');
 if(d.getAttribute('data-view')==='light'){l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href='fonts/Fraunces.woff2';document.head.appendChild(l)}
 window.AO={T:T,M:M,put:put,on:on,view:view,motion:motion};
 document.addEventListener('DOMContentLoaded',function(){
@@ -57,44 +57,42 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 <body id="top">
 <span id="night"></span>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-header wrap" data-menu="closed">
+<header class="site-header wrap">
   <a class="wordmark" href="index.html" aria-label="mariyaholic home">mariyaholic</a>
-  <nav class="site-nav" id="primary-nav" aria-label="Primary">
-    <a href="index.html">Home</a>
-    <a href="works.html">Work</a>
-    <a href="world.html">World</a>
+  <nav class="site-nav" aria-label="Primary">
+    <a href="works.html">Portfolio</a>
+    <a href="marketplace.html">Marketplace</a>
     <a href="about.html">About</a>
     <a href="sitemap.html" aria-current="page">Index</a>
+    <button class="view-toggle" id="theme" type="button" aria-pressed="false">Night</button>
+    <noscript><a class="view-toggle" href="#night">Night</a><a class="view-toggle" href="#top">Day</a></noscript>
   </nav>
-  <div class="header-tools">
-    <button class="toggle" id="theme" type="button" aria-pressed="false">Night view</button>
-    <button class="toggle" id="motion" type="button" aria-pressed="false">Pause motion</button>
-    <noscript><a class="toggle" href="#night">Night view</a><a class="toggle" href="#top">Light view</a></noscript>
-  </div>
-  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
 </header>
 <main id="main">
-<section class="page-hero page-hero--quiet wrap in-view" data-anim><div class="reveal"><p class="eyebrow">The index</p><h1>Find your <em>way in.</em></h1><p class="intro">Every page, with plain names.</p></div><div class="reveal delay-1"><p class="hero-note">It's small enough that you don't need search.</p></div></section>
-<nav class="interest-tape" aria-label="Explore the site"><div class="wrap tape-inner"><a href="sky.html">Sky</a><span aria-hidden="true">/</span><a href="hearth.html">Hearth</a><span aria-hidden="true">/</span><a href="arcade.html">Arcade</a><span aria-hidden="true">/</span><a href="companions.html">Companions</a><span aria-hidden="true">/</span><a href="tools.html">Tools</a><span aria-hidden="true">/</span><a href="taste.html">Taste</a></div></nav>
+<section class="page-hero page-hero--quiet wrap in-view" data-anim><div class="reveal"><p class="eyebrow">The index</p><h1>Find your <em>way in.</em></h1><p class="intro">Every page, grouped by what it is.</p></div><div class="reveal delay-1"><p class="hero-note">The site is small, so there's no search.</p></div></section>
 <section class="section section--rule wrap" aria-labelledby="map-title">
-  <div class="ascii-art ascii-art--hdr">
-<pre class="ascii" aria-hidden="true">
-   o=+=o                           o=+=o                           o=+=o
-     |  `-.______________________.-`  |  `-.______________________.-`  |
-     |                               |                               |
-░░░░░|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░|░░
-_:._;|_.:_.__:._;:_.:_.__:._;:_.:_.__|._;:_.:_.__:._;:_.:_.__:._;:_.:|._
+  <figure class="ascii-art ascii-art--hdr">
+<pre class="ascii" style="--cols:41" aria-hidden="true">
+   .                <span class="lbl">N</span>
+                    :               ·
+            ·       :
+                    :
+      <span class="lbl">W</span> · · · · ·  -<span class="lit">+</span>-  · · · · · <span class="lbl">E</span>
+                    :
+                    :        .
+      ·             :
+                    <span class="lbl">S</span>             .
 </pre>
-  </div>
-  <div class="section-head"><div><p class="eyebrow">All pages</p><h2 id="map-title">Everything.</h2></div></div><ul class="link-index"><li><a href="index.html">Home</a><span>intro and main projects</span></li><li><a href="works.html">Work</a><span>all projects</span></li><li><a href="world.html">World</a><span>Kurisu, Ava, and influences</span></li><li><a href="about.html">About</a><span>short intro</span></li><li><a href="persona.html">In person</a><span>what keeps showing up</span></li><li><a href="sky.html">Sky</a><span>Ad Astra and Cygnus</span></li><li><a href="hearth.html">Hearth</a><span>Starfire Hearth</span></li><li><a href="emberkind.html">Emberkind</a><span>a small deterministic game experiment</span></li><li><a href="companions.html">Companions</a><span>memory, voice, and fiction</span></li><li><a href="tools.html">Tools</a><span>Uika</span></li><li><a href="aria.html">Aria</a><span>a listening UI</span></li><li><a href="atlas.html">Atlas</a><span>TickAtlas and public research</span></li><li><a href="arcade.html">Arcade</a><span>small games and the Godot port</span></li><li><a href="taste.html">Taste</a><span>how I like to work</span></li><li><a href="colophon.html">Colophon</a><span>fonts, sources, rights</span></li></ul></section>
-<div class="wrap"><svg class="divider divider--flush" data-anim viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><line class="dv-line" x1="0" y1="6" x2="1000" y2="6"/><line class="dv-pulse" x1="0" y1="6" x2="1000" y2="6" pathLength="100"/><line class="dv-node" x1="500" y1="2" x2="500" y2="10"/></svg></div>
-<section class="section section--tight wrap" aria-labelledby="proposal-map-title"><div class="section-head"><div><p class="eyebrow">Methods &amp; boundaries</p><h2 id="proposal-map-title">Four drafts.</h2></div><p>Draft pages on how I'd present methods, cost, privacy and evidence.</p></div><ul class="link-index"><li><a href="method.html">Method</a><span>mechanics, states, synthetic walkthrough</span></li><li><a href="efficiency.html">Efficiency</a><span>resource families, normalized measures, lab limits</span></li><li><a href="privacy.html">Privacy</a><span>release ladder, crop review, rights gate</span></li><li><a href="evidence.html">Evidence</a><span>status vocabulary, receipts, open checks</span></li></ul></section>
+</figure>
+  <div class="section-head"><div><p class="eyebrow">All pages</p><h2 id="map-title">Portfolio</h2></div></div><ul class="link-index"><li><a href="works.html#ad-astra">Ad Astra</a><span>astronomy and the Cygnus sky map</span></li><li><a href="works.html#uika">Uika</a><span>coding tools across repos</span></li><li><a href="works.html#tickatlas">TickAtlas</a><span>public market research</span></li><li><a href="works.html#aria">Aria</a><span>a listening UI</span></li></ul>
+  <div class="section-head"><div><h2>Marketplace</h2></div></div><ul class="link-index"><li><a href="marketplace.html">Marketplace</a><span>the games, and how they'll be sold</span></li><li><a href="hearth.html">Starfire Hearth</a><span>a settlement game</span></li><li><a href="emberkind.html">Emberkind</a><span>a one-sitting colony game</span></li><li><a href="arcade.html">Arcade</a><span>thirteen browser games</span></li></ul>
+  <div class="section-head"><div><h2>About me</h2></div></div><ul class="link-index"><li><a href="about.html">About</a><span>short intro</span></li><li><a href="persona.html">In person</a><span>what keeps showing up</span></li><li><a href="taste.html">Taste</a><span>how I like to work</span></li></ul>
+  <div class="section-head"><div><h2>Notes</h2></div></div><ul class="link-index"><li><b>Drafts</b><span><a href="method.html">Method</a>, <a href="efficiency.html">Efficiency</a>, <a href="privacy.html">Privacy</a>, <a href="evidence.html">Evidence</a></span></li><li><a href="colophon.html">Colophon</a><span>fonts, sources, rights</span></li></ul>
+</section>
 </main>
-<footer class="footer wrap" id="elsewhere">
-  <div><p class="footer-name">mariyaholic</p><p>Things I make.</p></div>
-  <nav aria-label="Elsewhere"><a href="index.html">Home</a><a href="works.html">Work</a><a href="world.html">World</a><a href="about.html">About</a><a href="persona.html">In person</a><a href="sky.html">Sky</a><a href="hearth.html">Hearth</a><a href="emberkind.html">Emberkind</a><a href="companions.html">Companions</a><a href="tools.html">Tools</a><a href="aria.html">Aria</a><a href="atlas.html">Atlas</a><a href="arcade.html">Arcade</a><a href="taste.html">Taste</a><a href="method.html">Method</a><a href="efficiency.html">Efficiency</a><a href="privacy.html">Privacy</a><a href="evidence.html">Evidence</a><a href="sg.html">The lab door</a><a href="sr.html">The bridge home</a><a href="confluence.html">Confluence</a><a href="colophon.html">Colophon</a><a href="sitemap.html">Index</a><a href="https://cygnus-sky.pages.dev">Cygnus Sky ↗</a><a href="https://tickatlas.neocities.org">TickAtlas ↗</a><a href="https://github.com/mariyaholic/yozora">Yozora ↗</a></nav>
-  <p class="credits-line">Type: Fraunces, Newsreader (SIL OFL 1.1); subsets of Major Mono Display and JetBrains Mono (SIL OFL 1.1) and of Special Elite (Apache 2.0). Licence texts are in fonts/. <a href="colophon.html#credits">Credits</a></p>
-  <p class="review-note">Design study · <a href="colophon.html">Colophon</a>.</p>
+<footer class="footer wrap">
+  <p>mariyaholic · plain html, no trackers</p>
+  <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
 </footer>
 </body>
 </html>

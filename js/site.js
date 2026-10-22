@@ -1,15 +1,13 @@
-/* Shared controls (rev 6), ported from _src/site.js. The inline head script sets view and motion
-   before paint and exposes window.AO; this file wires the toggles, menu, project switcher, sequences. */
+/* Shared controls (rev 7). The inline head script sets view and motion before paint and exposes
+   window.AO; this file wires the Night toggle, the project switcher and the step sequences.
+   Motion follows prefers-reduced-motion (or ?motion=off); there is no on-page motion button. */
 (() => {
   const root = document.documentElement;
   const A = window.AO;
-  const header = document.querySelector('.site-header');
   const themeButton = document.getElementById('theme');
-  const motionButton = document.getElementById('motion');
-  const menuButton = document.querySelector('.menu-toggle');
   const motionOn = () => root.dataset.motion === 'on';
 
-  /* Toggles: fixed labels, state in aria-pressed; only clicks save. A pause is saved as off. */
+  /* Night toggle: fixed label, state in aria-pressed; only clicks save. */
   if (A) {
     A.view(root.dataset.view);
     A.motion(root.dataset.motion);
@@ -18,33 +16,7 @@
       A.view(next);
       A.put(A.T, next === 'night' ? 'dark' : 'light');
     });
-    motionButton?.addEventListener('click', () => {
-      const next = motionOn() ? 'paused' : 'on';
-      A.motion(next);
-      A.put(A.M, next === 'on' ? 'on' : 'off');
-    });
   }
-
-  /* Mobile menu */
-  function closeMenu() {
-    if (!header || !menuButton) return;
-    header.dataset.menu = 'closed';
-    menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.textContent = 'Menu';
-  }
-  menuButton?.addEventListener('click', () => {
-    const open = header.dataset.menu === 'open';
-    header.dataset.menu = open ? 'closed' : 'open';
-    menuButton.setAttribute('aria-expanded', String(!open));
-    menuButton.textContent = open ? 'Menu' : 'Close';
-  });
-  document.querySelectorAll('.site-nav a').forEach(link => link.addEventListener('click', closeMenu));
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && header?.dataset.menu === 'open') {
-      closeMenu();
-      menuButton?.focus();
-    }
-  });
 
   /* Project switcher (index, confluence). image:null shows the page's TODO frame (cap-tickatlas.png missing). */
   const switcher = document.querySelector('[data-project-switcher]');
