@@ -15,32 +15,24 @@ _____|░░░░░░░░░░░░░░░░░░░░░░░░�
   you found the stairwell. it is quiet here.
   plain html, no trackers. the lights stay on.
 -->
-<html lang="en" class="no-js" data-view="light" data-motion="on">
+<html lang="en" class="no-js" data-motion="on">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta name="color-scheme" content="light">
-<meta name="theme-color" content="#f3efe4">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#120c24">
 <meta name="description" content="Personal site of mariyaholic. Software, an astronomy project, and research.">
 <title>Home | mariyaholic</title>
 <link rel="icon" href="data:,">
 <script>
-/* View + motion before first paint: ?view=/?motion= (or #) > saved > light, on. See README.md. */
+/* Motion before first paint: ?motion= (or #motion=) > on; reduced motion is handled in CSS. See README.md. */
 (function(){
-var d=document.documentElement,L=location,q=new URLSearchParams(L.search),h=new URLSearchParams(L.hash.slice(1)),
-v=q.get('view')||h.get('view'),m=q.get('motion')||h.get('motion'),T='ao-persona-theme',M='ao-persona-motion',l;
-function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
-function put(k,x){try{localStorage.setItem(k,x)}catch(e){}}
+var d=document.documentElement,q=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.slice(1)),m=q.get('motion')||h.get('motion');
 function on(){return d.getAttribute('data-motion')==='on'}
-function press(id,p){var b=document.getElementById(id);if(b)b.setAttribute('aria-pressed',p?'true':'false')}
-function view(x){var t=document.querySelector('meta[name=theme-color]');d.setAttribute('data-view',x);press('theme',x==='night');if(t)t.content=x==='night'?'#211e1a':'#f3efe4'}
-function motion(x){d.setAttribute('data-motion',x);press('motion',x!=='on')}
 d.classList.remove('no-js');
-view(v==='light'||v==='night'?v:get(T)==='dark'?'night':'light');
-motion(m==='on'||m==='off'?m:'on');
-if(d.getAttribute('data-view')==='light'){l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href='fonts/Fraunces.woff2';document.head.appendChild(l)}
-window.AO={T:T,M:M,put:put,on:on,view:view,motion:motion};
+d.setAttribute('data-motion',m==='off'?'off':'on');
+window.AO={on:on};
 document.addEventListener('DOMContentLoaded',function(){
 var els=document.querySelectorAll('[data-anim]'),io,i;
 if(!on())for(i=0;i<els.length;i++)els[i].classList.remove('in-view');
@@ -50,63 +42,111 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 });
 })();
 </script>
-<link rel="preload" href="fonts/Newsreader.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/site.css">
 <script src="js/site.js" defer></script>
 </head>
-<body id="top">
-<span id="night"></span>
+<body id="top" class="home">
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-header wrap">
-  <a class="wordmark" href="index.html" aria-label="mariyaholic home">mariyaholic</a>
+<header class="site-header">
+  <a class="wordmark" href="index.html" aria-label="mariyaholic home">◆ mariyaholic-98</a>
   <nav class="site-nav" aria-label="Primary">
     <a href="works.html">Portfolio</a>
     <a href="marketplace.html">Marketplace</a>
     <a href="about.html">About</a>
     <a href="sitemap.html">Index</a>
-    <button class="view-toggle" id="theme" type="button" aria-pressed="false">Night</button>
-    <noscript><a class="view-toggle" href="#night">Night</a><a class="view-toggle" href="#top">Day</a></noscript>
   </nav>
+  <span class="path" aria-hidden="true">A:\&gt;</span>
 </header>
-<main id="main">
-<section class="home-hero wrap in-view" data-anim>
-  <div class="reveal">
-    <h1>I make <em>things.</em></h1>
-    <p class="intro">Mostly software and an astronomy project. Some of it is public. Most of it is still early.</p>
-  </div>
-</section>
-<div class="wrap">
-<figure class="ascii-art sky-chart">
-<pre class="ascii" style="--cols:58" aria-hidden="true">
-  .                                            .
-              ·               <span class="lit">@</span>  <span class="lbl">deneb</span>
-                              :                        ·
-      ·                       :         ·
-                              :
-                              :
-      <span class="lbl">δ</span> + · · · · · · · · · · + · · · · · · · · · + <span class="lbl">ε</span>
-                              :  <span class="lbl">sadr</span>
-                              :
-         .                    :                     ·
-                 .            :
-   ·                          *  <span class="lbl">albireo</span>
-                                            .
-</pre>
-  <figcaption>Cygnus, the swan. Where the sky project started.</figcaption>
-</figure>
-<section class="home-work" aria-labelledby="work-title">
-  <h2 class="eyebrow" id="work-title">Three things I'm making</h2>
-  <ul class="work-list">
-    <li><a href="works.html#ad-astra"><b>Ad Astra &amp; Cygnus</b><span>A sky map you can browse.</span><i aria-hidden="true">→</i></a></li>
-    <li><a href="works.html#uika"><b>Uika</b><span>Keeping coding tools in sync across repos.</span><i aria-hidden="true">→</i></a></li>
-    <li><a href="works.html#tickatlas"><b>TickAtlas</b><span>Market studies, published with their method.</span><i aria-hidden="true">→</i></a></li>
-  </ul>
-  <p class="more">The rest is in the <a href="works.html">portfolio</a>. Games live in the <a href="marketplace.html">marketplace</a>.</p>
-</section>
-</div>
+<main id="main" class="desk">
+  <nav class="icons" aria-label="Desktop">
+    <a href="#w-readme"><span class="ico doc" aria-hidden="true"></span><span>README</span></a>
+    <a href="#w-cygnus"><span class="ico app" aria-hidden="true"></span><span>CYGNUS</span></a>
+    <a href="works.html"><span class="ico dir" aria-hidden="true"></span><span>WORKS</span></a>
+    <a href="marketplace.html"><span class="ico cart" aria-hidden="true"></span><span>MARKET</span></a>
+  </nav>
+
+  <section class="win readme" id="w-readme" data-win="README.TXT" aria-labelledby="readme-title">
+    <div class="body">
+      <h1 id="readme-title">I make <em>things.</em></h1>
+      <p>Mostly software and an astronomy project. Some of it is public. Most of it is still early.</p>
+      <p>On a wide screen, drag a title bar to move a window. Everything in them is a plain link.</p>
+      <p class="prompt" aria-hidden="true">A:\MARIYA&gt; dir /works</p>
+    </div>
+  </section>
+
+  <section class="win" id="w-cygnus" data-win="CYGNUS.EXE — sky map" aria-labelledby="cygnus-title">
+    <h2 class="sr-only" id="cygnus-title">Cygnus sky map</h2>
+    <figure class="ascii-art screen" role="img" aria-label="Star chart of Cygnus in text mode: Deneb, Sadr, Gienah and Albireo joined by constellation lines, the Milky Way band through the swan, Vega to the east and the Kepler field.">
+<pre class="ascii" style="--cols:80" aria-hidden="true">                                                         <span class="mw">·</span>    <span class="mw">·</span> <span class="mw">.</span>  <span class="gl">CYGNUS·J2000</span>
+                                              <span class="mw">·</span>                  <span class="mw">·</span>     <span class="mw">·</span>       <span class="mw">.</span>
+                       <span class="fs">.</span>            <span class="fs">·</span>                   <span class="mw">.</span>     <span class="mw">·</span>         <span class="mw">.</span>  <span class="fs">·</span> <span class="mw">.</span>
+         <span class="fs">.</span>                                        <span class="mw">.</span>  <span class="mw">.·</span>     <span class="mw">:</span> <span class="mw">:</span> <span class="mw">·..</span>      <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.</span>
+                  <span class="fs">·</span>                        <span class="mw">:</span>     <span class="mw">.</span>  <span class="mw">.</span> <span class="mw">·:</span> <span class="st3">·</span> <span class="lbl">κ</span> <span class="mw">.</span> <span class="mw">..·</span>       <span class="mw">.</span>
+                                              <span class="mw">·</span>     <span class="st3">·</span> <span class="lbl">ι</span>   <span class="mw">·</span>        <span class="mw">·</span> <span class="mw">.</span>  <span class="mw">·</span>
+      <span class="fs">.</span>                 <span class="fs">·</span>        <span class="fs">·</span>              <span class="mw">.</span>  <span class="ln">/</span><span class="mw">.:</span>   <span class="mw">.</span>   <span class="mw">·</span>  <span class="mw">·</span>            <span class="mw">:</span>
+<span class="gl">+50° -</span>                        <span class="mw">·</span>  <span class="mw">·</span>        <span class="mw">.</span>   <span class="mw">·:</span>  <span class="ln">/</span>      <span class="mw">·.·:</span>             <span class="mw">·.</span>   <span class="gr">-</span>
+<span class="fs">.</span>                                                <span class="ln">/</span>     <span class="fs">.</span><span class="mw">.</span>               <span class="mw">·</span>
+        <span class="fs">.</span>                     <span class="mw">·</span>     <span class="mw">.</span>           <span class="ln">/</span>     <span class="mw">:</span>        <span class="mw">·</span>        <span class="mw">:</span>     <span class="mw">:</span>
+             <span class="mw">.</span> <span class="fs">.</span>                            <span class="fs">·</span>  <span class="ln">/</span> <span class="mw">·</span>   <span class="mw">:</span>       <span class="mw">·</span>  <span class="mw">:</span> <span class="mw">.</span>      <span class="mw">.</span> <span class="mw">·</span>  <span class="mw">·</span>
+                   <span class="fs">·</span><span class="mw">.</span>     <span class="lit">@</span> <span class="lbl">α Deneb</span>      <span class="mw">·</span> <span class="mw">:</span>   <span class="st2">+</span><span class="mw">:</span><span class="lbl">δ</span> <span class="mw">.</span>           <span class="mw">.</span> <span class="mw">.</span>  <span class="mw">.</span>
+                 <span class="st3">·</span>          <span class="ln">\</span>    <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.::</span> <span class="ln">/</span> <span class="mw">:</span>        <span class="kp">[ ]</span> <span class="kl">Kepler field</span>
+  <span class="mw">.</span>             <span class="mw">:</span>    <span class="mw">·</span>       <span class="fs">·</span><span class="ln">\</span>    <span class="mw">:</span>   <span class="mw">.</span>        <span class="mw">·</span>          <span class="mw">·</span>   <span class="mw">.</span>         <span class="mw">:</span>
+      <span class="fs">·</span>     <span class="mw">·</span>   <span class="mw">:</span> <span class="mw">:</span>    <span class="mw">·</span>   <span class="mw">:.</span>    <span class="mw">.</span>    <span class="mw">.</span> <span class="ln">/</span> <span class="fs">.</span>       <span class="mw">:</span>  <span class="mw">.</span>       <span class="mw">.</span> <span class="mw">·</span>
+                    <span class="st3">·</span> <span class="mw">·</span> <span class="mw">·.</span>    <span class="mw">·</span><span class="ln">\</span>  <span class="mw">:·</span><span class="ln">/</span>     <span class="fs">·</span>   <span class="mw">.</span>     <span class="mw">.:</span> <span class="mw">.</span> <span class="mw">.</span>
+<span class="gl">+40° -</span>      <span class="mw">··</span>  <span class="mw">·</span>  <span class="mw">:</span> <span class="mw">·.</span>          <span class="st1">*</span> <span class="lbl">γ Sadr</span> <span class="mw">.</span>   <span class="mw">·</span>  <span class="mw">.:</span> <span class="mw">.</span>       <span class="mw">·</span>    <span class="mw">·</span>             <span class="gr">-</span>
+           <span class="mw">·</span>         <span class="mw">:.</span> <span class="mw">··</span> <span class="mw">·</span> <span class="mw">.</span> <span class="ln">/</span>   <span class="ln">\</span>      <span class="mw">.</span> <span class="mw">.</span> <span class="mw">·</span> <span class="mw">·</span>   <span class="fs">.</span>      <span class="mw">.</span>           <span class="lit">@</span> <span class="lbl">Vega</span>
+                  <span class="mw">·</span> <span class="mw">.</span>   <span class="mw">:.</span>  <span class="mw">.</span> <span class="ln">/</span> <span class="mw">:</span>     <span class="ln">\</span><span class="mw">·</span>     <span class="mw">·</span>  <span class="mw">.</span>        <span class="mw">.</span>          <span class="fs">·</span>
+       <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.</span>   <span class="mw">·</span> <span class="mw">:</span> <span class="mw">.</span>    <span class="mw">:</span> <span class="ln">/</span> <span class="mw">.</span>     <span class="mw">·</span>  <span class="mw">.</span><span class="ln">\</span>         <span class="mw">·</span>   <span class="fs">.</span>
+       <span class="mw">..·</span>   <span class="mw">:</span><span class="fs">.</span><span class="mw">··</span>   <span class="mw">·</span>     <span class="ln">/</span><span class="mw">·</span> <span class="mw">.</span>    <span class="mw">··</span>    <span class="mw">·</span>     <span class="mw">.</span>  <span class="mw">·</span>     <span class="fs">.</span>
+  <span class="mw">.</span>  <span class="mw">.</span> <span class="mw">.</span>   <span class="fs">.</span> <span class="mw">.</span> <span class="mw">··</span>         <span class="mw">:</span> <span class="mw">·</span>       <span class="mw">·</span>     <span class="st3">·</span> <span class="lbl">η</span>                         <span class="mw">.</span>
+         <span class="mw">.·</span>  <span class="mw">.</span>        <span class="mw">·</span> <span class="st1">*</span> <span class="lbl">ε Gienah</span>          <span class="ln">\</span>  <span class="mw">:</span>                   <span class="st3">·</span>
+<span class="mw">:.</span>  <span class="mw">.</span>              <span class="mw">.</span> <span class="ln">/</span>    <span class="mw">.·</span>                  <span class="ln">\</span>                <span class="st2">+</span>
+    <span class="mw">.</span>    <span class="mw">·</span> <span class="mw">.</span>   <span class="mw">:..</span><span class="ln">/</span>        <span class="mw">·</span> <span class="mw">..</span>           <span class="mw">.</span>    <span class="ln">\</span>
+<span class="gl">+30° -</span>   <span class="mw">..·</span>   <span class="st2">+</span> <span class="lbl">ζ</span><span class="mw">.</span> <span class="mw">.</span>    <span class="mw">:</span>  <span class="fs">.</span>  <span class="mw">:</span>                 <span class="ln">\</span>               <span class="fs">.</span>             <span class="gr">-</span>
+<span class="mw">..·</span>       <span class="mw">:·</span>             <span class="fs">.</span>       <span class="mw">·</span>                <span class="ln">\</span><span class="fs">·</span>
+ <span class="mw">:.</span>   <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">··</span>                                      <span class="st2">+</span> <span class="lbl">β Albireo</span>  <span class="fs">.</span>
+    <span class="mw">·</span>    <span class="mw">·</span>                                              <span class="fs">.</span>        <span class="fs">.</span>      <span class="fs">·</span>
+ <span class="mw">.</span>   <span class="mw">·</span>    <span class="mw">·</span>         <span class="mw">·</span>         <span class="fs">.</span>  <span class="fs">.</span>
+ <span class="mw">·</span>  <span class="mw">..</span>  <span class="fs">.</span>         <span class="mw">·</span><span class="gr">|</span>                     <span class="gr">|</span>                     <span class="gr">|</span>
+                  <span class="gl">21h</span>                   <span class="gl">20h</span>                   <span class="gl">19h</span></pre>
+    </figure>
+    <div class="status"><span>3 / 1294 targets</span><span>open: TOI-224 · TOI-2666 · TOI-3500</span><a href="https://cygnus-sky.pages.dev">RUN ONLINE ↗</a></div>
+  </section>
+
+  <section class="win" id="w-files" data-win="A:\WORKS" aria-labelledby="files-title">
+    <div class="body">
+      <h2 class="sr-only" id="files-title">Works</h2>
+      <ul class="files">
+        <li><a href="works.html#ad-astra"><img src="img/98/cygnus.png" alt="" width="1120" height="700"><span><b>AD_ASTRA.SKY</b><small>astronomy · public archives, open leads</small></span></a></li>
+        <li><a href="works.html#uika"><img src="img/98/uika.png" alt="" width="960" height="600" loading="lazy"><span><b>UIKA.SYS</b><small>tools · coding tools in sync across repos</small></span></a></li>
+        <li><a href="works.html#tickatlas"><img src="img/98/tickatlas.png" alt="" width="960" height="600" loading="lazy"><span><b>TICKATLS.DAT</b><small>research · market studies with receipts</small></span></a></li>
+        <li><a href="works.html#aria"><span class="noimg" aria-hidden="true"></span><span><b>ARIA.SND</b><small>music · one room, one track</small></span></a></li>
+      </ul>
+    </div>
+    <div class="status"><span>4 file(s)</span><span>games are in MARKET</span><a href="works.html">OPEN ↗</a></div>
+  </section>
+
+  <section class="win pic" id="w-pic" data-win="STARFIRE.PIC" aria-labelledby="pic-title">
+    <figure class="body"><img src="img/98/starfire.png" width="1280" height="426" alt="Starfire Hearth concept art: a sheet of stars, planets and stations, dithered to sixteen colours." loading="lazy"><figcaption id="pic-title">Starfire Hearth · concept art, not gameplay · in development</figcaption></figure>
+  </section>
+
+  <section class="win" id="w-market" data-win="MARKET.DAT" aria-labelledby="market-title">
+    <div class="body">
+      <h2 class="sr-only" id="market-title">Marketplace</h2>
+      <table class="dat"><thead><tr><th scope="col">Game</th><th scope="col">Status</th></tr></thead><tbody>
+        <tr><td><a href="hearth.html">Starfire Hearth</a></td><td>in dev</td></tr>
+        <tr><td><a href="emberkind.html">Emberkind</a></td><td>experiment</td></tr>
+        <tr><td><a href="arcade.html">Arcade × 13</a></td><td>launch prep</td></tr>
+      </tbody></table>
+      <div class="thumbs"><img src="img/98/stellar_fusion.png" width="640" height="400" alt="Stellar Fusion, one of the arcade games, dithered to sixteen colours" loading="lazy"><img src="img/98/chromasort.png" width="640" height="400" alt="ChromaSort, one of the arcade games, dithered to sixteen colours" loading="lazy"></div>
+    </div>
+    <div class="status"><span>nothing on sale yet</span><a href="marketplace.html">OPEN ↗</a></div>
+  </section>
 </main>
-<footer class="footer wrap">
+<footer class="footer">
   <p>mariyaholic · plain html, no trackers</p>
+  <div class="tasks" aria-hidden="true"><button type="button" tabindex="-1" data-for="w-readme">README</button><button type="button" tabindex="-1" data-for="w-cygnus">CYGNUS</button><button type="button" tabindex="-1" data-for="w-files">WORKS</button><button type="button" tabindex="-1" data-for="w-pic">STARFIRE</button><button type="button" tabindex="-1" data-for="w-market">MARKET</button></div>
   <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
 </footer>
 </body>
