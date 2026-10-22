@@ -1,0 +1,127 @@
+<!doctype html>
+<!--
+   [▓███▓]                                __..''
+   ░▒▓▓▓▒░                          __..''  |
+  ░░▒▒▒▒▒░░                   __..''  |     |
+ .:;Il!lI;:.            __..''  |     |   _____|
+  . ' . ' .       __..''  |     |   _____|░░░░░░
+            __..''  |     |   _____|░░░░░░░░░░░░
+      __..''  |     |   _____|░░░░░░░░░░░░░░░░░░
+__..''  |     |   _____|░░░░░░░░░░░░░░░░░░░░░░░░
+  |     |   _____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+  |   _____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+_____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+  you found the stairwell. it is quiet here.
+  plain html, no trackers. the lights stay on.
+-->
+<html lang="en" class="no-js" data-motion="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#120c24">
+<meta name="description" content="Small Windows programs by mariyaholic: MH Ticker, a taskbar price strip, and Yozora, Discord Rich Presence for music. Plus four libraries.">
+<title>Programs | mariyaholic</title>
+<link rel="icon" href="data:,">
+<script>
+/* Motion before first paint: ?motion= (or #motion=) > on; reduced motion is handled in CSS. See README.md. */
+(function(){
+var d=document.documentElement,q=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.slice(1)),m=q.get('motion')||h.get('motion');
+function on(){return d.getAttribute('data-motion')==='on'}
+d.classList.remove('no-js');
+d.setAttribute('data-motion',m==='off'?'off':'on');
+window.AO={on:on};
+document.addEventListener('DOMContentLoaded',function(){
+var els=document.querySelectorAll('[data-anim]'),io,i;
+if(!on())for(i=0;i<els.length;i++)els[i].classList.remove('in-view');
+if(!('IntersectionObserver' in window))return;
+io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){io.unobserve(e.target);if(on())e.target.classList.add('in-view')}})});
+for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els[i]);
+});
+})();
+</script>
+<link rel="preload" href="fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/site.css">
+<script src="js/site.js" defer></script>
+</head>
+<body id="top">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="wordmark" href="index.html" aria-label="mariyaholic home">◆ mariyaholic-98</a>
+  <nav class="site-nav" aria-label="Primary">
+    <a href="works.html">Portfolio</a>
+    <a href="programs.html" aria-current="page">Programs</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="about.html">About</a>
+    <a href="sitemap.html">Index</a>
+  </nav>
+  <span class="path" aria-hidden="true">A:\PROGRAMS&gt;</span>
+</header>
+<main id="main">
+<section class="page-hero page-hero--quiet wrap in-view win" data-win="PROGRAMS\README.TXT" data-anim><div class="reveal"><p class="eyebrow">Programs</p><h1>Small programs, <em>no bloat.</em></h1><p class="intro">Two Windows programs you can download and run, and four libraries split out of them. All of it is public on GitHub.</p><p class="hero-note">Neither program is code-signed yet, so Windows SmartScreen will ask first. Choose More info, then Run anyway.</p></div><div class="reveal delay-1"><figure class="ascii-art screen" role="img" aria-label="A DOS directory listing of A:\PROGRAMS: MH_TICKR.EXE, 954,880 bytes, version 1.2.3; YOZORA.EXE, 11,676,672 bytes, version 0.1.5; and a LIBS folder with four archived libraries.">
+<pre class="ascii" style="--cols:47" aria-hidden="true"><span class="gl"> Volume in drive A is MARIYAHOLIC</span>
+<span class="gl"> Directory of A:\PROGRAMS</span>
+
+<span class="lit">MH_TICKR EXE </span>     954,880  10-16-26  <span class="lbl">v1.2.3</span>
+<span class="lit">YOZORA   EXE </span>  11,676,672  10-21-26  <span class="lbl">v0.1.5</span>
+<span class="lit">LIBS         </span>&lt;DIR&gt;         10-07-26  <span class="lbl">4 archived</span>
+<span class="gl">        2 file(s)    12,631,552 bytes</span>
+
+<span class="lbl">A:\PROGRAMS&gt; </span></pre>
+</figure></div></section>
+<section class="section section--rule wrap win" data-win="PROGRAMS\MH_TICKR.EXE" id="mh-ticker" aria-labelledby="mh-ticker-title">
+  <div class="feature-grid"><div class="feature-copy"><img class="app-icon" src="img/98/mh-ticker-icon.png" width="96" height="96" alt=""><p class="eyebrow">Rust · Windows 10 and up · v1.2.3 · MIT</p><h2 id="mh-ticker-title">MH Ticker. <em>Prices in the taskbar.</em></h2><p>A price strip that sits in the empty part of the Windows taskbar. Click it and it opens into a panel in the middle of the screen. Minimise it and it goes back.</p><ul class="feature-list"><li><strong>Prices</strong><span>Public CNBC quotes. No account, no key, no payment.</span></li><li><strong>Symbols</strong><span>Up to 12 of 23: metals, crypto, US futures, oil, gas, FX, yields, the VIX and major indices.</span></li><li><strong>Footprint</strong><span>About 5 MB of memory. Plain Win32 and GDI, no GUI toolkit or webview.</span></li><li><strong>Fullscreen</strong><span>It hides while a game or video is fullscreen.</span></li></ul><p class="actions"><a class="text-link" href="https://github.com/mariyaholic/mh-ticker/releases/latest">Download MH_Ticker.exe <span aria-hidden="true">↗</span></a><a class="inline-link" href="https://github.com/mariyaholic/mh-ticker">Source on GitHub</a></p></div>
+  <figure class="ascii-art screen" role="img" aria-label="Text-mode sketch: the two-row price strip in the taskbar (gold, silver, bitcoin, the Dow, the S&amp;P 500 and the Nasdaq), and below it the panel card for gold with its price, day change, a sparkline of the last hour and the source.">
+<pre class="ascii" style="--cols:58" aria-hidden="true"><span class="mw"> ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁</span>
+<span class="st1">  XAU 4,153.73   BTC 81,219   S&amp;P 7,743.75</span><span class="fs">        ^  21:04</span>
+<span class="st1">  XAG    56.590  DOW 52,048   NAS 29,801.50  </span><span class="gr">*</span>
+<span class="mw"> ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔</span>
+<span class="fs">        |  </span><span class="gl">click the strip</span>
+<span class="fs">        v</span>
+<span class="ax">┌────────────────────────────────────────────┐</span>
+<span class="ax">│</span><span class="lit"> XAU</span><span class="lbl">  gold</span>                                  <span class="ax">│</span>
+<span class="ax">│</span><span class="st1"> 4,153.73</span><span class="st3">   day change, previous close</span>      <span class="ax">│</span>
+<span class="ax">│</span><span class="fit"> ▂▂▃▃▂▃▄▄▅▄▅▆▅▆▆▇▆▇▇█▇▇█</span><span class="st3">  the last hour</span>     <span class="ax">│</span>
+<span class="ax">│</span><span class="st3"> CNBC · how old the price is</span>                <span class="ax">│</span>
+<span class="ax">└────────────────────────────────────────────┘</span></pre>
+<figcaption>Sketch of the strip and one panel card. The prices are the README's example, not live.</figcaption>
+</figure></div>
+</section>
+<section class="section section--rule wrap win" data-win="PROGRAMS\YOZORA.EXE" id="yozora" aria-labelledby="yozora-title">
+  <div class="feature-grid feature-grid--reverse"><div class="feature-copy"><img class="app-icon" src="img/98/yozora-icon.png" width="96" height="96" alt=""><p class="eyebrow">Go · Windows · v0.1.5 · MIT</p><h2 id="yozora-title">Yozora. <em>Your music, on Discord.</em></h2><p>It notices what's playing on Windows and shows it as Discord Rich Presence, with the album art and a Listen button. Everything a presence app doesn't need is cut, so it can run in about 10 MB of memory.</p><ul class="feature-list"><li><strong>Sources</strong><span>Spotify, Apple Music, YouTube Music, browsers and other players, in a priority order you set.</span></li><li><strong>Discord</strong><span>Talks to the desktop app over its local pipe. No client secret.</span></li><li><strong>Install</strong><span>One installer, for your user only, no admin prompt. A portable .exe is in the same release.</span></li><li><strong>Panel</strong><span>A small control panel for sources and priority. It closes to the tray.</span></li></ul><p class="actions"><a class="text-link" href="https://github.com/mariyaholic/yozora/releases/latest/download/Yozora-Setup.exe">Download Yozora-Setup.exe <span aria-hidden="true">↗</span></a><a class="inline-link" href="https://github.com/mariyaholic/yozora">Source on GitHub</a></p></div>
+  <figure class="ascii-art screen" role="img" aria-label="Text-mode sketch of a Yozora card on Discord: Listening to Spotify, the album art, song title, artist and album, a progress bar, and the buttons Listen on Spotify and Yozora.">
+<pre class="ascii" style="--cols:38" aria-hidden="true"><span class="gl">┌────────────────────────────────────┐</span>
+<span class="gl">│</span><span class="gl"> LISTENING TO SPOTIFY</span>               <span class="gl">│</span>
+<span class="gl">│</span><span class="ax"> ┌──────┐  </span><span class="st1">Song title</span>               <span class="gl">│</span>
+<span class="gl">│</span><span class="ln"> │░▒▓▓▒░│  </span><span class="st2">by the artist</span>            <span class="gl">│</span>
+<span class="gl">│</span><span class="ln"> │▒▓██▓▒│  </span><span class="st3">on the album</span>             <span class="gl">│</span>
+<span class="gl">│</span><span class="ax"> └──────┘  </span><span class="st3">1:12 </span><span class="fit">━━━━━━</span><span class="ax">─────── </span><span class="st3">3:40</span>  <span class="gl">│</span>
+<span class="gl">│</span>                                    <span class="gl">│</span>
+<span class="gl">│</span><span class="lit"> [ Listen on Spotify ]</span>  <span class="lbl">[ Yozora ]</span>  <span class="gl">│</span>
+<span class="gl">└────────────────────────────────────┘</span></pre>
+<figcaption>Sketch of the card's layout, not a screenshot. Yozora isn't affiliated with Discord, Spotify or Apple.</figcaption>
+</figure></div>
+</section>
+<section class="section section--tight wrap win" data-win="PROGRAMS\LIBS" id="libraries" aria-labelledby="libraries-title">
+  <div class="section-head"><div><p class="eyebrow">Libraries</p><h2 id="libraries-title">Pulled out, <em>then frozen.</em></h2></div><p>Parts of Yozora and of an older site, split into their own modules. They're archived on GitHub, so you can read them but they don't take changes. None has a licence file yet.</p></div>
+  <figure class="ascii-art screen libs-tree" role="img" aria-label="A folder tree: discordipc, nowplaying and winutil were split out of Yozora; sitekit was split out of an older site.">
+<pre class="ascii" style="--cols:35" aria-hidden="true"><span class="gl">A:\PROGRAMS\LIBS</span>
+<span class="ax">├─ </span><span class="lit">YOZORA.EXE</span><span class="st3">   split out of it:</span>
+<span class="ax">│   ├─ </span><span class="lbl">discordipc</span>
+<span class="ax">│   ├─ </span><span class="lbl">nowplaying</span>
+<span class="ax">│   └─ </span><span class="lbl">winutil</span>
+<span class="ax">└─ </span><span class="lit">an older site</span><span class="st3">   split out of it:</span>
+<span class="ax">    └─ </span><span class="lbl">sitekit</span></pre>
+</figure>
+  <ul class="link-index link-index--compact"><li><a href="https://github.com/mariyaholic/discordipc">discordipc ↗</a><span>Go · Discord Rich Presence over the local pipe, no SDK or cgo</span></li><li><a href="https://github.com/mariyaholic/nowplaying">nowplaying ↗</a><span>Go · what Windows is playing, from its media controls, standard library only</span></li><li><a href="https://github.com/mariyaholic/winutil">winutil ↗</a><span>Go · tray icon, Credential Manager, autostart, single instance</span></li><li><a href="https://github.com/mariyaholic/sitekit">sitekit ↗</a><span>Node and Python · builds a page from a JSON catalog, then audits it in a browser</span></li></ul>
+  <p class="more">This site's source is public too: <a href="https://github.com/mariyaholic/mariyaholic.github.io">mariyaholic.github.io</a>.</p>
+</section>
+</main>
+<footer class="footer">
+  <p>mariyaholic · plain html, no trackers</p>
+  <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
+</footer>
+</body>
+</html>
