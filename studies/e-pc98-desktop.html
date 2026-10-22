@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Study E · PC-98 desktop | mariyaholic</title>
+<link rel="icon" href="data:,">
+<style>
+/* Study E: "mariyaholic-98". A PC-98 era desktop: 16-colour palette, ordered dither, bitmap type, windows you can drag.
+   Images are Bayer-dithered to the same 16 colours; Cygnus is drawn in half-block characters. Stacks on phones. */
+@font-face{font-family:"Departure Mono";src:url("../fonts/DepartureMono-Regular.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"JetBrains Mono";src:url("../fonts/JetBrainsMono-VariableFont_wght.ttf") format("truetype");font-weight:100 800;font-display:swap}
+:root{
+  --c0:#000000;--c1:#120c24;--c2:#22204a;--c3:#33407a;--c4:#5a6ab0;--c5:#8fa0dd;--c6:#cfd6f4;--c7:#ffffff;
+  --c8:#3a1230;--c9:#7a2348;--c10:#c8455a;--c11:#f08868;--c12:#f4cf8a;--c13:#1d4a52;--c14:#4f9488;--c15:#a6dcc4;
+  --f:"Departure Mono","JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--c1)}
+body{margin:0;min-height:100vh;color:var(--c6);font:15px/1.55 var(--f);-webkit-font-smoothing:none;
+  background:repeating-conic-gradient(var(--c2) 0 25%,var(--c1) 0 50%) 0 0/4px 4px}
+a{color:var(--c12);text-decoration:none}
+a:hover{color:var(--c7);background:var(--c9)}
+:focus-visible{outline:2px dashed var(--c12);outline-offset:2px}
+img{display:block;max-width:100%;height:auto;image-rendering:pixelated}
+h1,h2,h3,p,ul,figure{margin:0}
+
+.menubar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:22px;padding:6px 14px;background:var(--c6);color:var(--c1);border-bottom:2px solid var(--c0)}
+.menubar b{font-weight:400;background:var(--c1);color:var(--c12);padding:0 6px}
+.menubar a{color:var(--c1)}
+.menubar a:hover{background:var(--c1);color:var(--c6)}
+.menubar .clock{margin-left:auto}
+
+.desk{position:relative;min-height:calc(100vh - 34px);padding:18px}
+.icons{position:absolute;left:18px;top:18px;display:grid;gap:18px;width:84px;z-index:1}
+.icons a{display:grid;justify-items:center;gap:4px;text-align:center;color:var(--c7);font-size:12px}
+.icons a:hover{background:none}
+.icons a:hover span{background:var(--c9)}
+.ico{width:40px;height:34px;border:2px solid var(--c0);box-shadow:3px 3px 0 var(--c0);position:relative}
+.ico.doc{background:var(--c7)}.ico.doc::after{content:"";position:absolute;inset:6px 8px;background:repeating-linear-gradient(var(--c3) 0 2px,transparent 2px 6px)}
+.ico.dir{background:var(--c12)}.ico.dir::before{content:"";position:absolute;left:-2px;top:-8px;width:18px;height:8px;background:var(--c12);border:2px solid var(--c0);border-bottom:0}
+.ico.app{background:var(--c3)}.ico.app::after{content:"";position:absolute;inset:7px 12px;background:var(--c12);box-shadow:0 0 0 3px var(--c10)}
+.ico.cart{background:var(--c14)}.ico.cart::after{content:"$";position:absolute;inset:0;display:grid;place-items:center;color:var(--c0);font-size:20px}
+
+.win{position:absolute;background:var(--c1);border:2px solid var(--c6);box-shadow:6px 6px 0 var(--c0);min-width:0}
+.win.top{z-index:20}
+.bar{display:flex;align-items:center;gap:10px;padding:3px 6px;background:var(--c3);color:var(--c7);cursor:grab;user-select:none;border-bottom:2px solid var(--c6)}
+.win.top .bar{background:var(--c10)}
+.bar h2{font-size:14px;font-weight:400;letter-spacing:.06em;margin-right:auto}
+.bar i{font-style:normal;width:14px;height:14px;border:2px solid var(--c7);display:inline-block}
+.body{padding:12px 14px}
+.status{display:flex;flex-wrap:wrap;gap:4px 18px;padding:4px 10px;border-top:2px solid var(--c3);font-size:12px;color:var(--c5)}
+
+.readme h1{font-size:30px;line-height:1.1;color:var(--c7);font-weight:400}
+.readme h1 span{color:var(--c11)}
+.readme p{margin-top:10px;color:var(--c6)}
+.prompt{margin-top:12px;color:var(--c15)}
+.prompt::after{content:"_";animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+.ansi{container-type:inline-size;background:var(--c0)}
+.ansi pre{margin:0;font-family:"JetBrains Mono",monospace;font-size:calc(100cqi / var(--cols) / .6);line-height:1;white-space:pre;font-variant-ligatures:none}
+.ansi i{font-style:normal}
+.tmode{padding:10px 12px;container-type:inline-size}
+.tmode pre{font-size:calc((100cqi - 2px) / var(--cols) / .6);line-height:1.2;color:var(--c3)}
+.tmode .mw{color:var(--c3)}.tmode .fs{color:var(--c4)}.tmode .gr,.tmode .gl{color:var(--c14)}.tmode .ln{color:var(--c10)}
+.tmode .lit{color:var(--c12)}.tmode .st1{color:var(--c7)}.tmode .st2{color:var(--c6)}.tmode .st3{color:var(--c5)}.tmode .lbl{color:var(--c15)}.tmode .kp,.tmode .kl{color:var(--c11)}
+
+.files{list-style:none;padding:0;display:grid;gap:2px}
+.files a{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:center;padding:4px;color:var(--c6)}
+.files a:hover{background:var(--c3);color:var(--c7)}
+.files img{width:64px;height:40px;object-fit:cover;border:2px solid var(--c0)}
+.files b{display:block;font-weight:400;color:var(--c7)}
+.files small{color:var(--c5);font-size:12px}
+.noimg{width:64px;height:40px;border:2px solid var(--c0);background:repeating-conic-gradient(var(--c9) 0 25%,var(--c8) 0 50%) 0 0/4px 4px}
+
+.market table{width:100%;border-collapse:collapse;font-size:13px}
+.market th{text-align:left;font-weight:400;color:var(--c12);border-bottom:2px dotted var(--c4);padding:4px 6px}
+.market td{padding:4px 6px;border-bottom:1px dotted var(--c2);color:var(--c6)}
+.market td:last-child{color:var(--c15);white-space:nowrap}
+.market tr:hover td{background:var(--c2)}
+.thumbs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.thumbs img{border:2px solid var(--c0)}
+
+.pic figcaption{margin-top:8px;font-size:12px;color:var(--c5)}
+.taskbar{position:fixed;bottom:0;left:0;right:0;z-index:60;display:flex;gap:6px;padding:4px 8px;background:var(--c6);border-top:2px solid var(--c0);font-size:12px}
+.taskbar button{font:inherit;background:var(--c7);color:var(--c1);border:2px solid var(--c0);padding:1px 8px;cursor:pointer}
+.taskbar button.on{background:var(--c10);color:var(--c7)}
+
+/* desktop layout (absolute windows) */
+@media (min-width:1100px){
+  .desk{height:max(1080px,calc(100vh - 34px))}
+  #w-readme{left:120px;top:24px;width:430px}
+  #w-cygnus{left:580px;top:40px;width:min(700px,calc(100% - 600px))}
+  #w-files{left:120px;top:330px;width:430px}
+  #w-pic{left:250px;top:720px;width:680px}
+  #w-market{left:960px;top:730px;width:min(460px,calc(100% - 980px))}
+}
+@media (max-width:1099px){
+  .icons{position:static;display:flex;flex-wrap:wrap;width:auto;margin-bottom:16px}
+  .win{position:relative;margin-bottom:22px}
+  .bar{cursor:default}
+  .menubar .clock{display:none}
+  .menubar{flex-wrap:wrap;gap:6px 16px}
+  .taskbar{display:none}
+}
+@media (prefers-reduced-motion:reduce){.prompt::after{animation:none}}
+</style>
+</head>
+<body>
+<nav class="menubar" aria-label="Primary"><b>◆ mariyaholic-98</b><a href="#w-files">Portfolio</a><a href="../marketplace.html">Marketplace</a><a href="../about.html">About</a><a href="../sitemap.html">Index</a><span class="clock">22 OCT 2026 · 21:04</span></nav>
+<main class="desk" id="desk">
+  <div class="icons" aria-label="Desktop">
+    <a href="#w-readme"><span class="ico doc" aria-hidden="true"></span><span>README</span></a>
+    <a href="#w-cygnus"><span class="ico app" aria-hidden="true"></span><span>CYGNUS</span></a>
+    <a href="#w-files"><span class="ico dir" aria-hidden="true"></span><span>WORKS</span></a>
+    <a href="#w-market"><span class="ico cart" aria-hidden="true"></span><span>MARKET</span></a>
+  </div>
+
+  <section class="win readme top" id="w-readme" aria-labelledby="t-readme">
+    <div class="bar"><h2 id="t-readme">README.TXT</h2><i aria-hidden="true"></i></div>
+    <div class="body">
+      <h1>I make <span>things.</span></h1>
+      <p>Mostly software and an astronomy project. Some of it is public. Most of it is still early.</p>
+      <p>Double-click nothing. Everything here is a plain link.</p>
+      <p class="prompt">A:\MARIYA&gt; dir /works</p>
+    </div>
+  </section>
+
+  <section class="win" id="w-cygnus" aria-labelledby="t-cyg">
+    <div class="bar"><h2 id="t-cyg">CYGNUS.EXE — sky map</h2><i aria-hidden="true"></i></div>
+    <figure class="ansi tmode" role="img" aria-label="Star chart of Cygnus in text mode: Deneb, Sadr, Gienah and Albireo joined by constellation lines, the Milky Way band, Vega and the Kepler field.">
+<pre style="--cols:80">                                                         <span class="mw">·</span>    <span class="mw">·</span> <span class="mw">.</span>  <span class="gl">CYGNUS·J2000</span>
+                                              <span class="mw">·</span>                  <span class="mw">·</span>     <span class="mw">·</span>       <span class="mw">.</span>
+                       <span class="fs">.</span>            <span class="fs">·</span>                   <span class="mw">.</span>     <span class="mw">·</span>         <span class="mw">.</span>  <span class="fs">·</span> <span class="mw">.</span>
+         <span class="fs">.</span>                                        <span class="mw">.</span>  <span class="mw">.·</span>     <span class="mw">:</span> <span class="mw">:</span> <span class="mw">·..</span>      <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.</span>
+                  <span class="fs">·</span>                        <span class="mw">:</span>     <span class="mw">.</span>  <span class="mw">.</span> <span class="mw">·:</span> <span class="st3">·</span> <span class="lbl">κ</span> <span class="mw">.</span> <span class="mw">..·</span>       <span class="mw">.</span>
+                                              <span class="mw">·</span>     <span class="st3">·</span> <span class="lbl">ι</span>   <span class="mw">·</span>        <span class="mw">·</span> <span class="mw">.</span>  <span class="mw">·</span>
+      <span class="fs">.</span>                 <span class="fs">·</span>        <span class="fs">·</span>              <span class="mw">.</span>  <span class="ln">/</span><span class="mw">.:</span>   <span class="mw">.</span>   <span class="mw">·</span>  <span class="mw">·</span>            <span class="mw">:</span>
+<span class="gl">+50° -</span>                        <span class="mw">·</span>  <span class="mw">·</span>        <span class="mw">.</span>   <span class="mw">·:</span>  <span class="ln">/</span>      <span class="mw">·.·:</span>             <span class="mw">·.</span>   <span class="gr">-</span>
+<span class="fs">.</span>                                                <span class="ln">/</span>     <span class="fs">.</span><span class="mw">.</span>               <span class="mw">·</span>
+        <span class="fs">.</span>                     <span class="mw">·</span>     <span class="mw">.</span>           <span class="ln">/</span>     <span class="mw">:</span>        <span class="mw">·</span>        <span class="mw">:</span>     <span class="mw">:</span>
+             <span class="mw">.</span> <span class="fs">.</span>                            <span class="fs">·</span>  <span class="ln">/</span> <span class="mw">·</span>   <span class="mw">:</span>       <span class="mw">·</span>  <span class="mw">:</span> <span class="mw">.</span>      <span class="mw">.</span> <span class="mw">·</span>  <span class="mw">·</span>
+                   <span class="fs">·</span><span class="mw">.</span>     <span class="lit">@</span> <span class="lbl">α Deneb</span>      <span class="mw">·</span> <span class="mw">:</span>   <span class="st2">+</span><span class="mw">:</span><span class="lbl">δ</span> <span class="mw">.</span>           <span class="mw">.</span> <span class="mw">.</span>  <span class="mw">.</span>
+                 <span class="st3">·</span>          <span class="ln">\</span>    <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.::</span> <span class="ln">/</span> <span class="mw">:</span>        <span class="kp">[ ]</span> <span class="kl">Kepler field</span>
+  <span class="mw">.</span>             <span class="mw">:</span>    <span class="mw">·</span>       <span class="fs">·</span><span class="ln">\</span>    <span class="mw">:</span>   <span class="mw">.</span>        <span class="mw">·</span>          <span class="mw">·</span>   <span class="mw">.</span>         <span class="mw">:</span>
+      <span class="fs">·</span>     <span class="mw">·</span>   <span class="mw">:</span> <span class="mw">:</span>    <span class="mw">·</span>   <span class="mw">:.</span>    <span class="mw">.</span>    <span class="mw">.</span> <span class="ln">/</span> <span class="fs">.</span>       <span class="mw">:</span>  <span class="mw">.</span>       <span class="mw">.</span> <span class="mw">·</span>
+                    <span class="st3">·</span> <span class="mw">·</span> <span class="mw">·.</span>    <span class="mw">·</span><span class="ln">\</span>  <span class="mw">:·</span><span class="ln">/</span>     <span class="fs">·</span>   <span class="mw">.</span>     <span class="mw">.:</span> <span class="mw">.</span> <span class="mw">.</span>
+<span class="gl">+40° -</span>      <span class="mw">··</span>  <span class="mw">·</span>  <span class="mw">:</span> <span class="mw">·.</span>          <span class="st1">*</span> <span class="lbl">γ Sadr</span> <span class="mw">.</span>   <span class="mw">·</span>  <span class="mw">.:</span> <span class="mw">.</span>       <span class="mw">·</span>    <span class="mw">·</span>             <span class="gr">-</span>
+           <span class="mw">·</span>         <span class="mw">:.</span> <span class="mw">··</span> <span class="mw">·</span> <span class="mw">.</span> <span class="ln">/</span>   <span class="ln">\</span>      <span class="mw">.</span> <span class="mw">.</span> <span class="mw">·</span> <span class="mw">·</span>   <span class="fs">.</span>      <span class="mw">.</span>           <span class="lit">@</span> <span class="lbl">Vega</span>
+                  <span class="mw">·</span> <span class="mw">.</span>   <span class="mw">:.</span>  <span class="mw">.</span> <span class="ln">/</span> <span class="mw">:</span>     <span class="ln">\</span><span class="mw">·</span>     <span class="mw">·</span>  <span class="mw">.</span>        <span class="mw">.</span>          <span class="fs">·</span>
+       <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">.</span>   <span class="mw">·</span> <span class="mw">:</span> <span class="mw">.</span>    <span class="mw">:</span> <span class="ln">/</span> <span class="mw">.</span>     <span class="mw">·</span>  <span class="mw">.</span><span class="ln">\</span>         <span class="mw">·</span>   <span class="fs">.</span>
+       <span class="mw">..·</span>   <span class="mw">:</span><span class="fs">.</span><span class="mw">··</span>   <span class="mw">·</span>     <span class="ln">/</span><span class="mw">·</span> <span class="mw">.</span>    <span class="mw">··</span>    <span class="mw">·</span>     <span class="mw">.</span>  <span class="mw">·</span>     <span class="fs">.</span>
+  <span class="mw">.</span>  <span class="mw">.</span> <span class="mw">.</span>   <span class="fs">.</span> <span class="mw">.</span> <span class="mw">··</span>         <span class="mw">:</span> <span class="mw">·</span>       <span class="mw">·</span>     <span class="st3">·</span> <span class="lbl">η</span>                         <span class="mw">.</span>
+         <span class="mw">.·</span>  <span class="mw">.</span>        <span class="mw">·</span> <span class="st1">*</span> <span class="lbl">ε Gienah</span>          <span class="ln">\</span>  <span class="mw">:</span>                   <span class="st3">·</span>
+<span class="mw">:.</span>  <span class="mw">.</span>              <span class="mw">.</span> <span class="ln">/</span>    <span class="mw">.·</span>                  <span class="ln">\</span>                <span class="st2">+</span>
+    <span class="mw">.</span>    <span class="mw">·</span> <span class="mw">.</span>   <span class="mw">:..</span><span class="ln">/</span>        <span class="mw">·</span> <span class="mw">..</span>           <span class="mw">.</span>    <span class="ln">\</span>
+<span class="gl">+30° -</span>   <span class="mw">..·</span>   <span class="st2">+</span> <span class="lbl">ζ</span><span class="mw">.</span> <span class="mw">.</span>    <span class="mw">:</span>  <span class="fs">.</span>  <span class="mw">:</span>                 <span class="ln">\</span>               <span class="fs">.</span>             <span class="gr">-</span>
+<span class="mw">..·</span>       <span class="mw">:·</span>             <span class="fs">.</span>       <span class="mw">·</span>                <span class="ln">\</span><span class="fs">·</span>
+ <span class="mw">:.</span>   <span class="mw">.</span> <span class="mw">·</span>   <span class="mw">··</span>                                      <span class="st2">+</span> <span class="lbl">β Albireo</span>  <span class="fs">.</span>
+    <span class="mw">·</span>    <span class="mw">·</span>                                              <span class="fs">.</span>        <span class="fs">.</span>      <span class="fs">·</span>
+ <span class="mw">.</span>   <span class="mw">·</span>    <span class="mw">·</span>         <span class="mw">·</span>         <span class="fs">.</span>  <span class="fs">.</span>
+ <span class="mw">·</span>  <span class="mw">..</span>  <span class="fs">.</span>         <span class="mw">·</span><span class="gr">|</span>                     <span class="gr">|</span>                     <span class="gr">|</span>
+                  <span class="gl">21h</span>                   <span class="gl">20h</span>                   <span class="gl">19h</span></pre>
+</figure>
+    <div class="status"><span>3 / 1294 targets</span><span>open: TOI-224 · TOI-2666 · TOI-3500</span><a href="https://cygnus-sky.pages.dev">RUN ONLINE ↗</a></div>
+  </section>
+
+  <section class="win" id="w-files" aria-labelledby="t-files">
+    <div class="bar"><h2 id="t-files">A:\WORKS</h2><i aria-hidden="true"></i></div>
+    <div class="body">
+      <ul class="files">
+        <li><a href="../works.html#ad-astra"><img src="img/cygnus-pc98.png" alt="" width="960" height="600"><span><b>AD_ASTRA.SKY</b><small>astronomy · public archives, open leads</small></span></a></li>
+        <li><a href="../works.html#uika"><img src="img/uika-pc98.png" alt="" width="960" height="600"><span><b>UIKA.SYS</b><small>tools · coding tools in sync across repos</small></span></a></li>
+        <li><a href="../works.html#tickatlas"><img src="img/tickatlas-pc98.png" alt="" width="960" height="600"><span><b>TICKATLS.DAT</b><small>research · market studies with receipts</small></span></a></li>
+        <li><a href="../works.html#aria"><span class="noimg" aria-hidden="true"></span><span><b>ARIA.SND</b><small>music · one room, one track</small></span></a></li>
+      </ul>
+    </div>
+    <div class="status"><span>4 file(s)</span><span>games are in MARKET</span></div>
+  </section>
+
+  <section class="win pic" id="w-pic" aria-labelledby="t-pic">
+    <div class="bar"><h2 id="t-pic">STARFIRE.PIC</h2><i aria-hidden="true"></i></div>
+    <figure class="body"><img src="img/starfire-pc98.png" width="1280" height="426" alt="Starfire Hearth concept art: a sheet of stars, planets and stations, dithered to sixteen colours."><figcaption>Starfire Hearth · concept art, not gameplay · in development</figcaption></figure>
+  </section>
+
+  <section class="win market" id="w-market" aria-labelledby="t-mk">
+    <div class="bar"><h2 id="t-mk">MARKET.DAT</h2><i aria-hidden="true"></i></div>
+    <div class="body">
+      <table><thead><tr><th scope="col">Game</th><th scope="col">Status</th></tr></thead><tbody>
+        <tr><td><a href="../hearth.html">Starfire Hearth</a></td><td>in dev</td></tr>
+        <tr><td><a href="../emberkind.html">Emberkind</a></td><td>experiment</td></tr>
+        <tr><td><a href="../arcade.html">Arcade × 13</a></td><td>launch prep</td></tr>
+      </tbody></table>
+      <div class="thumbs"><img src="img/stellar-pc98.png" width="800" height="500" alt="Stellar Fusion, dithered"><img src="img/chromasort-pc98.png" width="800" height="500" alt="ChromaSort, dithered"></div>
+    </div>
+    <div class="status"><span>nothing on sale yet</span><a href="../marketplace.html">OPEN ↗</a></div>
+  </section>
+</main>
+<div class="taskbar" aria-hidden="true"><button data-for="w-readme">README</button><button data-for="w-cygnus">CYGNUS</button><button data-for="w-files">WORKS</button><button data-for="w-pic">STARFIRE</button><button data-for="w-market">MARKET</button></div>
+<script>
+/* Drag by the title bar and bring to front (desktop layout only). */
+(function () {
+  var z = 20, wide = matchMedia('(min-width:1100px)');
+  function front(w) { document.querySelectorAll('.win').forEach(function (x) { x.classList.remove('top'); }); w.classList.add('top'); w.style.zIndex = ++z;
+    document.querySelectorAll('.taskbar button').forEach(function (b) { b.classList.toggle('on', b.dataset.for === w.id); }); }
+  document.querySelectorAll('.win').forEach(function (w) {
+    w.addEventListener('pointerdown', function () { front(w); });
+    var bar = w.querySelector('.bar');
+    bar.addEventListener('pointerdown', function (e) {
+      if (!wide.matches) return;
+      var sx = e.clientX - w.offsetLeft, sy = e.clientY - w.offsetTop; bar.setPointerCapture(e.pointerId);
+      function move(ev) { w.style.left = Math.max(0, ev.clientX - sx) + 'px'; w.style.top = Math.max(0, ev.clientY - sy) + 'px'; }
+      function up() { bar.removeEventListener('pointermove', move); bar.removeEventListener('pointerup', up); }
+      bar.addEventListener('pointermove', move); bar.addEventListener('pointerup', up);
+    });
+  });
+  document.querySelectorAll('.taskbar button').forEach(function (b) { b.addEventListener('click', function () { front(document.getElementById(b.dataset.for)); }); });
+  front(document.getElementById('w-readme'));
+})();
+</script>
+</body>
+</html>
