@@ -38,7 +38,7 @@ function view(x){var t=document.querySelector('meta[name=theme-color]');d.setAtt
 function motion(x){d.setAttribute('data-motion',x);press('motion',x!=='on')}
 d.classList.remove('no-js');
 view(v==='light'||v==='night'?v:get(T)==='dark'?'night':'light');
-motion(m==='on'||m==='off'?m:get(M)==='off'?'off':'on');  /* a saved pause reopens as off: end frames */
+motion(m==='on'||m==='off'?m:'on');  /* a saved pause reopens as off: end frames */
 if(d.getAttribute('data-view')==='light'){l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href='fonts/Fraunces.woff2';document.head.appendChild(l)}
 window.AO={T:T,M:M,put:put,on:on,view:view,motion:motion};
 document.addEventListener('DOMContentLoaded',function(){
@@ -57,49 +57,35 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 <body id="top">
 <span id="night"></span>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-header wrap" data-menu="closed">
+<header class="site-header wrap">
   <a class="wordmark" href="index.html" aria-label="mariyaholic home">mariyaholic</a>
-  <nav class="site-nav" id="primary-nav" aria-label="Primary">
-    <a href="index.html">Home</a>
+  <nav class="site-nav" aria-label="Primary">
     <a href="works.html">Work</a>
-    <a href="world.html">World</a>
     <a href="about.html">About</a>
     <a href="sitemap.html" aria-current="true">Index</a>
+    <button class="view-toggle" id="theme" type="button" aria-pressed="false">Night</button>
+    <noscript><a class="view-toggle" href="#night">Night</a><a class="view-toggle" href="#top">Day</a></noscript>
   </nav>
-  <div class="header-tools">
-    <button class="toggle" id="theme" type="button" aria-pressed="false">Night view</button>
-    <button class="toggle" id="motion" type="button" aria-pressed="false">Pause motion</button>
-    <noscript><a class="toggle" href="#night">Night view</a><a class="toggle" href="#top">Light view</a></noscript>
-  </div>
-  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
 </header>
 <main id="main">
 <section class="page-hero page-hero--quiet wrap in-view" data-anim><div class="reveal"><p class="eyebrow">Colophon</p><h1>How this site <em>is made.</em></h1><p class="intro">Warm paper colours, Fraunces and Newsreader, one oxblood accent, and plain HTML, CSS and JavaScript.</p></div><div class="reveal delay-1"><p class="kicker">One rule</p><p class="hero-note">Things can move, but everything has to read fine with motion off.</p></div></section>
-<nav class="interest-tape" aria-label="Explore the site"><div class="wrap tape-inner"><a href="sky.html">Sky</a><span aria-hidden="true">/</span><a href="hearth.html">Hearth</a><span aria-hidden="true">/</span><a href="arcade.html">Arcade</a><span aria-hidden="true">/</span><a href="companions.html">Companions</a><span aria-hidden="true">/</span><a href="tools.html">Tools</a><span aria-hidden="true">/</span><a href="taste.html">Taste</a></div></nav>
-<section class="section section--rule wrap" aria-labelledby="design-title"><div class="section-head"><div><p class="eyebrow">Design notes</p><h2 id="design-title">Laid out like a magazine, not a dashboard.</h2></div><p>The look comes from the approved combo draft: paper colours, open margins, wide images and oxblood rules. The other pages change up the layout a bit.</p></div><div class="manifest"><article><h3>Type</h3><p>Light: Fraunces for headings, Newsreader for body text, system sans for the UI. Night: Major Mono Display for headings, Special Elite for labels, Newsreader for body text.</p></article><article><h3>Motion</h3><p>Animations only use transform and opacity. You can pause them, and the site follows your reduced-motion setting.</p></article><article><h3>Interaction</h3><p>Links are real links. The project switcher on the home page uses real buttons with focus states. The mobile menu works with a keyboard.</p></article><article><h3>Fallback</h3><p>With JavaScript off, every page still has its text, links, images and reading order.</p></article></div>
+<section class="section section--rule wrap" aria-labelledby="design-title"><div class="section-head"><div><p class="eyebrow">Design notes</p><h2 id="design-title">Laid out like a magazine, not a dashboard.</h2></div><p>The look comes from the approved combo draft: paper colours, open margins, wide images and oxblood rules. The other pages change up the layout a bit.</p></div><div class="manifest"><article><h3>Type</h3><p>Fraunces for headings, Newsreader for body text and labels, JetBrains Mono for the ASCII drawings. Night view only swaps the colours.</p></article><article><h3>Motion</h3><p>Animations only use transform and opacity, and they switch off when your system asks for reduced motion.</p></article><article><h3>Interaction</h3><p>Links are real links. Three in the header, two in the footer, and everything else in the index.</p></article><article><h3>Fallback</h3><p>With JavaScript off, every page still has its text, links, images and reading order.</p></article></div>
 <div class="ascii-panel colo">
-  <div class="ascii-art ascii-art--colo">
-<pre class="ascii" aria-hidden="true">
-          o-.-'''-.        .-------------------------.
-         / /_______\       | .---------------------. |
-        /   <span class="lit">▒▓▓█▓▓▒</span>        | |░░░░░░░░░░░░░░░░░░░░░| |
-       /   ░▒▓▓▓▓▓▒░       | |░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░| |
-      /    ░▒▒▓▓▓▒▒░       | |░▒ $ ls ./colophon ▒░| |
-     /    ░░▒▒▒▓▒▒▒░░      | |░▒ build    static ▒░| |
-    o      ░░▒▒▒▒▒░░       | |░▒ fonts    local  ▒░| |
-    |     ░░░▒▒▒▒▒░░░      | |░▒ $ _             ▒░| |
-    |      ░░░▒▒▒░░░       | |░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░| |
-    |     ░ ░░░░░░░ ░      | |░░░░░░░░░░░░░░░░░░░░░| |
- __.|.__   _.=-=-=-=-=-._  | '---------------------' |
-(_______) /:;:;:;:;:;:;:;\ |  o  ::::::::        [=] |
-__________'--------------'_'-------------------------'__
-|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░|
-|   )                                   (     )        |
-|    (                                 )       (       |
-|   )                                   (     )        |
-|___'___________________________________'_____'________|
+  <figure class="ascii-art ascii-art--colo">
+<pre class="ascii" style="--cols:46" aria-hidden="true">
+   ·             .                        <span class="lit">*</span>
+                            ·
+                            _.-')
+                        _.-'  _.-')         ·
+                    _.-'  _.-'
+  .             _.-'  _.-'            .
+         o=(_.-'  _.-'
+                '-.-'
+                 /|\                     ·
+                / | \
+               /  |  \
 </pre>
-  </div>
+</figure>
   <h3>Colophon</h3>
   <dl>
     <dt>build</dt><dd>static HTML, no framework</dd>
@@ -109,12 +95,10 @@ __________'--------------'_'-------------------------'__
     <dt>views</dt><dd>light and night, one stylesheet</dd>
     <dt>trackers</dt><dd>none</dd>
     <dt>cookies</dt><dd>none</dd>
-    <dt>storage</dt><dd>your view and motion choice only (localStorage)</dd>
+    <dt>storage</dt><dd>your light or night choice only (localStorage)</dd>
   </dl>
 </div>
 </section>
-<!-- Below-fold animated SVG: divider, plays once when it scrolls into view (1 animation; page total 3). -->
-<div class="wrap"><svg class="divider divider--flush" data-anim viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><line class="dv-line" x1="0" y1="6" x2="1000" y2="6"/><line class="dv-pulse" x1="0" y1="6" x2="1000" y2="6" pathLength="100"/><line class="dv-node" x1="500" y1="2" x2="500" y2="10"/></svg></div>
 <section class="section wrap" aria-labelledby="source-title"><div class="feature-grid"><div class="feature-copy"><p class="eyebrow">Sources and limits</p><h2 id="source-title">Where the content comes from.</h2><p>Project text comes from my persona drafts, the READMEs, the public sites and dated notes. Screenshots are local captures of Cygnus, Uika, TickAtlas, and Starfire concept art.</p><div class="rights-note"><strong>Rights gate</strong><br>The portrait and character art are for private review only. Their sources don't allow public redistribution, so they need to be swapped for cleared art before publishing.</div></div><div class="timeline"><article><h3>Approved direction</h3><p>The combo draft gave the site its paper colours, Fraunces, the oxblood accent, wide images and light motion.</p></article><article><h3>One system</h3><p>Sky, Hearth, Emberkind, Companions, Tools, Atlas, Arcade, Taste and Colophon all use the same stylesheet and layout.</p></article><article><h3>Still unverified</h3><p>Not checked yet: Safari, Firefox, screen readers, real hosting, and publication rights.</p></article></div></div></section>
 <section class="section section--tight wrap" aria-labelledby="proposal-colophon-title"><div class="section-head"><div><p class="eyebrow">Methods &amp; boundaries</p><h2 id="proposal-colophon-title">Four draft pages.</h2></div><p>Drafts of how I'd show methods, cost, privacy and evidence. Read these before taking any chart here as a claim.</p></div><div class="proposal-links"><a href="method.html">Method ↗</a><a href="efficiency.html">Efficiency ↗</a><a href="privacy.html">Privacy ↗</a><a href="evidence.html">Evidence ↗</a></div></section>
 <section class="section section--rule wrap" id="credits" aria-labelledby="credits-title">
@@ -134,11 +118,9 @@ __________'--------------'_'-------------------------'__
   </table>
 </section>
 </main>
-<footer class="footer wrap" id="elsewhere">
-  <div><p class="footer-name">mariyaholic</p><p>Things I make.</p></div>
-  <nav aria-label="Elsewhere"><a href="index.html">Home</a><a href="works.html">Work</a><a href="world.html">World</a><a href="about.html">About</a><a href="persona.html">In person</a><a href="sky.html">Sky</a><a href="hearth.html">Hearth</a><a href="emberkind.html">Emberkind</a><a href="companions.html">Companions</a><a href="tools.html">Tools</a><a href="aria.html">Aria</a><a href="atlas.html">Atlas</a><a href="arcade.html">Arcade</a><a href="taste.html">Taste</a><a href="method.html">Method</a><a href="efficiency.html">Efficiency</a><a href="privacy.html">Privacy</a><a href="evidence.html">Evidence</a><a href="sg.html">The lab door</a><a href="sr.html">The bridge home</a><a href="confluence.html">Confluence</a><a href="colophon.html">Colophon</a><a href="sitemap.html">Index</a><a href="https://cygnus-sky.pages.dev">Cygnus Sky ↗</a><a href="https://tickatlas.neocities.org">TickAtlas ↗</a><a href="https://github.com/mariyaholic/yozora">Yozora ↗</a></nav>
-  <p class="credits-line">Type: Fraunces, Newsreader (SIL OFL 1.1); subsets of Major Mono Display and JetBrains Mono (SIL OFL 1.1) and of Special Elite (Apache 2.0). Licence texts are in fonts/. <a href="colophon.html#credits">Credits</a></p>
-  <p class="review-note">Design study · <a href="colophon.html">Colophon</a>.</p>
+<footer class="footer wrap">
+  <p>mariyaholic · plain html, no trackers</p>
+  <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
 </footer>
 </body>
 </html>
