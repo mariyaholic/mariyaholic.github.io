@@ -6,9 +6,9 @@ Plain static HTML, CSS and JS. No build step, no framework, no external requests
 
 ## Layout
 - One `.html` file per page at the root. `404.html` is GitHub Pages' not-found page and uses root paths (`/css/...`) so it works at any URL.
-- `css/site.css` is the one stylesheet for both views (light and night). `js/site.js` handles the view/motion toggles, menu and animations.
+- `css/site.css` is the one stylesheet (rev 8, "mariyaholic-98": a PC-98 style desktop in a 16-colour palette). Each top-level `<section>` in `<main>` is a window: give it `class="win"` and `data-win="FOLDER\NAME.TXT"` and CSS draws the title bar. `js/site.js` drags the home-page windows and runs the step sequences.
 - `fonts/` holds the subset web fonts with their OFL licence texts (see `fonts/SOURCES.md` and the Credits section on `colophon.html`).
-- `img/` holds the art, shipped as-is.
+- `img/98/` holds the pictures the pages use, each Bayer-dithered to the site palette. The originals stay in `img/`.
 - `.nojekyll` tells Pages to serve the files untouched.
 
 ## Editing

@@ -15,32 +15,24 @@ _____|░░░░░░░░░░░░░░░░░░░░░░░░�
   you found the stairwell. it is quiet here.
   plain html, no trackers. the lights stay on.
 -->
-<html lang="en" class="no-js" data-view="light" data-motion="on">
+<html lang="en" class="no-js" data-motion="on">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<meta name="color-scheme" content="light">
-<meta name="theme-color" content="#f3efe4">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#120c24">
 <meta name="description" content="Starfire Hearth, a cozy hard sci-fi settlement game I'm working on.">
 <title>Starfire Hearth | mariyaholic</title>
 <link rel="icon" href="data:,">
 <script>
-/* View + motion before first paint: ?view=/?motion= (or #) > saved > light, on. See README.md. */
+/* Motion before first paint: ?motion= (or #motion=) > on; reduced motion is handled in CSS. See README.md. */
 (function(){
-var d=document.documentElement,L=location,q=new URLSearchParams(L.search),h=new URLSearchParams(L.hash.slice(1)),
-v=q.get('view')||h.get('view'),m=q.get('motion')||h.get('motion'),T='ao-persona-theme',M='ao-persona-motion',l;
-function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
-function put(k,x){try{localStorage.setItem(k,x)}catch(e){}}
+var d=document.documentElement,q=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.slice(1)),m=q.get('motion')||h.get('motion');
 function on(){return d.getAttribute('data-motion')==='on'}
-function press(id,p){var b=document.getElementById(id);if(b)b.setAttribute('aria-pressed',p?'true':'false')}
-function view(x){var t=document.querySelector('meta[name=theme-color]');d.setAttribute('data-view',x);press('theme',x==='night');if(t)t.content=x==='night'?'#211e1a':'#f3efe4'}
-function motion(x){d.setAttribute('data-motion',x);press('motion',x!=='on')}
 d.classList.remove('no-js');
-view(v==='light'||v==='night'?v:get(T)==='dark'?'night':'light');
-motion(m==='on'||m==='off'?m:'on');
-if(d.getAttribute('data-view')==='light'){l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href='fonts/Fraunces.woff2';document.head.appendChild(l)}
-window.AO={T:T,M:M,put:put,on:on,view:view,motion:motion};
+d.setAttribute('data-motion',m==='off'?'off':'on');
+window.AO={on:on};
 document.addEventListener('DOMContentLoaded',function(){
 var els=document.querySelectorAll('[data-anim]'),io,i;
 if(!on())for(i=0;i<els.length;i++)els[i].classList.remove('in-view');
@@ -50,29 +42,27 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 });
 })();
 </script>
-<link rel="preload" href="fonts/Newsreader.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/site.css">
 <script src="js/site.js" defer></script>
 </head>
 <body id="top">
-<span id="night"></span>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-header wrap">
-  <a class="wordmark" href="index.html" aria-label="mariyaholic home">mariyaholic</a>
+<header class="site-header">
+  <a class="wordmark" href="index.html" aria-label="mariyaholic home">◆ mariyaholic-98</a>
   <nav class="site-nav" aria-label="Primary">
     <a href="works.html">Portfolio</a>
     <a href="marketplace.html" aria-current="true">Marketplace</a>
     <a href="about.html">About</a>
     <a href="sitemap.html">Index</a>
-    <button class="view-toggle" id="theme" type="button" aria-pressed="false">Night</button>
-    <noscript><a class="view-toggle" href="#night">Night</a><a class="view-toggle" href="#top">Day</a></noscript>
   </nav>
+  <span class="path" aria-hidden="true">A:\MARKET\HEARTH&gt;</span>
 </header>
 <main id="main">
-<section class="page-hero page-hero--feature wrap in-view" data-anim><div class="reveal"><p class="eyebrow">Game / worldbuilding</p><h1>A hopeful <em>frontier.</em></h1><p class="intro">Starfire Hearth is a cozy hard sci-fi settlement game I'm working on. You explore, find things, and build a home out in space.</p><p class="hero-note">The image is concept art. The game is still in development.</p></div><div class="hero-art reveal delay-1"><figure class="art-frame art-frame--wide"><img src="img/starfire.png" width="2172" height="724" alt="Starfire Hearth galaxy concept art in a wide landscape format" fetchpriority="high"><figcaption>Starfire Hearth <span>concept art</span></figcaption></figure></div></section>
-<section class="section section--rule wrap" aria-labelledby="hearth-title"><div class="feature-grid feature-grid--reverse"><div class="feature-copy"><p class="eyebrow">A world with a kernel</p><h2 id="hearth-title">Cozy on top, strict underneath.</h2><p>Gentle on top, a deterministic kernel underneath. Gates A and B, saves and the turn rules are there so the world is still kind when you come back.</p><p class="small-copy">It isn't finished. Right now it's a build stage and an ongoing experiment.</p><a class="text-link" href="arcade.html">See the smaller games <span aria-hidden="true">↗</span></a></div><div class="manifest"><article><h3>Settlement</h3><p>A home in space, with exploring as part of the daily routine.</p></article><article><h3>Kernel</h3><p>Deterministic state and explicit rules under the cozy stuff.</p></article><article><h3>Gate A</h3><p>A build and certification stage. Not a launch date.</p></article><article><h3>Concept</h3><p>Art studies are shown as concept art, separate from anything running in the game.</p></article></div></div></section>
+<section class="page-hero page-hero--feature wrap in-view win" data-win="MARKET\HEARTH\README.TXT" data-anim><div class="reveal"><p class="eyebrow">Game / worldbuilding</p><h1>A hopeful <em>frontier.</em></h1><p class="intro">Starfire Hearth is a cozy hard sci-fi settlement game I'm working on. You explore, find things, and build a home out in space.</p><p class="hero-note">The image is concept art. The game is still in development.</p></div><div class="hero-art reveal delay-1"><figure class="art-frame art-frame--wide"><img src="img/98/starfire.png" width="1280" height="426" alt="Starfire Hearth galaxy concept art in a wide landscape format" fetchpriority="high"><figcaption>Starfire Hearth <span>concept art</span></figcaption></figure></div></section>
+<section class="section section--rule wrap win" data-win="MARKET\HEARTH\HEARTH.TXT" aria-labelledby="hearth-title"><div class="feature-grid feature-grid--reverse"><div class="feature-copy"><p class="eyebrow">A world with a kernel</p><h2 id="hearth-title">Cozy on top, strict underneath.</h2><p>Gentle on top, a deterministic kernel underneath. Gates A and B, saves and the turn rules are there so the world is still kind when you come back.</p><p class="small-copy">It isn't finished. Right now it's a build stage and an ongoing experiment.</p><a class="text-link" href="arcade.html">See the smaller games <span aria-hidden="true">↗</span></a></div><div class="manifest"><article><h3>Settlement</h3><p>A home in space, with exploring as part of the daily routine.</p></article><article><h3>Kernel</h3><p>Deterministic state and explicit rules under the cozy stuff.</p></article><article><h3>Gate A</h3><p>A build and certification stage. Not a launch date.</p></article><article><h3>Concept</h3><p>Art studies are shown as concept art, separate from anything running in the game.</p></article></div></div></section>
 </main>
-<footer class="footer wrap">
+<footer class="footer">
   <p>mariyaholic · plain html, no trackers</p>
   <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
 </footer>
