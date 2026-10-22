@@ -73,35 +73,35 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 </figure></div></section>
 <section class="section section--rule wrap win" data-win="PROGRAMS\MH_TICKR.EXE" id="mh-ticker" aria-labelledby="mh-ticker-title">
   <div class="feature-grid"><div class="feature-copy"><img class="app-icon" src="img/98/mh-ticker-icon.png" width="96" height="96" alt=""><p class="eyebrow">Rust · Windows 10 and up · v1.2.3 · MIT</p><h2 id="mh-ticker-title">MH Ticker. <em>Prices in the taskbar.</em></h2><p>A price strip that sits in the empty part of the Windows taskbar. Click it and it opens into a panel in the middle of the screen. Minimise it and it goes back.</p><ul class="feature-list"><li><strong>Prices</strong><span>Public CNBC quotes. No account, no key, no payment.</span></li><li><strong>Symbols</strong><span>Up to 12 of 23: metals, crypto, US futures, oil, gas, FX, yields, the VIX and major indices.</span></li><li><strong>Footprint</strong><span>About 5 MB of memory. Plain Win32 and GDI, no GUI toolkit or webview.</span></li><li><strong>Fullscreen</strong><span>It hides while a game or video is fullscreen.</span></li></ul><p class="actions"><a class="text-link" href="https://github.com/mariyaholic/mh-ticker/releases/latest">Download MH_Ticker.exe <span aria-hidden="true">↗</span></a><a class="inline-link" href="https://github.com/mariyaholic/mh-ticker">Source on GitHub</a></p></div>
-  <figure class="ascii-art screen" role="img" aria-label="Text-mode sketch: the two-row price strip in the taskbar (gold, silver, bitcoin, the Dow, the S&amp;P 500 and the Nasdaq), and below it the panel card for gold with its price, day change, a sparkline of the last hour and the source.">
+  <figure class="ascii-art screen" data-sketch="ticker" role="img" aria-label="Animated text-mode sketch: the two-row price strip in the taskbar (gold, silver, bitcoin, the Dow, the S&amp;P 500 and the Nasdaq), and below it the panel card for gold with its price, day change, a sparkline of the last hour and how old the price is.">
 <pre class="ascii" style="--cols:58" aria-hidden="true"><span class="mw"> ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁</span>
-<span class="st1">  XAU 4,153.73   BTC 81,219   S&amp;P 7,743.75</span><span class="fs">        ^  21:04</span>
-<span class="st1">  XAG    56.590  DOW 52,048   NAS 29,801.50  </span><span class="gr">*</span>
+  <span class="st2">XAU </span><span class="st1" data-q="XAU">4,153.73</span>   <span class="st2">BTC </span><span class="st1" data-q="BTC">81,219</span>   <span class="st2">S&amp;P </span><span class="st1" data-q="SPX">7,743.75</span><span class="fs">        ^  </span><span class="fs" data-k="clock">21:04</span>
+  <span class="st2">XAG </span><span class="st1" data-q="XAG">   56.590</span>  <span class="st2">DOW </span><span class="st1" data-q="DOW">52,048</span>   <span class="st2">NAS </span><span class="st1" data-q="NAS">29,801.50</span>  <span class="gr" data-k="live">*</span>
 <span class="mw"> ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔</span>
 <span class="fs">        |  </span><span class="gl">click the strip</span>
-<span class="fs">        v</span>
+<span class="fs blink">        v</span>
 <span class="ax">┌────────────────────────────────────────────┐</span>
 <span class="ax">│</span><span class="lit"> XAU</span><span class="lbl">  gold</span>                                  <span class="ax">│</span>
-<span class="ax">│</span><span class="st1"> 4,153.73</span><span class="st3">   day change, previous close</span>      <span class="ax">│</span>
-<span class="ax">│</span><span class="fit"> ▂▂▃▃▂▃▄▄▅▄▅▆▅▆▆▇▆▇▇█▇▇█</span><span class="st3">  the last hour</span>     <span class="ax">│</span>
-<span class="ax">│</span><span class="st3"> CNBC · how old the price is</span>                <span class="ax">│</span>
+<span class="ax">│</span> <span class="st1" data-q="XAU">4,153.73</span>   <span class="st2" data-k="chg">+12.40  +0.30%</span><span class="st3">  prev 4,141.33</span>   <span class="ax">│</span>
+<span class="ax">│</span> <span class="fit" data-k="spark">▂▂▃▃▂▃▄▄▅▄▅▆▅▆▆▇▆▇▇█▇▇█</span><span class="st3">  the last hour</span>     <span class="ax">│</span>
+<span class="ax">│</span><span class="st3"> CNBC · </span><span class="st3" data-k="age"> 0s old</span>                             <span class="ax">│</span>
 <span class="ax">└────────────────────────────────────────────┘</span></pre>
-<figcaption>Sketch of the strip and one panel card. The prices are the README's example, not live.</figcaption>
+<figcaption>Sketch of the strip and one panel card. The prices wander around the README's example. They aren't live.</figcaption>
 </figure></div>
 </section>
 <section class="section section--rule wrap win" data-win="PROGRAMS\YOZORA.EXE" id="yozora" aria-labelledby="yozora-title">
   <div class="feature-grid feature-grid--reverse"><div class="feature-copy"><img class="app-icon" src="img/98/yozora-icon.png" width="96" height="96" alt=""><p class="eyebrow">Go · Windows · v0.1.5 · MIT</p><h2 id="yozora-title">Yozora. <em>Your music, on Discord.</em></h2><p>It notices what's playing on Windows and shows it as Discord Rich Presence, with the album art and a Listen button. Everything a presence app doesn't need is cut, so it can run in about 10 MB of memory.</p><ul class="feature-list"><li><strong>Sources</strong><span>Spotify, Apple Music, YouTube Music, browsers and other players, in a priority order you set.</span></li><li><strong>Discord</strong><span>Talks to the desktop app over its local pipe. No client secret.</span></li><li><strong>Install</strong><span>One installer, for your user only, no admin prompt. A portable .exe is in the same release.</span></li><li><strong>Panel</strong><span>A small control panel for sources and priority. It closes to the tray.</span></li></ul><p class="actions"><a class="text-link" href="https://github.com/mariyaholic/yozora/releases/latest/download/Yozora-Setup.exe">Download Yozora-Setup.exe <span aria-hidden="true">↗</span></a><a class="inline-link" href="https://github.com/mariyaholic/yozora">Source on GitHub</a></p></div>
-  <figure class="ascii-art screen" role="img" aria-label="Text-mode sketch of a Yozora card on Discord: Listening to Spotify, the album art, song title, artist and album, a progress bar, and the buttons Listen on Spotify and Yozora.">
-<pre class="ascii" style="--cols:38" aria-hidden="true"><span class="gl">┌────────────────────────────────────┐</span>
-<span class="gl">│</span><span class="gl"> LISTENING TO SPOTIFY</span>               <span class="gl">│</span>
-<span class="gl">│</span><span class="ax"> ┌──────┐  </span><span class="st1">Song title</span>               <span class="gl">│</span>
-<span class="gl">│</span><span class="ln"> │░▒▓▓▒░│  </span><span class="st2">by the artist</span>            <span class="gl">│</span>
-<span class="gl">│</span><span class="ln"> │▒▓██▓▒│  </span><span class="st3">on the album</span>             <span class="gl">│</span>
-<span class="gl">│</span><span class="ax"> └──────┘  </span><span class="st3">1:12 </span><span class="fit">━━━━━━</span><span class="ax">─────── </span><span class="st3">3:40</span>  <span class="gl">│</span>
-<span class="gl">│</span>                                    <span class="gl">│</span>
-<span class="gl">│</span><span class="lit"> [ Listen on Spotify ]</span>  <span class="lbl">[ Yozora ]</span>  <span class="gl">│</span>
-<span class="gl">└────────────────────────────────────┘</span></pre>
-<figcaption>Sketch of the card's layout, not a screenshot. Yozora isn't affiliated with Discord, Spotify or Apple.</figcaption>
+  <figure class="ascii-art screen" data-sketch="discord" role="img" aria-label="Animated text-mode sketch of a Yozora card on Discord: the source, album art, song title, artist and album, a progress bar, and the Listen and Yozora buttons. It plays three made-up songs from Spotify, Apple Music and YouTube Music in turn.">
+<pre class="ascii" style="--cols:42" aria-hidden="true"><span class="gl">┌────────────────────────────────────────┐</span>
+<span class="gl">│</span><span class="gl"> LISTENING TO </span><span class="gl" data-k="src">SPOTIFY      </span>             <span class="gl">│</span>
+<span class="gl">│</span><span class="ax"> ┌──────┐  </span><span class="st1" data-k="title">Song title            </span>       <span class="gl">│</span>
+<span class="gl">│</span><span class="ax"> │</span><span class="ln" data-k="art1">░▒▓▓▒░</span><span class="ax">│  </span><span class="st2" data-k="artist">by the artist         </span>       <span class="gl">│</span>
+<span class="gl">│</span><span class="ax"> │</span><span class="ln" data-k="art2">▒▓██▓▒</span><span class="ax">│  </span><span class="st3" data-k="album">on the album          </span>       <span class="gl">│</span>
+<span class="gl">│</span><span class="ax"> └──────┘  </span><span class="st3" data-k="t0"> 1:12</span> <span class="fit" data-k="barA">━━━━</span><span class="ax" data-k="barB">─────────</span> <span class="st3" data-k="t1">3:40</span>     <span class="gl">│</span>
+<span class="gl">│</span>                                        <span class="gl">│</span>
+<span class="gl">│</span> <span class="lit" data-k="btn">[ Listen on Spotify ]    </span> <span class="lbl">[ Yozora ]</span>   <span class="gl">│</span>
+<span class="gl">└────────────────────────────────────────┘</span></pre>
+<figcaption>Sketch of the card, not a screenshot: three made-up songs at ten times speed. The artwork arrives a moment after the text, as it does in Yozora. Yozora isn't affiliated with Discord, Spotify or Apple.</figcaption>
 </figure></div>
 </section>
 <section class="section section--tight wrap win" data-win="PROGRAMS\LIBS" id="libraries" aria-labelledby="libraries-title">

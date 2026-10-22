@@ -486,6 +486,8 @@ h1 em,h2 em,h3 em,.project-name em{color:var(--c11)}
 .ascii .st1{color:var(--c7)}.ascii .st2{color:var(--c6)}.ascii .st3{color:var(--c5)}.ascii .kp,.ascii .kl{color:var(--c11)}
 .ascii .pt{color:var(--c5)}.ascii .fit{color:var(--c11)}
 .ascii .lost{color:var(--c10)}
+.ascii .up{color:var(--c15)}.ascii .dn{color:var(--c11)}
+.ascii .blink{animation:blink 1s steps(1) infinite}
 .screen{background:var(--c0);padding:12px 14px;margin:0}
 .screen .ascii{font-size:min(15px,calc((100cqi - 1px) / var(--cols) / .6));line-height:1.2}
 .screen figcaption{margin-top:10px}
