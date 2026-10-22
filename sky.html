@@ -1,0 +1,106 @@
+<!doctype html>
+<!--
+   [▓███▓]                                __..''
+   ░▒▓▓▓▒░                          __..''  |
+  ░░▒▒▒▒▒░░                   __..''  |     |
+ .:;Il!lI;:.            __..''  |     |   _____|
+  . ' . ' .       __..''  |     |   _____|░░░░░░
+            __..''  |     |   _____|░░░░░░░░░░░░
+      __..''  |     |   _____|░░░░░░░░░░░░░░░░░░
+__..''  |     |   _____|░░░░░░░░░░░░░░░░░░░░░░░░
+  |     |   _____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+  |   _____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+_____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+  you found the stairwell. it is quiet here.
+  plain html, no trackers. the lights stay on.
+-->
+<html lang="en" class="no-js" data-view="light" data-motion="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f3efe4">
+<meta name="description" content="Ad Astra and Project Cygnus. Public astronomy data, open leads, and retractions.">
+<title>The sky, on the record | mariyaholic</title>
+<link rel="icon" href="data:,">
+<script>
+/* View + motion before first paint: ?view=/?motion= (or #) > saved > light, on. See README.md. */
+(function(){
+var d=document.documentElement,L=location,q=new URLSearchParams(L.search),h=new URLSearchParams(L.hash.slice(1)),
+v=q.get('view')||h.get('view'),m=q.get('motion')||h.get('motion'),T='ao-persona-theme',M='ao-persona-motion',l;
+function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function put(k,x){try{localStorage.setItem(k,x)}catch(e){}}
+function on(){return d.getAttribute('data-motion')==='on'}
+function press(id,p){var b=document.getElementById(id);if(b)b.setAttribute('aria-pressed',p?'true':'false')}
+function view(x){var t=document.querySelector('meta[name=theme-color]');d.setAttribute('data-view',x);press('theme',x==='night');if(t)t.content=x==='night'?'#211e1a':'#f3efe4'}
+function motion(x){d.setAttribute('data-motion',x);press('motion',x!=='on')}
+d.classList.remove('no-js');
+view(v==='light'||v==='night'?v:get(T)==='dark'?'night':'light');
+motion(m==='on'||m==='off'?m:get(M)==='off'?'off':'on');
+if(d.getAttribute('data-view')==='light'){l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href='fonts/Fraunces.woff2';document.head.appendChild(l)}
+window.AO={T:T,M:M,put:put,on:on,view:view,motion:motion};
+document.addEventListener('DOMContentLoaded',function(){
+var els=document.querySelectorAll('[data-anim]'),io,i;
+if(!on())for(i=0;i<els.length;i++)els[i].classList.remove('in-view');
+if(!('IntersectionObserver' in window))return;
+io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){io.unobserve(e.target);if(on())e.target.classList.add('in-view')}})});
+for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els[i]);
+});
+})();
+</script>
+<link rel="preload" href="fonts/Newsreader.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/site.css">
+<script src="js/site.js" defer></script>
+</head>
+<body id="top">
+<span id="night"></span>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header wrap" data-menu="closed">
+  <a class="wordmark" href="index.html" aria-label="mariyaholic home">mariyaholic</a>
+  <nav class="site-nav" id="primary-nav" aria-label="Primary">
+    <a href="index.html">Home</a>
+    <a href="works.html" aria-current="true">Work</a>
+    <a href="world.html">World</a>
+    <a href="about.html">About</a>
+    <a href="sitemap.html">Index</a>
+  </nav>
+  <div class="header-tools">
+    <button class="toggle" id="theme" type="button" aria-pressed="false">Night view</button>
+    <button class="toggle" id="motion" type="button" aria-pressed="false">Pause motion</button>
+    <noscript><a class="toggle" href="#night">Night view</a><a class="toggle" href="#top">Light view</a></noscript>
+  </div>
+  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
+</header>
+<main id="main">
+<section class="page-hero page-hero--feature wrap in-view" data-anim><div class="reveal"><p class="eyebrow">Ad Astra / Project Cygnus</p><h1>The sky, <em>on record.</em></h1><p class="intro">I go back through public archives looking for signals the standard pipelines might have missed. Then I try to explain them away before calling anything a lead.</p><a class="primary-link" href="https://cygnus-sky.pages.dev">Open Cygnus Sky <span aria-hidden="true">↗</span></a></div><div class="hero-art reveal delay-1"><figure class="art-frame"><img src="img/cygnus.png" width="1440" height="900" alt="Cygnus Sky, a landscape capture of the astronomy explorer" fetchpriority="high"><figcaption>Cygnus Sky <span>explorer capture</span></figcaption></figure><div class="stamp">record first<br>interpret second</div></div></section>
+<nav class="interest-tape" aria-label="Explore the site"><div class="wrap tape-inner"><a href="sky.html">Sky</a><span aria-hidden="true">/</span><a href="hearth.html">Hearth</a><span aria-hidden="true">/</span><a href="arcade.html">Arcade</a><span aria-hidden="true">/</span><a href="companions.html">Companions</a><span aria-hidden="true">/</span><a href="tools.html">Tools</a><span aria-hidden="true">/</span><a href="taste.html">Taste</a></div></nav>
+<section class="section section--rule wrap" aria-labelledby="sky-record-title"><div class="feature-grid"><div class="feature-copy"><p class="eyebrow">The record</p><h2 id="sky-record-title">Where the data comes from.</h2><p>Ad Astra stores the patches, field images and Gaia stars, plus the record that links them. Cygnus is the public part.</p><ul class="feature-list"><li><strong>Archive</strong><span>TESS, Kepler, Gaia, WISE, ZTF and the Legacy Surveys, each with source notes.</span></li><li><strong>Status</strong><span>Open leads stay unverified by definition. Retractions stay visible.</span></li><li><strong>Reading</strong><span>Named objects, measured values and competing explanations.</span></li></ul></div><div class="manifest"><article><h3>Archive</h3><p>Each footprint keeps its patch, field image and source record with the object.</p></article><article><h3>Explorer</h3><p>Cygnus turns those records into a map you can browse.</p></article><article><h3>Reading shelf</h3><p>Named objects, values and competing explanations, next to the map.</p></article><article><h3>Open edge</h3><p>A lead just means check this. It stays open until there's more evidence.</p></article></div></div>
+<figure class="trace-figure" data-anim>
+  <svg class="trace" viewBox="0 0 960 200" role="img" aria-labelledby="sky-tr-t sky-tr-d">
+    <title id="sky-tr-t">Trace: archive, explorer, reading shelf, open edge.</title>
+    <desc id="sky-tr-d">The Ad Astra record on one line, from archive to open edge. A dashed side branch leads to the retractions, which stay visible.</desc>
+    <path class="tr-branch" d="M347 100C380 52 430 40 492 40"/>
+    <g class="tr-side"><circle cx="504" cy="40" r="8"/><text x="522" y="45">retractions</text></g>
+    <path class="tr-line" pathLength="100" d="M80 100H880"/>
+    <g class="tr-node"><circle style="--d:1.5s" cx="80" cy="100" r="10"/><text x="80" y="142" text-anchor="middle">archive</text></g>
+    <g class="tr-node"><circle style="--d:2.3s" cx="347" cy="100" r="10"/><text x="347" y="142" text-anchor="middle">explorer</text></g>
+    <g class="tr-node"><circle style="--d:3.1s" cx="613" cy="100" r="10"/><text x="613" y="142" text-anchor="middle">reading shelf</text></g>
+    <g class="tr-node"><circle style="--d:3.9s" cx="880" cy="100" r="10"/><text x="880" y="142" text-anchor="middle">open edge</text></g>
+    <circle class="tr-pulse" cx="880" cy="100" r="6"/>
+  </svg>
+  <p class="trace-status">Ad Astra · the record · retractions stay visible</p>
+</figure>
+</section>
+<div class="wrap"><svg class="divider divider--flush" data-anim viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><line class="dv-line" x1="0" y1="6" x2="1000" y2="6"/><line class="dv-pulse" x1="0" y1="6" x2="1000" y2="6" pathLength="100"/><line class="dv-node" x1="500" y1="2" x2="500" y2="10"/></svg></div>
+<section class="section wrap" aria-labelledby="sky-leads-title"><div class="section-head"><div><p class="eyebrow">Still open</p><h2 id="sky-leads-title">Three leads, two retractions.</h2></div><p>The September 2026 handoff kept the paper trail. A lead is something to check, not a discovery.</p></div><div class="manifest"><article><h3>TOI-224</h3><p>Next: new coverage and resolving the host.</p></article><article><h3>TOI-2666</h3><p>Phase spread and radial velocity will decide if it holds.</p></article><article><h3>TOI-3500</h3><p>Needs calibrated imaging before any catalogue or journal submission.</p></article><article><h3>The retractions</h3><p>Sixty-five first leads got narrowed down. The rejection notes are part of the result.</p></article></div></section>
+</main>
+<footer class="footer wrap" id="elsewhere">
+  <div><p class="footer-name">mariyaholic</p><p>Things I make.</p></div>
+  <nav aria-label="Elsewhere"><a href="index.html">Home</a><a href="works.html">Work</a><a href="world.html">World</a><a href="about.html">About</a><a href="persona.html">In person</a><a href="sky.html">Sky</a><a href="hearth.html">Hearth</a><a href="emberkind.html">Emberkind</a><a href="companions.html">Companions</a><a href="tools.html">Tools</a><a href="aria.html">Aria</a><a href="atlas.html">Atlas</a><a href="arcade.html">Arcade</a><a href="taste.html">Taste</a><a href="method.html">Method</a><a href="efficiency.html">Efficiency</a><a href="privacy.html">Privacy</a><a href="evidence.html">Evidence</a><a href="sg.html">The lab door</a><a href="sr.html">The bridge home</a><a href="confluence.html">Confluence</a><a href="colophon.html">Colophon</a><a href="sitemap.html">Index</a><a href="https://cygnus-sky.pages.dev">Cygnus Sky ↗</a><a href="https://tickatlas.neocities.org">TickAtlas ↗</a><a href="https://github.com/mariyaholic/yozora">Yozora ↗</a></nav>
+  <p class="credits-line">Type: Fraunces, Newsreader (SIL OFL 1.1); subsets of Major Mono Display and JetBrains Mono (SIL OFL 1.1) and of Special Elite (Apache 2.0). Licence texts are in fonts/. <a href="colophon.html#credits">Credits</a></p>
+  <p class="review-note">Design study · <a href="colophon.html">Colophon</a>.</p>
+</footer>
+</body>
+</html>

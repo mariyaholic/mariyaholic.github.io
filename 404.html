@@ -1,0 +1,126 @@
+<!doctype html>
+<!--
+   [▓███▓]                                __..''
+   ░▒▓▓▓▒░                          __..''  |
+  ░░▒▒▒▒▒░░                   __..''  |     |
+ .:;Il!lI;:.            __..''  |     |   _____|
+  . ' . ' .       __..''  |     |   _____|░░░░░░
+            __..''  |     |   _____|░░░░░░░░░░░░
+      __..''  |     |   _____|░░░░░░░░░░░░░░░░░░
+__..''  |     |   _____|░░░░░░░░░░░░░░░░░░░░░░░░
+  |     |   _____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+  |   _____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+_____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+  you found the stairwell. it is quiet here.
+  plain html, no trackers. the lights stay on.
+-->
+<html lang="en" class="no-js" data-view="light" data-motion="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f3efe4">
+<meta name="description" content="This page doesn't exist. It moved, or it was never here.">
+<title>Not on the shelf | mariyaholic</title>
+<link rel="icon" href="data:,">
+<script>
+/* View + motion before first paint: ?view=/?motion= (or #) > saved > light, on. See README.md. */
+(function(){
+var d=document.documentElement,L=location,q=new URLSearchParams(L.search),h=new URLSearchParams(L.hash.slice(1)),
+v=q.get('view')||h.get('view'),m=q.get('motion')||h.get('motion'),T='ao-persona-theme',M='ao-persona-motion',l;
+function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function put(k,x){try{localStorage.setItem(k,x)}catch(e){}}
+function on(){return d.getAttribute('data-motion')==='on'}
+function press(id,p){var b=document.getElementById(id);if(b)b.setAttribute('aria-pressed',p?'true':'false')}
+function view(x){var t=document.querySelector('meta[name=theme-color]');d.setAttribute('data-view',x);press('theme',x==='night');if(t)t.content=x==='night'?'#211e1a':'#f3efe4'}
+function motion(x){d.setAttribute('data-motion',x);press('motion',x!=='on')}
+d.classList.remove('no-js');
+view(v==='light'||v==='night'?v:get(T)==='dark'?'night':'light');
+motion(m==='on'||m==='off'?m:get(M)==='off'?'off':'on');
+if(d.getAttribute('data-view')==='light'){l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href='/fonts/Fraunces.woff2';document.head.appendChild(l)}
+window.AO={T:T,M:M,put:put,on:on,view:view,motion:motion};
+document.addEventListener('DOMContentLoaded',function(){
+var els=document.querySelectorAll('[data-anim]'),io,i;
+if(!on())for(i=0;i<els.length;i++)els[i].classList.remove('in-view');
+if(!('IntersectionObserver' in window))return;
+io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){io.unobserve(e.target);if(on())e.target.classList.add('in-view')}})});
+for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els[i]);
+});
+})();
+</script>
+<link rel="preload" href="/fonts/Newsreader.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/site.css">
+<script src="/js/site.js" defer></script>
+</head>
+<body id="top">
+<span id="night"></span>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header wrap" data-menu="closed">
+  <a class="wordmark" href="/index.html" aria-label="mariyaholic home">mariyaholic</a>
+  <nav class="site-nav" id="primary-nav" aria-label="Primary">
+    <a href="/index.html">Home</a>
+    <a href="/works.html">Work</a>
+    <a href="/world.html">World</a>
+    <a href="/about.html">About</a>
+    <a href="/sitemap.html">Index</a>
+  </nav>
+  <div class="header-tools">
+    <button class="toggle" id="theme" type="button" aria-pressed="false">Night view</button>
+    <button class="toggle" id="motion" type="button" aria-pressed="false">Pause motion</button>
+    <noscript><a class="toggle" href="#night">Night view</a><a class="toggle" href="#top">Light view</a></noscript>
+  </div>
+  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
+</header>
+<main id="main">
+<section class="section wrap" aria-labelledby="e404-title">
+<div class="ascii-panel e404">
+  <div class="ascii-art ascii-art--404">
+<pre class="ascii ascii--lg" aria-hidden="true">
+   .                `          .:**:.          .                  '
+        '                .    .*#@@#*.                 `             .
+      o==+==o                 :*#@@#*:                  o==+==o
+         |   `-.._             ':**:'              _..-`   |      .
+         |        _________________________________        |
+      o==+==o                                           o==+==o
+         |   `-._                .      '           _.-`   |
+    .--. |       `-.                             .-`       |     `
+    |<span class="lit">▓▓</span>|=|          \                           /          |
+    '--' |           |                         |           |
+         |    .      :                         :           |
+         | ___|____  '     _________       ____'           | ___________
+         | |: .  :|        |: . : .|       |::|            | |. :  . : |
+  .  :  ░|░|.  : :|░░░░░░░░|. :  : | :  .   . :  : . ░░░░░░|░| :  .  : |
+: .  : .▒|▒|: : . |▒▒▒▒▒▒▒▒|:  . : |. :  :: .  :: . :▒▒▒▒▒▒|▒|.  :  . :|
+ :  . : ▓|▓|. :  :|. :  . :| : .  :| . : : :  . : .  : . : |▓| : . :  .|
+_________|_________________________________________________|____________
+</pre>
+<pre class="ascii ascii--sm" aria-hidden="true">
+  .        `            .          '
+    o==+==o`-.____________.     ._______
+       |                   \   /
+       |                   |   |
+       |                   :   :
+       |                   '   '
+       | ________      ________
+ :  . ░|░|.  : :|░░░░░░|: . . |░░░░░░░░░
+. :  :▒|▒|:  . :| .  : | :  .:| :  . :
+ :  . ▓|▓|. :  :|: .  :|.  : :|. :  :  .
+_______|________________________________
+</pre>
+  </div>
+  <h1 id="e404-title">404 · not on the shelf</h1>
+  <p>This page doesn't exist. It moved, or it was never here.</p>
+  <a class="primary-link" href="/index.html">Back to the home page <span aria-hidden="true">↗</span></a>
+</div>
+</section>
+</main>
+<footer class="footer wrap" id="elsewhere">
+  <div><p class="footer-name">mariyaholic</p><p>Things I make.</p></div>
+  <nav aria-label="Elsewhere"><a href="/index.html">Home</a><a href="/works.html">Work</a><a href="/world.html">World</a><a href="/about.html">About</a><a href="/persona.html">In person</a><a href="/sky.html">Sky</a><a href="/hearth.html">Hearth</a><a href="/emberkind.html">Emberkind</a><a href="/companions.html">Companions</a><a href="/tools.html">Tools</a><a href="/aria.html">Aria</a><a href="/atlas.html">Atlas</a><a href="/arcade.html">Arcade</a><a href="/taste.html">Taste</a><a href="/method.html">Method</a><a href="/efficiency.html">Efficiency</a><a href="/privacy.html">Privacy</a><a href="/evidence.html">Evidence</a><a href="/sg.html">The lab door</a><a href="/sr.html">The bridge home</a><a href="/confluence.html">Confluence</a><a href="/colophon.html">Colophon</a><a href="/sitemap.html">Index</a><a href="https://cygnus-sky.pages.dev">Cygnus Sky ↗</a><a href="https://tickatlas.neocities.org">TickAtlas ↗</a><a href="https://github.com/mariyaholic/yozora">Yozora ↗</a></nav>
+  <p class="credits-line">Type: Fraunces, Newsreader (SIL OFL 1.1); subsets of Major Mono Display and JetBrains Mono (SIL OFL 1.1) and of Special Elite (Apache 2.0). Licence texts are in fonts/. <a href="/colophon.html#credits">Credits</a></p>
+  <p class="review-note">Design study · <a href="/colophon.html">Colophon</a>.</p>
+</footer>
+</body>
+</html>

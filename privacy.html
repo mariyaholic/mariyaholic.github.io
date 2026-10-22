@@ -1,0 +1,93 @@
+<!doctype html>
+<!--
+   [▓███▓]                                __..''
+   ░▒▓▓▓▒░                          __..''  |
+  ░░▒▒▒▒▒░░                   __..''  |     |
+ .:;Il!lI;:.            __..''  |     |   _____|
+  . ' . ' .       __..''  |     |   _____|░░░░░░
+            __..''  |     |   _____|░░░░░░░░░░░░
+      __..''  |     |   _____|░░░░░░░░░░░░░░░░░░
+__..''  |     |   _____|░░░░░░░░░░░░░░░░░░░░░░░░
+  |     |   _____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+  |   _____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+_____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+  you found the stairwell. it is quiet here.
+  plain html, no trackers. the lights stay on.
+-->
+<html lang="en" class="no-js" data-view="light" data-motion="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f3efe4">
+<meta name="description" content="Draft page. What's public on this site, what's aggregated, what's made up, and what stays private.">
+<title>Privacy | mariyaholic</title>
+<link rel="icon" href="data:,">
+<script>
+/* View + motion before first paint: ?view=/?motion= (or #) > saved > light, on. See README.md. */
+(function(){
+var d=document.documentElement,L=location,q=new URLSearchParams(L.search),h=new URLSearchParams(L.hash.slice(1)),
+v=q.get('view')||h.get('view'),m=q.get('motion')||h.get('motion'),T='ao-persona-theme',M='ao-persona-motion',l;
+function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function put(k,x){try{localStorage.setItem(k,x)}catch(e){}}
+function on(){return d.getAttribute('data-motion')==='on'}
+function press(id,p){var b=document.getElementById(id);if(b)b.setAttribute('aria-pressed',p?'true':'false')}
+function view(x){var t=document.querySelector('meta[name=theme-color]');d.setAttribute('data-view',x);press('theme',x==='night');if(t)t.content=x==='night'?'#211e1a':'#f3efe4'}
+function motion(x){d.setAttribute('data-motion',x);press('motion',x!=='on')}
+d.classList.remove('no-js');
+view(v==='light'||v==='night'?v:get(T)==='dark'?'night':'light');
+motion(m==='on'||m==='off'?m:get(M)==='off'?'off':'on');  /* a saved pause reopens as off: end frames */
+if(d.getAttribute('data-view')==='light'){l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href='fonts/Fraunces.woff2';document.head.appendChild(l)}
+window.AO={T:T,M:M,put:put,on:on,view:view,motion:motion};
+document.addEventListener('DOMContentLoaded',function(){
+var els=document.querySelectorAll('[data-anim]'),io,i;
+if(!on())for(i=0;i<els.length;i++)els[i].classList.remove('in-view');  /* off at load: hero rests, never replays */
+if(!('IntersectionObserver' in window))return;  /* no observer: below-fold blocks keep end frames */
+io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){io.unobserve(e.target);if(on())e.target.classList.add('in-view')}})});
+for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els[i]);
+});
+})();
+</script>
+<link rel="preload" href="fonts/Newsreader.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/site.css">
+<script src="js/site.js" defer></script>
+</head>
+<body id="top">
+<span id="night"></span>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header wrap" data-menu="closed">
+  <a class="wordmark" href="index.html" aria-label="mariyaholic home">mariyaholic</a>
+  <nav class="site-nav" id="primary-nav" aria-label="Primary">
+    <a href="index.html">Home</a>
+    <a href="works.html" aria-current="true">Work</a>
+    <a href="world.html">World</a>
+    <a href="about.html">About</a>
+    <a href="sitemap.html">Index</a>
+  </nav>
+  <div class="header-tools">
+    <button class="toggle" id="theme" type="button" aria-pressed="false">Night view</button>
+    <button class="toggle" id="motion" type="button" aria-pressed="false">Pause motion</button>
+    <noscript><a class="toggle" href="#night">Night view</a><a class="toggle" href="#top">Light view</a></noscript>
+  </div>
+  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
+</header>
+<main id="main">
+<section class="page-hero page-hero--quiet wrap in-view" data-anim><div class="reveal"><p class="eyebrow">Draft: privacy</p><h1>Keep the line <em>visible.</em></h1><p class="intro">Be clear about what you can look at, what's been aggregated, and what stays private. If the line is written down, you can check it.</p></div><div class="reveal delay-1"><p class="kicker">Display class</p><p class="hero-note">A draft policy. Nothing private is linked here: no files, credentials, raw rows or uncleared art.</p></div></section>
+<nav class="interest-tape" aria-label="Proposal pages"><div class="wrap tape-inner"><a href="method.html">Method</a><span aria-hidden="true">/</span><a href="efficiency.html">Efficiency</a><span aria-hidden="true">/</span><a href="privacy.html" aria-current="page">Privacy</a><span aria-hidden="true">/</span><a href="evidence.html">Evidence</a></div></nav>
+<section class="section section--rule wrap" aria-labelledby="ladder-title"><div class="section-head"><div><p class="eyebrow">Four display classes</p><h2 id="ladder-title">Pick the class first.</h2></div><p>Blurring something doesn't make it safe. Each item needs a class, a source note, and a check that it can't be traced back.</p></div><div class="facts"><div class="fact"><strong>Public</strong><span>identity, mechanism, approved surface</span></div><div class="fact"><strong>Aggregated</strong><span>ranges, buckets, medians, or quantiles</span></div><div class="fact"><strong>Synthetic</strong><span>seeded example unrelated to source rows</span></div><div class="fact"><strong>Private</strong><span>exact outcomes, identifiers, paths, or tokens</span></div></div></section>
+<!-- Below-fold animated SVG: divider, plays once when it scrolls into view (1 animation; page total 3). -->
+<div class="wrap"><svg class="divider divider--flush" data-anim viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><line class="dv-line" x1="0" y1="6" x2="1000" y2="6"/><line class="dv-pulse" x1="0" y1="6" x2="1000" y2="6" pathLength="100"/><line class="dv-node" x1="500" y1="2" x2="500" y2="10"/></svg></div>
+<section class="section wrap" aria-labelledby="allowed-title"><div class="section-head"><div><p class="eyebrow">The ladder</p><h2 id="allowed-title">What can go on a page.</h2></div><p>Step through it, from public stuff down to what has to stay private.</p></div><figure class="proposal-figure sequence" data-sequence="ladder" data-active="0"><div class="proposal-visual"><ol class="release-ladder" aria-label="Public release classes"><li class="ladder-step is-active" data-sequence-target="0" data-sequence-label="Public"><button type="button" data-sequence-step="0" data-sequence-label="Public" aria-current="true">Public</button><p>Identity, mechanism, approved surface.</p></li><li class="ladder-step" data-sequence-target="1" data-sequence-label="Aggregated"><button type="button" data-sequence-step="1" data-sequence-label="Aggregated" aria-current="false">Aggregated</button><p>Ranges, buckets, medians, or quantiles.</p></li><li class="ladder-step" data-sequence-target="2" data-sequence-label="Synthetic/demo"><button type="button" data-sequence-step="2" data-sequence-label="Synthetic/demo" aria-current="false">Synthetic/demo</button><p>Seeded example unrelated to source rows.</p></li><li class="ladder-step" data-sequence-target="3" data-sequence-label="Private"><button type="button" data-sequence-step="3" data-sequence-label="Private" aria-current="false">Private</button><p>Exact outcomes, identifiers, paths, or tokens.</p></li></ol><div class="sequence-controls" role="group" aria-label="Release ladder controls"><button type="button" data-sequence-play>Walk the boundary</button></div><p class="sequence-status" data-sequence-status role="status" aria-live="polite">Public · step 1 of 4</p></div><figcaption><strong>The rule:</strong> the site can show the first three classes if each item has its source note and limits. Private stuff stays private, blurred or not.</figcaption></figure><div class="manifest"><article><h3>Public</h3><p>Project names, how things work at a high level, approved screenshots, rough page counts and design stage. Label things &quot;local capture&quot;, &quot;concept art&quot; or &quot;in development&quot; where it fits.</p></article><article><h3>Aggregated</h3><p>Rough ranges, normalized indexes and grouped counts that can't point to one run, account, symbol, target or day. The grouping rule is recorded privately.</p></article><article><h3>Synthetic/demo</h3><p>Seeded toy data or a made-up trace. Put &quot;Synthetic demonstration - not a measured result&quot; in the caption and alt text.</p></article><article><h3>Private</h3><p>Exact financial metrics, raw trades, account or broker details, precise timestamps, local paths, credentials, private chat text, and live or promotion status. No public link.</p></article></div></section>
+<section class="section section--rule wrap" aria-labelledby="checklist-title"><div class="section-head"><div><p class="eyebrow">Before a release</p><h2 id="checklist-title">Check the crop.</h2></div><p>A screenshot can show more than you meant. Browser bars, URLs, titles and text in the image all count. Nothing live, broker, public bind or promotion goes out without explicit sign-off.</p></div><table class="receipt-table"><caption>Draft release checklist</caption><thead><tr><th scope="col">Check</th><th scope="col">Remove or state</th><th scope="col">Status</th></tr></thead><tbody><tr><td><strong>Identifiers</strong></td><td>Paths, ports, hostnames, account labels, symbols, order IDs, and rare combinations</td><td>Required before release</td></tr><tr><td><strong>Conversation</strong></td><td>Private bodies and prompt text; use a paraphrase only with provenance and approval</td><td>Required before release</td></tr><tr><td><strong>Evidence class</strong></td><td>Lab, fixture, offline, independent, public, live, and promotion states stay separate</td><td>Print beside the visual</td></tr><tr><td><strong>Rights</strong></td><td>Replace or hold any image without a public redistribution record</td><td>Open on this site</td></tr></tbody></table></section>
+<section class="section wrap" aria-labelledby="rights-title"><div class="feature-grid"><div class="feature-copy"><p class="eyebrow">Rights and re-identification</p><h2 id="rights-title">The owner decides.</h2><p>NIST's release-model guidance helps you think it through. It doesn't clear anything. The owner still decides if the audience, date range and source can go out together.</p><div class="rights-note"><strong>Right now</strong><br>The portrait and character art stay private until there's a cleared replacement or a written OK to publish.</div></div><div class="timeline"><article><h3>Classify</h3><p>Give every item a class: Public, Aggregated, Synthetic/demo or Private.</p></article><article><h3>Inspect</h3><p>Check the crop, alt text, links and captions for anything that could identify someone.</p></article><article><h3>Record</h3><p>Keep the source class, method, date range and limits next to the visual.</p></article></div></div><div class="proposal-links"><a href="evidence.html">Evidence ↗</a><a href="colophon.html">Rights notes ↗</a></div></section>
+</main>
+<footer class="footer wrap" id="elsewhere">
+  <div><p class="footer-name">mariyaholic</p><p>Things I make.</p></div>
+  <nav aria-label="Elsewhere"><a href="index.html">Home</a><a href="works.html">Work</a><a href="world.html">World</a><a href="about.html">About</a><a href="persona.html">In person</a><a href="sky.html">Sky</a><a href="hearth.html">Hearth</a><a href="emberkind.html">Emberkind</a><a href="companions.html">Companions</a><a href="tools.html">Tools</a><a href="aria.html">Aria</a><a href="atlas.html">Atlas</a><a href="arcade.html">Arcade</a><a href="taste.html">Taste</a><a href="method.html">Method</a><a href="efficiency.html">Efficiency</a><a href="privacy.html">Privacy</a><a href="evidence.html">Evidence</a><a href="sg.html">The lab door</a><a href="sr.html">The bridge home</a><a href="confluence.html">Confluence</a><a href="colophon.html">Colophon</a><a href="sitemap.html">Index</a><a href="https://cygnus-sky.pages.dev">Cygnus Sky ↗</a><a href="https://tickatlas.neocities.org">TickAtlas ↗</a><a href="https://github.com/mariyaholic/yozora">Yozora ↗</a></nav>
+  <p class="credits-line">Type: Fraunces, Newsreader (SIL OFL 1.1); subsets of Major Mono Display and JetBrains Mono (SIL OFL 1.1) and of Special Elite (Apache 2.0). Licence texts are in fonts/. <a href="colophon.html#credits">Credits</a></p>
+  <p class="review-note">Proposal study · <a href="colophon.html">Colophon</a>.</p>
+</footer>
+</body>
+</html>
