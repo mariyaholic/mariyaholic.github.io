@@ -52,6 +52,7 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
   <a class="wordmark" href="index.html" aria-label="mariyaholic home">◆ mariyaholic-98</a>
   <nav class="site-nav" aria-label="Primary">
     <a href="works.html">Portfolio</a>
+    <a href="programs.html">Programs</a>
     <a href="marketplace.html">Marketplace</a>
     <a href="about.html">About</a>
     <a href="sitemap.html">Index</a>
@@ -63,18 +64,47 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
     <a href="#w-readme"><span class="ico doc" aria-hidden="true"></span><span>README</span></a>
     <a href="#w-cygnus"><span class="ico app" aria-hidden="true"></span><span>CYGNUS</span></a>
     <a href="works.html"><span class="ico dir" aria-hidden="true"></span><span>WORKS</span></a>
+    <a href="programs.html"><span class="ico exe" aria-hidden="true"></span><span>PROGRAMS</span></a>
     <a href="marketplace.html"><span class="ico cart" aria-hidden="true"></span><span>MARKET</span></a>
   </nav>
 
+  <div class="col col-a">
   <section class="win readme" id="w-readme" data-win="README.TXT" aria-labelledby="readme-title">
     <div class="body">
       <h1 id="readme-title">I make <em>things.</em></h1>
-      <p>Mostly software and an astronomy project. Some of it is public. Most of it is still early.</p>
+      <p>Small Windows programs, an astronomy project and a few games. Some of it is public. Most of it is still early.</p>
       <p>On a wide screen, drag a title bar to move a window. Everything in them is a plain link.</p>
       <p class="prompt" aria-hidden="true">A:\MARIYA&gt; dir /works</p>
     </div>
   </section>
 
+  <section class="win" id="w-files" data-win="A:\WORKS" aria-labelledby="files-title">
+    <div class="body">
+      <h2 class="sr-only" id="files-title">Works</h2>
+      <ul class="files">
+        <li><a href="works.html#ad-astra"><img src="img/98/cygnus.png" alt="" width="1120" height="700"><span><b>AD_ASTRA.SKY</b><small>astronomy · public archives, open leads</small></span></a></li>
+        <li><a href="works.html#uika"><img src="img/98/uika.png" alt="" width="960" height="600" loading="lazy"><span><b>UIKA.SYS</b><small>tools · coding tools in sync across repos</small></span></a></li>
+        <li><a href="works.html#tickatlas"><img src="img/98/tickatlas.png" alt="" width="960" height="600" loading="lazy"><span><b>TICKATLS.DAT</b><small>research · market studies with receipts</small></span></a></li>
+        <li><a href="works.html#aria"><span class="noimg" aria-hidden="true"></span><span><b>ARIA.SND</b><small>music · one room, one track</small></span></a></li>
+      </ul>
+    </div>
+    <div class="status"><span>4 file(s)</span><span>games are in MARKET</span><a href="works.html">OPEN ↗</a></div>
+  </section>
+
+  <section class="win" id="w-market" data-win="MARKET.DAT" aria-labelledby="market-title">
+    <div class="body">
+      <h2 class="sr-only" id="market-title">Marketplace</h2>
+      <table class="dat"><thead><tr><th scope="col">Game</th><th scope="col">Status</th></tr></thead><tbody>
+        <tr><td><a href="hearth.html">Starfire Hearth</a></td><td>in dev</td></tr>
+        <tr><td><a href="emberkind.html">Emberkind</a></td><td>experiment</td></tr>
+        <tr><td><a href="arcade.html">Arcade × 13</a></td><td>launch prep</td></tr>
+      </tbody></table>
+      <div class="thumbs"><img src="img/98/stellar_fusion.png" width="640" height="400" alt="Stellar Fusion, one of the arcade games, dithered to sixteen colours" loading="lazy"><img src="img/98/chromasort.png" width="640" height="400" alt="ChromaSort, one of the arcade games, dithered to sixteen colours" loading="lazy"></div>
+    </div>
+    <div class="status"><span>nothing on sale yet</span><a href="marketplace.html">OPEN ↗</a></div>
+  </section>
+  </div>
+  <div class="col col-b">
   <section class="win" id="w-cygnus" data-win="CYGNUS.EXE — sky map" aria-labelledby="cygnus-title">
     <h2 class="sr-only" id="cygnus-title">Cygnus sky map</h2>
     <figure class="ascii-art screen" role="img" aria-label="Star chart of Cygnus in text mode: Deneb, Sadr, Gienah and Albireo joined by constellation lines, the Milky Way band through the swan, Vega to the east and the Kepler field.">
@@ -114,39 +144,29 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
     <div class="status"><span>3 / 1294 targets</span><span>open: TOI-224 · TOI-2666 · TOI-3500</span><a href="https://cygnus-sky.pages.dev">RUN ONLINE ↗</a></div>
   </section>
 
-  <section class="win" id="w-files" data-win="A:\WORKS" aria-labelledby="files-title">
+  <section class="win" id="w-progs" data-win="A:\PROGRAMS" aria-labelledby="progs-title">
     <div class="body">
-      <h2 class="sr-only" id="files-title">Works</h2>
+      <h2 class="sr-only" id="progs-title">Programs</h2>
+      <figure class="ascii-art screen strip" data-sketch="ticker" role="img" aria-label="The MH Ticker strip: gold, silver, bitcoin, the Dow, the S&amp;P 500 and the Nasdaq in two rows, with sample prices.">
+<pre class="ascii" style="--cols:44" aria-hidden="true"><span class="st2">XAU </span><span class="st1" data-q="XAU">4,153.73</span>   <span class="st2">BTC </span><span class="st1" data-q="BTC">81,219</span>   <span class="st2">S&amp;P </span><span class="st1" data-q="SPX">7,743.75</span>
+<span class="st2">XAG </span><span class="st1" data-q="XAG">   56.590</span>  <span class="st2">DOW </span><span class="st1" data-q="DOW">52,048</span>   <span class="st2">NAS </span><span class="st1" data-q="NAS">29,801.50</span>  <span class="gr" data-k="live">*</span></pre>
+      </figure>
       <ul class="files">
-        <li><a href="works.html#ad-astra"><img src="img/98/cygnus.png" alt="" width="1120" height="700"><span><b>AD_ASTRA.SKY</b><small>astronomy · public archives, open leads</small></span></a></li>
-        <li><a href="works.html#uika"><img src="img/98/uika.png" alt="" width="960" height="600" loading="lazy"><span><b>UIKA.SYS</b><small>tools · coding tools in sync across repos</small></span></a></li>
-        <li><a href="works.html#tickatlas"><img src="img/98/tickatlas.png" alt="" width="960" height="600" loading="lazy"><span><b>TICKATLS.DAT</b><small>research · market studies with receipts</small></span></a></li>
-        <li><a href="works.html#aria"><span class="noimg" aria-hidden="true"></span><span><b>ARIA.SND</b><small>music · one room, one track</small></span></a></li>
+        <li><a href="programs.html#mh-ticker"><img src="img/98/mh-ticker-icon.png" alt="" width="96" height="96" loading="lazy"><span><b>MH_TICKR.EXE</b><small>v1.2.3 · prices in the taskbar, about 5 MB of memory</small></span></a></li>
+        <li><a href="programs.html#yozora"><img src="img/98/yozora-icon.png" alt="" width="96" height="96" loading="lazy"><span><b>YOZORA.EXE</b><small>v0.1.5 · your music, on Discord</small></span></a></li>
       </ul>
     </div>
-    <div class="status"><span>4 file(s)</span><span>games are in MARKET</span><a href="works.html">OPEN ↗</a></div>
+    <div class="status"><span>2 program(s) · 4 libraries</span><span>Windows · free</span><a href="programs.html">OPEN ↗</a></div>
   </section>
 
   <section class="win pic" id="w-pic" data-win="STARFIRE.PIC" aria-labelledby="pic-title">
     <figure class="body"><img src="img/98/starfire.png" width="1280" height="426" alt="Starfire Hearth concept art: a sheet of stars, planets and stations, dithered to sixteen colours." loading="lazy"><figcaption id="pic-title">Starfire Hearth · concept art, not gameplay · in development</figcaption></figure>
   </section>
-
-  <section class="win" id="w-market" data-win="MARKET.DAT" aria-labelledby="market-title">
-    <div class="body">
-      <h2 class="sr-only" id="market-title">Marketplace</h2>
-      <table class="dat"><thead><tr><th scope="col">Game</th><th scope="col">Status</th></tr></thead><tbody>
-        <tr><td><a href="hearth.html">Starfire Hearth</a></td><td>in dev</td></tr>
-        <tr><td><a href="emberkind.html">Emberkind</a></td><td>experiment</td></tr>
-        <tr><td><a href="arcade.html">Arcade × 13</a></td><td>launch prep</td></tr>
-      </tbody></table>
-      <div class="thumbs"><img src="img/98/stellar_fusion.png" width="640" height="400" alt="Stellar Fusion, one of the arcade games, dithered to sixteen colours" loading="lazy"><img src="img/98/chromasort.png" width="640" height="400" alt="ChromaSort, one of the arcade games, dithered to sixteen colours" loading="lazy"></div>
-    </div>
-    <div class="status"><span>nothing on sale yet</span><a href="marketplace.html">OPEN ↗</a></div>
-  </section>
+  </div>
 </main>
 <footer class="footer">
   <p>mariyaholic · plain html, no trackers</p>
-  <div class="tasks" aria-hidden="true"><button type="button" tabindex="-1" data-for="w-readme">README</button><button type="button" tabindex="-1" data-for="w-cygnus">CYGNUS</button><button type="button" tabindex="-1" data-for="w-files">WORKS</button><button type="button" tabindex="-1" data-for="w-pic">STARFIRE</button><button type="button" tabindex="-1" data-for="w-market">MARKET</button></div>
+  <div class="tasks" aria-hidden="true"><button type="button" tabindex="-1" data-for="w-readme">README</button><button type="button" tabindex="-1" data-for="w-cygnus">CYGNUS</button><button type="button" tabindex="-1" data-for="w-files">WORKS</button><button type="button" tabindex="-1" data-for="w-progs">PROGRAMS</button><button type="button" tabindex="-1" data-for="w-pic">STARFIRE</button><button type="button" tabindex="-1" data-for="w-market">MARKET</button></div>
   <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
 </footer>
 </body>
