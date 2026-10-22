@@ -22,8 +22,8 @@ _____|░░░░░░░░░░░░░░░░░░░░░░░░�
 <meta name="robots" content="noindex,nofollow">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#f3efe4">
-<meta name="description" content="My projects. Astronomy, games, tools and research.">
-<title>The work | mariyaholic</title>
+<meta name="description" content="My portfolio: an astronomy project, dev tools, research and a music interface.">
+<title>Portfolio | mariyaholic</title>
 <link rel="icon" href="data:,">
 <script>
 /* View + motion before first paint: ?view=/?motion= (or #) > saved > light, on. See README.md. */
@@ -38,7 +38,7 @@ function view(x){var t=document.querySelector('meta[name=theme-color]');d.setAtt
 function motion(x){d.setAttribute('data-motion',x);press('motion',x!=='on')}
 d.classList.remove('no-js');
 view(v==='light'||v==='night'?v:get(T)==='dark'?'night':'light');
-motion(m==='on'||m==='off'?m:get(M)==='off'?'off':'on');
+motion(m==='on'||m==='off'?m:'on');
 if(d.getAttribute('data-view')==='light'){l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href='fonts/Fraunces.woff2';document.head.appendChild(l)}
 window.AO={T:T,M:M,put:put,on:on,view:view,motion:motion};
 document.addEventListener('DOMContentLoaded',function(){
@@ -57,55 +57,50 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 <body id="top">
 <span id="night"></span>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-header wrap" data-menu="closed">
+<header class="site-header wrap">
   <a class="wordmark" href="index.html" aria-label="mariyaholic home">mariyaholic</a>
-  <nav class="site-nav" id="primary-nav" aria-label="Primary">
-    <a href="index.html">Home</a>
-    <a href="works.html" aria-current="page">Work</a>
-    <a href="world.html">World</a>
+  <nav class="site-nav" aria-label="Primary">
+    <a href="works.html" aria-current="page">Portfolio</a>
+    <a href="marketplace.html">Marketplace</a>
     <a href="about.html">About</a>
     <a href="sitemap.html">Index</a>
+    <button class="view-toggle" id="theme" type="button" aria-pressed="false">Night</button>
+    <noscript><a class="view-toggle" href="#night">Night</a><a class="view-toggle" href="#top">Day</a></noscript>
   </nav>
-  <div class="header-tools">
-    <button class="toggle" id="theme" type="button" aria-pressed="false">Night view</button>
-    <button class="toggle" id="motion" type="button" aria-pressed="false">Pause motion</button>
-    <noscript><a class="toggle" href="#night">Night view</a><a class="toggle" href="#top">Light view</a></noscript>
-  </div>
-  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
 </header>
 <main id="main">
-<section class="page-hero page-hero--feature wrap in-view" data-anim>
-  <div class="reveal"><p class="eyebrow">The work</p><h1>What I've <em>been making.</em></h1><p class="intro">Astronomy, games, dev tools and research. I bounce between them a lot.</p></div>
-  <div class="hero-art reveal delay-1"><figure class="art-frame"><img src="img/cygnus.png" width="1440" height="900" alt="Cygnus Sky, a landscape capture of the astronomy explorer" fetchpriority="high"><figcaption>Ad Astra / Cygnus <span>local capture</span></figcaption></figure><div class="stamp">work in progress<br>with receipts</div></div>
-</section>
-<nav class="interest-tape" aria-label="Explore the site"><div class="wrap tape-inner"><a href="sky.html">Sky</a><span aria-hidden="true">/</span><a href="hearth.html">Hearth</a><span aria-hidden="true">/</span><a href="arcade.html">Arcade</a><span aria-hidden="true">/</span><a href="companions.html">Companions</a><span aria-hidden="true">/</span><a href="tools.html">Tools</a><span aria-hidden="true">/</span><a href="taste.html">Taste</a></div></nav>
-<section class="section section--rule wrap" aria-labelledby="fleet-title"><div class="section-head"><div><p class="eyebrow">Overview</p><h2 id="fleet-title">They overlap a lot.</h2></div><p>Some are public, some are early. Each one is described as far as it actually got.</p></div><div class="facts"><div class="fact"><strong>4</strong><span>main projects on the home page</span></div><div class="fact"><strong>13</strong><span>single-file arcade originals</span></div><div class="fact"><strong>27</strong><span>entries in my taste notes</span></div><div class="fact"><strong>Open</strong><span>questions, still</span></div></div></section>
-<section class="section wrap" aria-labelledby="project-list-title">
-  <div class="ascii-art ascii-art--hdr">
-<pre class="ascii" aria-hidden="true">
-+----------------------------------------------------------------------+
-|[::::] o. [<span class="lit">░▒▓█</span>] .o |||||| oo [::::] o. |||||| oo [<span class="lit">░▒▓█</span>] .o [::::] o. |
-|[__][__].. ::::::: o░░▒▒▓▓▒▒░░[__][__].. ::::::: o[__][__]..░░▒▒▓▓▒▒░░|
-+----------------------------------------------------------------------+
+<section class="page-hero page-hero--quiet wrap in-view" data-anim><div class="reveal"><p class="eyebrow">Portfolio</p><h1>What I've <em>been making.</em></h1><p class="intro">Astronomy, dev tools, research and one music interface. Each one is described as far as it actually got.</p></div><div class="reveal delay-1"><p class="hero-note">The games have their own shelf, in the <a class="inline-link" href="marketplace.html">marketplace</a>.</p></div></section>
+<section class="section section--rule wrap" id="ad-astra" aria-labelledby="ad-astra-title">
+  <figure class="ascii-art ascii-art--hdr">
+<pre class="ascii" style="--cols:64" aria-hidden="true">
+   ·         .                 ·              .             ·
+  + · · · · · · · · · · · · · · <span class="lit">@</span> · · · · · · · · · · · · · · *
+        .             ·                .              ·
 </pre>
-  </div>
-  <div class="section-head"><div><p class="eyebrow">Project notes</p><h2 id="project-list-title">Start anywhere.</h2></div></div>
-<article class="essay"><h3><a href="sky.html">Ad Astra</a></h3><div><p>Astronomy from public archives, with recorded footprints, named sources, and a sky map you can browse called Cygnus.</p><p>Open leads stay open. Retractions stay up.</p></div></article>
-<article class="essay"><h3><a href="hearth.html">Starfire Hearth</a></h3><div><p>A cozy hard sci-fi settlement game in development, with a deterministic kernel underneath.</p><p>The art is concept art. The rest is still being built.</p></div></article>
-<article class="essay"><h3><a href="tools.html">Uika</a></h3><div><p>An early personal lab for coordinating coding tools across my repos.</p><p>The manual and the decision log matter as much as the UI.</p></div></article>
-<article class="essay"><h3><a href="atlas.html">Argonaut Oak</a></h3><div><p>Research and trading systems. TickAtlas is the public stats site.</p><p>The pages describe studies and methods. They don't promise future performance.</p></div></article>
-<article class="essay"><h3><a href="aria.html">Aria</a></h3><div><p>A dark listening UI. One track at a time, and the album art has a proper empty state.</p><p>It's here because I think a tool can be useful and still have a mood.</p></div></article>
-<article class="essay"><h3><a href="arcade.html">The play shelf</a></h3><div><p>Thirteen small arcade games that run straight in the browser, later ported to Godot.</p><p>The fun part.</p></div></article>
-<article class="essay"><h3><a href="https://github.com/mariyaholic/yozora">Yozora</a></h3><div><p><span class="todo-slot">TODO: one-line description of Yozora — Manager to supply</span></p><p><a href="https://github.com/mariyaholic/yozora">Release on GitHub ↗</a></p></div></article>
+</figure>
+  <div class="feature-grid"><div class="feature-copy"><p class="eyebrow">Astronomy · Ad Astra / Cygnus</p><h2 id="ad-astra-title">The sky, <em>on record.</em></h2><p>I go back through public archives looking for signals the standard pipelines might have missed. Then I try to explain them away before calling anything a lead.</p><ul class="feature-list"><li><strong>Archive</strong><span>TESS, Kepler, Gaia, WISE, ZTF and the Legacy Surveys, each with source notes.</span></li><li><strong>Open leads</strong><span>TOI-224, TOI-2666 and TOI-3500. A lead is something to check, not a discovery.</span></li><li><strong>Retractions</strong><span>Sixty-five first leads got narrowed down. The rejection notes stay visible.</span></li></ul><a class="text-link" href="https://cygnus-sky.pages.dev">Open Cygnus Sky <span aria-hidden="true">↗</span></a></div>
+  <figure class="art-frame"><img src="img/cygnus-filtered.jpg" width="1440" height="900" alt="Dark sky map of Project Cygnus filtered to the active, unverified leads: TOI-2666.01 and TOI-224.01 circled in gold against faint stars, the Milky Way and grid lines, with TOI-3500.02 in the lead list." fetchpriority="high"><figcaption>Cygnus Sky <span>filtered view</span></figcaption></figure></div>
 </section>
-<div class="wrap"><svg class="divider divider--flush" data-anim viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><line class="dv-line" x1="0" y1="6" x2="1000" y2="6"/><line class="dv-pulse" x1="0" y1="6" x2="1000" y2="6" pathLength="100"/><line class="dv-node" x1="500" y1="2" x2="500" y2="10"/></svg></div>
-<section class="section section--tight wrap" aria-labelledby="proposal-title"><div class="section-head"><div><p class="eyebrow">Methods &amp; boundaries</p><h2 id="proposal-title">Four drafts.</h2></div><p>Draft pages on how things work, what they cost, what's private, and how sure I am. Every number says where it came from.</p></div><div class="manifest"><article><h3><a href="method.html">Method</a></h3><p>Rule pipelines, state changes, receipts and one made-up walkthrough.</p></article><article><h3><a href="efficiency.html">Efficiency</a></h3><p>Relative resource sizes, and what local tests can't show.</p></article><article><h3><a href="privacy.html">Privacy</a></h3><p>Four classes from public to private, plus a release checklist.</p></article><article><h3><a href="evidence.html">Evidence</a></h3><p>Status labels and receipts across projects, failures included.</p></article></div></section>
+<section class="section section--rule wrap" id="uika" aria-labelledby="uika-title">
+  <div class="feature-grid feature-grid--reverse"><div class="feature-copy"><p class="eyebrow">Tools · Uika</p><h2 id="uika-title">Room for <em>the work.</em></h2><p>An early personal lab for coordinating coding tools across my repos. Code follows what's written down, so each repo doesn't have to remember on its own.</p><ul class="feature-list"><li><strong>Manual</strong><span>Instructions and working agreements, written to be read.</span></li><li><strong>Contract</strong><span>The parts a machine needs, in a structured file.</span></li><li><strong>Decisions</strong><span>ADRs first, so a decision can be revisited without guessing why it was made.</span></li></ul><p class="small-copy">It's private and still early. The screenshot is of the manual, not a finished app.</p></div>
+  <figure class="art-frame"><img src="img/uika.png" width="1440" height="900" alt="The Uika estate manual in its Doloris theme" loading="lazy"><figcaption>Uika <span>the manual</span></figcaption></figure></div>
+</section>
+<section class="section section--rule wrap" id="tickatlas" aria-labelledby="tickatlas-title">
+  <div class="feature-grid"><div class="feature-copy"><p class="eyebrow">Research · Argonaut Oak / TickAtlas</p><h2 id="tickatlas-title">Numbers with <em>receipts.</em></h2><p>TickAtlas turns my market studies into pages you can look through. It describes what happened, and it can be reproduced. It isn't a promise of future performance.</p><a class="text-link" href="https://tickatlas.neocities.org">Open TickAtlas <span aria-hidden="true">↗</span></a></div>
+  <div class="manifest"><article><h3>Method</h3><p>Each page says what was measured and what the limits are.</p></article><article><h3>Failure</h3><p>Eight essays on ideas that failed. They stay up.</p></article><article><h3>Scope</h3><p>Past data is not a guarantee, a live signal, or financial advice.</p></article><article><h3>Reader</h3><p>It's there so you can check a study, not copy a conclusion.</p></article></div></div>
+</section>
+<section class="section section--rule wrap" id="aria" aria-labelledby="aria-title">
+  <div class="feature-grid"><div class="feature-copy"><p class="eyebrow">Music · Aria</p><h2 id="aria-title">One room, <em>one track.</em></h2><p>A dark UI for listening to music. It's here because I think a tool can be useful and still have a mood.</p></div>
+  <ul class="feature-list"><li><strong>Cue sheet</strong><span>The query box, ruled like a cue sheet.</span></li><li><strong>Track card</strong><span>Title and playback controls in one place.</span></li><li><strong>Album plate</strong><span>Album art for what's playing, with a proper empty state when nothing is.</span></li></ul></div>
+</section>
+<section class="section section--rule section--tight wrap" id="more" aria-labelledby="more-title">
+  <div class="section-head"><div><p class="eyebrow">Also</p><h2 id="more-title">Smaller things.</h2></div></div>
+  <ul class="link-index"><li><a href="https://github.com/mariyaholic/yozora">Yozora ↗</a><span><span class="todo-slot">TODO: one-line description of Yozora — Manager to supply</span></span></li><li><b>Drafts</b><span><a href="method.html">Method</a>, <a href="efficiency.html">Efficiency</a>, <a href="privacy.html">Privacy</a>, <a href="evidence.html">Evidence</a></span></li></ul>
+</section>
 </main>
-<footer class="footer wrap" id="elsewhere">
-  <div><p class="footer-name">mariyaholic</p><p>Things I make.</p></div>
-  <nav aria-label="Elsewhere"><a href="index.html">Home</a><a href="works.html">Work</a><a href="world.html">World</a><a href="about.html">About</a><a href="persona.html">In person</a><a href="sky.html">Sky</a><a href="hearth.html">Hearth</a><a href="emberkind.html">Emberkind</a><a href="companions.html">Companions</a><a href="tools.html">Tools</a><a href="aria.html">Aria</a><a href="atlas.html">Atlas</a><a href="arcade.html">Arcade</a><a href="taste.html">Taste</a><a href="method.html">Method</a><a href="efficiency.html">Efficiency</a><a href="privacy.html">Privacy</a><a href="evidence.html">Evidence</a><a href="sg.html">The lab door</a><a href="sr.html">The bridge home</a><a href="confluence.html">Confluence</a><a href="colophon.html">Colophon</a><a href="sitemap.html">Index</a><a href="https://cygnus-sky.pages.dev">Cygnus Sky ↗</a><a href="https://tickatlas.neocities.org">TickAtlas ↗</a><a href="https://github.com/mariyaholic/yozora">Yozora ↗</a></nav>
-  <p class="credits-line">Type: Fraunces, Newsreader (SIL OFL 1.1); subsets of Major Mono Display and JetBrains Mono (SIL OFL 1.1) and of Special Elite (Apache 2.0). Licence texts are in fonts/. <a href="colophon.html#credits">Credits</a></p>
-  <p class="review-note">Design study · <a href="colophon.html">Colophon</a>.</p>
+<footer class="footer wrap">
+  <p>mariyaholic · plain html, no trackers</p>
+  <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
 </footer>
 </body>
 </html>
