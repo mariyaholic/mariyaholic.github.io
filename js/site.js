@@ -119,8 +119,13 @@
       seek: () => [0, .05, .1, .19].forEach((at, i) => hiss(at, .03, .5, 700 + i * 250)),     // drive seek during the memory test
       key: () => { hiss(0, .012, .4, 2600); hiss(.04, .012, .35, 3000); },                   // two typed characters per boot frame
       miss: () => { fm(note(64), 0, .12, { wave: 'square', index: .5, vol: .4 }); fm(note(57), .14, .26, { wave: 'square', index: .5, vol: .4 }); },
+      // hovers: quieter and shorter than clicks
+      menu: n => fm(note(n), 0, .045, { index: .8, vol: .35 }),                                // one note of a scale per menu item
+      icon: () => fm(note(67), 0, .05, { ratio: 3.5, index: 2.5, vol: .4 }),                  // a desktop icon: a woody knock
+      cta: () => { fm(note(91), 0, .04, { index: 1, vol: .3 }); fm(note(96), .035, .06, { index: 1, vol: .3 }); },
+      btn: () => hiss(0, .01, .25, 4200),                                                     // a status-bar button
     };
-    const play = name => { if (on && ac && ac.state === 'running') SOUNDS[name](); };
+    const play = (name, arg) => { if (on && ac && ac.state === 'running') SOUNDS[name](arg); };
 
     if (on) {
       start();
@@ -151,6 +156,22 @@
       setTimeout(() => { location.href = a.href; }, 140);
     });
     if (document.body.dataset.page === '404') addEventListener('load', () => setTimeout(() => play('miss'), 300));
+
+    /* Hovers on the main controls, mouse only. A control sounds once per entry and hovers sound at most once
+       every 140ms, so sweeping across the menu plays a quick pentatonic run instead of a buzz. */
+    const HOVER = [['.wordmark, .site-nav a', 'menu'], ['.icons a', 'icon'], ['.primary-link, .text-link', 'cta'], ['.tasks button, .footer .sound', 'btn']];
+    const SCALE = [79, 84, 86, 88, 91, 93, 96]; // G5, then C D E G A C
+    let over = null, last = 0;
+    document.addEventListener('pointerover', e => {
+      if (e.pointerType !== 'mouse') return;
+      const hit = HOVER.map(([sel, name]) => [e.target.closest(sel), name]).find(([el]) => el) || [null];
+      if (hit[0] === over) return;
+      over = hit[0];
+      if (!over || performance.now() - last < 140) return;
+      last = performance.now();
+      const menu = [...document.querySelectorAll('.wordmark, .site-nav a')];
+      play(hit[1], SCALE[Math.min(menu.indexOf(over), SCALE.length - 1)]);
+    });
     return play;
   })();
 
