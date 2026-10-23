@@ -547,13 +547,21 @@ h1 em,h2 em,h3 em,.project-name em{color:var(--c11)}
 .thumbs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .thumbs img{border:2px solid var(--c0)}
 .pic figcaption{margin-top:8px;font-size:12px;color:var(--c5)}
+.yt,.yt-frame{display:block;width:100%;aspect-ratio:16/9;border:2px solid var(--c0)}
+.yt{display:grid;place-content:center;justify-items:center;gap:14px;background:repeating-conic-gradient(var(--c2) 0 25%,var(--c0) 0 50%) 0 0/4px 4px;color:var(--c7);text-align:center;padding:10px}
+.yt:hover{color:var(--c7);background:repeating-conic-gradient(var(--c3) 0 25%,var(--c0) 0 50%) 0 0/4px 4px}
+.yt-name{background:var(--c0);padding:0 6px}
+.yt-play{background:var(--c10);padding:2px 14px;border:2px solid var(--c0);box-shadow:3px 3px 0 var(--c0)}
+.yt:hover .yt-play{background:var(--c12);color:var(--c1)}
+.credit{margin-top:8px;font-size:12px;color:var(--c5)}
+.credit b{font-weight:400;color:var(--c12)}
 .ico.exe{background:var(--c6)}.ico.exe::before{content:"";position:absolute;inset:0 0 auto;height:7px;background:var(--c10)}.ico.exe::after{content:">_";position:absolute;inset:7px 0 0;display:grid;place-items:center;color:var(--c1);font-size:13px}
 .files img[src*="-icon"]{object-fit:contain;background:var(--c0)}
 .strip{margin:0 0 10px;padding:8px 10px}
 /* Two columns, in flow; from 1200px js/site.js pins every window where the columns put it (.pinned),
    so they can be dragged. Without JS the columns simply stay. Below 1200px: one column, readme first. */
 .desk .col{display:contents}
-#w-readme{order:1}#w-cygnus{order:2}#w-progs{order:3}#w-files{order:4}#w-market{order:5}#w-pic{order:6}
+#w-readme{order:1}#w-cygnus{order:2}#w-progs{order:3}#w-files{order:4}#w-market{order:5}#w-pic{order:6}#w-vivy{order:7}
 .desk{display:flex;flex-direction:column}
 .desk .icons{order:0}
 @media (min-width:1200px){

@@ -149,7 +149,7 @@
     const CHORDS = { Cmaj7: [60, 64, 67, 71], Am7: [57, 60, 64, 67], Fmaj7: [53, 57, 60, 64], G: [55, 59, 62, 67], Dm7: [50, 53, 57, 60], Em7: [52, 55, 59, 62] };
     const BASS = { 0: [0, 3], 6: [12, 2], 8: [7, 2], 10: [0, 2], 14: [12, 2] }; // step in the bar: [semitones above the root, length in steps]
     const midi = tok => { const m = /^([A-G])(#?)(\d)$/.exec(tok); return 12 * (+m[3] + 1) + 'C D EF G A B'.indexOf(m[1]) + (m[2] ? 1 : 0); };
-    let level = null, duck = null, waves = null, timer = null, step = 0, next = 0;
+    let level = null, duck = null, waves = null, timer = null, step = 0, next = 0, hush = false; // hush: a video is playing
     try { step = +sessionStorage.getItem('mh98-music-at') || 0; } catch (e) { /* from the top */ }
     const song = DESKTOP, chords = song.chords.split(' ').map(c => CHORDS[c]), lead = song.lead.map(b => b.split(' '));
     const STEP = 60 / song.bpm / 4, TOTAL = chords.length * 16;
@@ -197,7 +197,7 @@
     };
     const pump = () => { while (next < ac.currentTime + .15) { book(step, next); next += STEP; step = (step + 1) % TOTAL; } };
     const playMusic = () => {
-      if (timer || !musicOn || !ac || ac.state !== 'running' || document.hidden || root.classList.contains('boot')) return; // after the boot
+      if (timer || hush || !musicOn || !ac || ac.state !== 'running' || document.hidden || root.classList.contains('boot')) return; // after the boot
       if (!level) { level = ac.createGain(); level.gain.value = .8; level.connect(out); waves = { lead: pulse(.25), arp: pulse(.125) }; }
       duck = ac.createGain(); duck.connect(level);
       step &= ~3; next = ac.currentTime + .05; pump(); timer = setInterval(pump, 25); // resume on a beat
@@ -210,6 +210,7 @@
     };
     document.addEventListener('visibilitychange', () => (document.hidden ? stopMusic() : playMusic()));
     addEventListener('mh98-booted', playMusic);
+    addEventListener('mh98-quiet', () => { hush = true; stopMusic(); });
     addEventListener('pagehide', () => { try { sessionStorage.setItem('mh98-music-at', String(step)); } catch (e) { /* starts from the top */ } });
 
     // Audio wakes on the first click or key when the browser held it back; then the music starts.
@@ -235,7 +236,7 @@
     };
     if (foot) {
       toggle('SOUND', 'mh98-sound', () => on, v => { on = v; }, ': ON', () => play('chime'), () => {});
-      toggle('MUSIC', 'mh98-music', () => musicOn, v => { musicOn = v; }, `: ${song.name}`, playMusic, stopMusic);
+      toggle('MUSIC', 'mh98-music', () => musicOn, v => { musicOn = v; }, `: ${song.name}`, () => { hush = false; playMusic(); }, stopMusic);
     }
     document.addEventListener('click', e => {
       const a = e.target.closest('a[href]');
@@ -250,7 +251,7 @@
 
     /* Hovers on the main controls, mouse only. A control sounds once per entry and hovers sound at most once
        every 140ms, so sweeping across the menu plays a quick pentatonic run instead of a buzz. */
-    const HOVER = [['.wordmark, .site-nav a', 'menu'], ['.icons a', 'icon'], ['.primary-link, .text-link', 'cta'], ['.tasks button, .footer .sound', 'btn']];
+    const HOVER = [['.wordmark, .site-nav a', 'menu'], ['.icons a', 'icon'], ['.primary-link, .text-link, .yt', 'cta'], ['.tasks button, .footer .sound', 'btn']];
     const SCALE = [79, 84, 86, 88, 91, 93, 96]; // G5, then C D E G A C
     let over = null, last = 0;
     document.addEventListener('pointerover', e => {
@@ -265,6 +266,21 @@
     });
     return play;
   })();
+
+  /* YouTube windows: the markup is a plain link to the video, so nothing loads from YouTube until someone
+     asks to play. A click swaps in YouTube's privacy-enhanced player (youtube-nocookie.com) at the same size,
+     and the site's MUSIC steps aside for it until MUSIC is pressed again. */
+  document.querySelectorAll('a[data-yt]').forEach(a => a.addEventListener('click', e => {
+    if (e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    const f = document.createElement('iframe');
+    f.className = 'yt-frame'; f.title = a.dataset.title || 'YouTube video';
+    f.src = `https://www.youtube-nocookie.com/embed/${a.dataset.yt}?autoplay=1&rel=0`;
+    f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen = true;
+    f.referrerPolicy = 'strict-origin-when-cross-origin';
+    a.replaceWith(f); f.focus();
+    dispatchEvent(new Event('mh98-quiet'));
+  }));
 
   /* Boot: on a first visit with motion on, the head script adds html.boot (CSS covers the page in black)
      and this types a short text-mode boot, about 1.2-1.5s, then cuts to the page. The last line changes to
