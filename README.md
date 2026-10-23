@@ -6,7 +6,7 @@ Plain static HTML, CSS and JS. No build step, no framework, no external requests
 
 ## Layout
 - One `.html` file per page at the root. `404.html` is GitHub Pages' not-found page and uses root paths (`/css/...`) so it works at any URL.
-- `css/site.css` is the one stylesheet (rev 8, "mariyaholic-98": a PC-98 style desktop in a 16-colour palette). Each top-level `<section>` in `<main>` is a window: give it `class="win"` and `data-win="FOLDER\NAME.TXT"` and CSS draws the title bar. `js/site.js` drags the home-page windows and runs the step sequences.
+- `css/site.css` is the one stylesheet (rev 8, "mariyaholic-98": a PC-98 style desktop in a 16-colour palette). Each top-level `<section>` in `<main>` is a window: give it `class="win"` and `data-win="FOLDER\NAME.TXT"` and CSS draws the title bar. `js/site.js` draws the desktop (a palette-cycling dither with drifting stars), plays the boot screen on a first visit, drags the home-page windows, and runs the app sketches and step sequences. With `?motion=off` or reduced motion, the desktop is still and there is no boot. Add `?boot` to a URL to replay the boot.
 - `fonts/` holds the subset web fonts with their OFL licence texts (see `fonts/SOURCES.md` and the Credits section on `colophon.html`).
 - `img/98/` holds the pictures the pages use, each Bayer-dithered to the site palette. The originals stay in `img/`.
 - `.nojekyll` tells Pages to serve the files untouched.
