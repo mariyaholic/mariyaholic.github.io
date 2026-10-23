@@ -197,7 +197,7 @@
     };
     const pump = () => { while (next < ac.currentTime + .15) { book(step, next); next += STEP; step = (step + 1) % TOTAL; } };
     const playMusic = () => {
-      if (timer || !musicOn || !ac || ac.state !== 'running' || document.hidden) return;
+      if (timer || !musicOn || !ac || ac.state !== 'running' || document.hidden || root.classList.contains('boot')) return; // after the boot
       if (!level) { level = ac.createGain(); level.gain.value = .8; level.connect(out); waves = { lead: pulse(.25), arp: pulse(.125) }; }
       duck = ac.createGain(); duck.connect(level);
       step &= ~3; next = ac.currentTime + .05; pump(); timer = setInterval(pump, 25); // resume on a beat
@@ -209,6 +209,7 @@
       setTimeout(() => old.disconnect(), 300); duck = null;
     };
     document.addEventListener('visibilitychange', () => (document.hidden ? stopMusic() : playMusic()));
+    addEventListener('mh98-booted', playMusic);
     addEventListener('pagehide', () => { try { sessionStorage.setItem('mh98-music-at', String(step)); } catch (e) { /* starts from the top */ } });
 
     // Audio wakes on the first click or key when the browser held it back; then the music starts.
@@ -292,7 +293,7 @@
     const keys = ['keydown', 'wheel'];
     const end = () => {
       if (!scr.isConnected) return;
-      clearInterval(timer); scr.remove(); root.classList.remove('boot');
+      clearInterval(timer); scr.remove(); root.classList.remove('boot'); dispatchEvent(new Event('mh98-booted'));
       keys.forEach(e => removeEventListener(e, end, true));
       try { localStorage.setItem('mh98-booted', '1'); } catch (e) { /* the boot just plays again next time */ }
       const played = [...document.querySelectorAll('.in-view')];
