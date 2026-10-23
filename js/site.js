@@ -211,6 +211,7 @@
     document.addEventListener('visibilitychange', () => (document.hidden ? stopMusic() : playMusic()));
     addEventListener('mh98-booted', playMusic);
     addEventListener('mh98-quiet', () => { hush = true; stopMusic(); });
+    addEventListener('mh98-loud', () => { hush = false; playMusic(); });
     addEventListener('pagehide', () => { try { sessionStorage.setItem('mh98-music-at', String(step)); } catch (e) { /* starts from the top */ } });
 
     // Audio wakes on the first click or key when the browser held it back; then the music starts.
@@ -267,20 +268,53 @@
     return play;
   })();
 
-  /* YouTube windows: the markup is a plain link to the video, so nothing loads from YouTube until someone
-     asks to play. A click swaps in YouTube's privacy-enhanced player (youtube-nocookie.com) at the same size,
-     and the site's MUSIC steps aside for it until MUSIC is pressed again. */
-  document.querySelectorAll('a[data-yt]').forEach(a => a.addEventListener('click', e => {
-    if (e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    e.preventDefault();
-    const f = document.createElement('iframe');
-    f.className = 'yt-frame'; f.title = a.dataset.title || 'YouTube video';
-    f.src = `https://www.youtube-nocookie.com/embed/${a.dataset.yt}?autoplay=1&rel=0`;
-    f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen = true;
-    f.referrerPolicy = 'strict-origin-when-cross-origin';
-    a.replaceWith(f); f.focus();
-    dispatchEvent(new Event('mh98-quiet'));
-  }));
+  /* FLUORITE.EYE, the home page's YouTube window. The markup is a plain link to the video (what shows without
+     JS); with JS it becomes YouTube's player, on the privacy-enhanced host, through YouTube's IFrame API. It
+     plays when the page opens (after the boot). If the browser holds sound back until a click or key, it starts
+     on the first one. The spot is saved every second and on leaving, so coming back picks up there; paused
+     by hand, it comes back paused. While it plays, the site's MUSIC steps aside. If the API can't load, the
+     link comes back. */
+  const ytLink = document.querySelector('a[data-yt]');
+  if (ytLink) {
+    const KEY = `mh98-yt-${ytLink.dataset.yt}`;
+    let saved = { t: 0, paused: false }, player = null, leaving = false;
+    try { saved = { ...saved, ...JSON.parse(localStorage.getItem(KEY) || '{}') }; } catch (e) { /* from the start */ }
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) { /* this visit only */ } };
+    const box = document.createElement('div'), spot = document.createElement('div');
+    box.className = 'yt-box'; box.append(spot);
+    ytLink.replaceWith(box);
+    if (!saved.paused) dispatchEvent(new Event('mh98-quiet')); // the song is about to play: no chip music first
+    const playing = () => player?.getPlayerState?.() === 1;
+    const go = () => { if (player && !saved.paused && !root.classList.contains('boot')) player.playVideo(); };
+    const firstTouch = () => {
+      const once = () => { removeEventListener('pointerdown', once, true); removeEventListener('keydown', once, true); go(); };
+      addEventListener('pointerdown', once, true); addEventListener('keydown', once, true);
+    };
+    const begin = () => { go(); setTimeout(() => { if (!playing() && !saved.paused) firstTouch(); }, 1500); };
+    window.onYouTubeIframeAPIReady = () => {
+      player = new YT.Player(spot, {
+        host: 'https://www.youtube-nocookie.com', videoId: ytLink.dataset.yt, width: '100%', height: '100%',
+        playerVars: { start: Math.floor(saved.t), rel: 0, playsinline: 1, origin: location.origin },
+        events: {
+          onReady: () => { player.getIframe().title = ytLink.dataset.title || 'YouTube video'; begin(); },
+          onStateChange: e => {
+            if (e.data === 1) { saved.paused = false; dispatchEvent(new Event('mh98-quiet')); }
+            else if (e.data === 2 && !leaving) { saved.paused = true; dispatchEvent(new Event('mh98-loud')); }
+            else if (e.data === 0) { saved = { t: 0, paused: false }; dispatchEvent(new Event('mh98-loud')); }
+            save();
+          },
+        },
+      });
+    };
+    setInterval(() => { if (playing()) { saved.t = player.getCurrentTime(); save(); } }, 1000);
+    addEventListener('pagehide', () => { leaving = true; if (player?.getPlayerState && player.getPlayerState() !== 0) { saved.t = player.getCurrentTime(); save(); } }); // not at the end
+    addEventListener('pageshow', e => { if (e.persisted) { leaving = false; begin(); } });
+    addEventListener('mh98-booted', begin);
+    const api = document.createElement('script');
+    api.src = 'https://www.youtube.com/iframe_api';
+    api.onerror = () => { box.replaceWith(ytLink); dispatchEvent(new Event('mh98-loud')); };
+    document.head.append(api);
+  }
 
   /* Boot: on a first visit with motion on, the head script adds html.boot (CSS covers the page in black)
      and this types a short text-mode boot, about 1.2-1.5s, then cuts to the page. The last line changes to

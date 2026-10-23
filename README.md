@@ -2,7 +2,7 @@
 
 Maria's personal site: software, an astronomy project, and games. Live at https://mariyaholic.github.io.
 
-Plain static HTML, CSS and JS. No build step, no framework, and no external requests until someone presses play on the YouTube window on the home page.
+Plain static HTML, CSS and JS. No build step, no framework, and no external requests except the YouTube player in the home page's FLUORITE.EYE window.
 
 ## Layout
 - One `.html` file per page at the root. `404.html` is GitHub Pages' not-found page and uses root paths (`/css/...`) so it works at any URL.
