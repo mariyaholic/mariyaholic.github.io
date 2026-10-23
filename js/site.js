@@ -74,6 +74,86 @@
     document.querySelector('canvas.desktop')?.remove(); root.classList.remove('desk-live');
   }
 
+  /* Sound: off until the SOUND button in the status bar turns it on, and the choice is remembered. Every
+     sound is synthesized here with two-operator FM (a sine bending the pitch of a sine or square, like the
+     PC-98's FM chip), so there are no audio files. Browsers only start audio after a click or key on the
+     page, so with sound on a fresh page can stay silent until then; sfx() does nothing while it can't play.
+     Internal links wait 140ms so their chime is heard before the page changes. */
+  const sfx = (() => {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return () => {};
+    let on = false, ac = null, out = null, noise = null;
+    try { on = localStorage.getItem('mh98-sound') === 'on'; } catch (e) { /* stays off */ }
+    const start = () => {
+      if (!ac) {
+        ac = new AC(); out = ac.createGain(); out.gain.value = .16; out.connect(ac.destination);
+        noise = ac.createBuffer(1, ac.sampleRate * .2, ac.sampleRate);
+        const d = noise.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      }
+      return ac.state === 'suspended' ? ac.resume() : Promise.resolve();
+    };
+    // One FM note: carrier at f, modulator at f*ratio and depth index*f; the brightness and volume both decay.
+    const fm = (f, at, dur, { ratio = 2, index = 1.5, wave = 'sine', vol = 1 } = {}) => {
+      const t = ac.currentTime + at, car = ac.createOscillator(), mod = ac.createOscillator(), depth = ac.createGain(), env = ac.createGain();
+      car.type = wave; car.frequency.value = f; mod.frequency.value = f * ratio;
+      depth.gain.setValueAtTime(index * f, t); depth.gain.exponentialRampToValueAtTime(index * f * .2 + 1, t + dur);
+      env.gain.setValueAtTime(vol, t); env.gain.exponentialRampToValueAtTime(.001, t + dur);
+      mod.connect(depth).connect(car.frequency); car.connect(env).connect(out);
+      car.start(t); mod.start(t); car.stop(t + dur + .02); mod.stop(t + dur + .02);
+    };
+    // A burst of band-passed noise: clicks, ticks and the drive seek.
+    const hiss = (at, dur, vol, hz) => {
+      const t = ac.currentTime + at, src = ac.createBufferSource(), bp = ac.createBiquadFilter(), env = ac.createGain();
+      src.buffer = noise; bp.type = 'bandpass'; bp.frequency.value = hz; bp.Q.value = 2;
+      env.gain.setValueAtTime(vol, t); env.gain.exponentialRampToValueAtTime(.001, t + dur);
+      src.connect(bp).connect(env).connect(out); src.start(t); src.stop(t + dur + .02);
+    };
+    const note = n => 440 * 2 ** ((n - 69) / 12);
+    const SOUNDS = {
+      chime: () => [72, 76, 79, 84].forEach((n, i) => fm(note(n), i * .07, .3, { index: 2 })),  // sound turned on: C E G C
+      open: () => { fm(note(84), 0, .06); fm(note(91), .05, .09); },                         // a window comes to the front
+      tick: () => hiss(0, .018, .3, 3200),                                                   // dragging, every 24px
+      link: () => { fm(note(88), 0, .08, { ratio: 3 }); fm(note(93), .07, .14, { ratio: 3 }); },
+      post: () => fm(2000, 0, .12, { wave: 'square', index: 0, vol: .3 }),                   // the boot beep
+      seek: () => [0, .05, .1, .19].forEach((at, i) => hiss(at, .03, .5, 700 + i * 250)),     // drive seek during the memory test
+      key: () => { hiss(0, .012, .4, 2600); hiss(.04, .012, .35, 3000); },                   // two typed characters per boot frame
+      miss: () => { fm(note(64), 0, .12, { wave: 'square', index: .5, vol: .4 }); fm(note(57), .14, .26, { wave: 'square', index: .5, vol: .4 }); },
+    };
+    const play = name => { if (on && ac && ac.state === 'running') SOUNDS[name](); };
+
+    if (on) {
+      start();
+      const wake = () => { start(); removeEventListener('pointerdown', wake, true); removeEventListener('keydown', wake, true); };
+      addEventListener('pointerdown', wake, true); addEventListener('keydown', wake, true);
+    }
+    const foot = document.querySelector('.footer');
+    if (foot) {
+      const btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'sound';
+      btn.innerHTML = 'SOUND<span aria-hidden="true"></span>';
+      const label = () => { btn.setAttribute('aria-pressed', String(on)); btn.lastChild.textContent = on ? ': ON' : ': OFF'; };
+      label();
+      btn.addEventListener('click', () => {
+        on = !on; label();
+        try { localStorage.setItem('mh98-sound', on ? 'on' : 'off'); } catch (e) { /* only this page remembers */ }
+        if (on) start().then(() => play('chime'));
+      });
+      foot.insertBefore(btn, foot.querySelector('nav'));
+    }
+    document.addEventListener('click', e => {
+      const a = e.target.closest('a[href]');
+      if (!a || !on || !ac || ac.state !== 'running' || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (a.target || a.hasAttribute('download') || a.origin !== location.origin) return;
+      play('link');
+      if (a.pathname === location.pathname && a.search === location.search) return; // an anchor on this page
+      e.preventDefault();
+      setTimeout(() => { location.href = a.href; }, 140);
+    });
+    if (document.body.dataset.page === '404') addEventListener('load', () => setTimeout(() => play('miss'), 300));
+    return play;
+  })();
+
   /* Boot: on a first visit with motion on, the head script adds html.boot (CSS covers the page in black)
      and this types a short text-mode boot, about 1.2-1.5s, then cuts to the page. The last line changes to
      the page's directory. A key, click, tap or wheel skips it; ?boot replays it. The hero animations ran under
@@ -92,9 +172,13 @@
     frames.push([...head, mem], [...head, mem, pal], done);
     const typing = frames.length;
     for (let n = 0; n < cmd.length; n += 2) frames.push([...done, 'A:\\>' + cmd.slice(0, n)]);
+    const typed = frames.length;
     for (let n = 0; n < 3; n++) frames.push([...done, 'A:\\>' + cmd]);
     let f = 0;
-    const show = () => { scr.textContent = frames[f].join('\n') + (f >= typing && f % 2 === 0 ? '_' : ''); };
+    const show = () => {
+      scr.textContent = frames[f].join('\n') + (f >= typing && f % 2 === 0 ? '_' : '');
+      if (f === 0) sfx('post'); else if (f === 1) sfx('seek'); else if (f > typing && f <= typed) sfx('key');
+    };
     const keys = ['keydown', 'wheel'];
     const end = () => {
       if (!scr.isConnected) return;
@@ -138,7 +222,8 @@
     (document.fonts ? document.fonts.ready : Promise.resolve()).then(pin);
     wide.addEventListener('change', () => { dragged = false; pin(); });
     addEventListener('resize', () => { clearTimeout(timer); timer = setTimeout(() => { if (!dragged) pin(); }, 150); });
-    const front = w => {
+    const front = (w, quiet) => {
+      if (!quiet && !w.classList.contains('top')) sfx('open');
       wins.forEach(x => x.classList.toggle('top', x === w));
       w.style.zIndex = ++z;
       tasks.forEach(b => b.classList.toggle('on', b.dataset.for === w.id));
@@ -149,9 +234,11 @@
         if (!desk.classList.contains('pinned') || e.button !== 0 || e.clientY - w.getBoundingClientRect().top > 30 || e.target.closest('a')) return;
         e.preventDefault(); dragged = true;
         const sx = e.clientX - w.offsetLeft, sy = e.clientY - w.offsetTop;
+        let tx = e.clientX, ty = e.clientY;
         const move = ev => {
           w.style.left = Math.max(0, Math.min(desk.clientWidth - 80, ev.clientX - sx)) + 'px';
           w.style.top = Math.max(0, ev.clientY - sy) + 'px';
+          if (Math.hypot(ev.clientX - tx, ev.clientY - ty) >= 24) { tx = ev.clientX; ty = ev.clientY; sfx('tick'); }
         };
         const up = () => { removeEventListener('pointermove', move); removeEventListener('pointerup', up); };
         addEventListener('pointermove', move); addEventListener('pointerup', up);
@@ -159,7 +246,7 @@
       w.addEventListener('focusin', () => front(w));
     });
     tasks.forEach(b => b.addEventListener('click', () => { const w = document.getElementById(b.dataset.for); front(w); }));
-    if (wins.length) front(wins[0]);
+    if (wins.length) front(wins[0], true);
   }
 
   /* App sketches (programs, home): stepped text-mode animation, one step a second. The prices are a random
