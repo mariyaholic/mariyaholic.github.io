@@ -242,7 +242,7 @@
     document.addEventListener('click', e => {
       const a = e.target.closest('a[href]');
       if (!a || !on || !ac || ac.state !== 'running' || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-      if (a.target || a.hasAttribute('download') || a.origin !== location.origin) return;
+      if (a.target || a.hasAttribute('download') || a.origin !== location.origin || a.closest('.tasks')) return; // a window's own blip plays
       play('link');
       if (a.pathname === location.pathname && a.search === location.search) return; // an anchor on this page
       e.preventDefault();
@@ -252,7 +252,7 @@
 
     /* Hovers on the main controls, mouse only. A control sounds once per entry and hovers sound at most once
        every 140ms, so sweeping across the menu plays a quick pentatonic run instead of a buzz. */
-    const HOVER = [['.wordmark, .site-nav a', 'menu'], ['.icons a', 'icon'], ['.primary-link, .text-link, .yt', 'cta'], ['.tasks button, .footer .sound', 'btn']];
+    const HOVER = [['.wordmark, .site-nav a', 'menu'], ['.icons a', 'icon'], ['.primary-link, .text-link, .yt', 'cta'], ['.tasks a, .footer .sound', 'btn']];
     const SCALE = [79, 84, 86, 88, 91, 93, 96]; // G5, then C D E G A C
     let over = null, last = 0;
     document.addEventListener('pointerover', e => {
@@ -371,7 +371,7 @@
   if (desk) {
     const wide = matchMedia('(min-width:1200px)');
     const wins = [...desk.querySelectorAll('.win')];
-    const tasks = [...document.querySelectorAll('.tasks button')];
+    const tasks = [...document.querySelectorAll('.tasks a')];
     let z = 20, dragged = false;
     const unpin = () => {
       desk.classList.remove('pinned'); desk.style.height = '';
@@ -413,8 +413,11 @@
       });
       w.addEventListener('focusin', () => front(w));
     });
-    tasks.forEach(b => b.addEventListener('click', () => { const w = document.getElementById(b.dataset.for); front(w); }));
-    if (wins.length) front(wins[0], true);
+    // the status-bar buttons are links to each window (#w-…): following one, or opening the page at one, brings it to the front
+    const fromHash = quiet => { const w = location.hash && wins.find(x => '#' + x.id === location.hash); if (w) front(w, quiet); return w; };
+    tasks.forEach(b => b.addEventListener('click', () => front(document.getElementById(b.dataset.for))));
+    addEventListener('hashchange', () => fromHash());
+    if (wins.length && !fromHash(true)) front(wins[0], true);
   }
 
   /* App sketches (programs, home): stepped text-mode animation, one step a second. The prices are a random
