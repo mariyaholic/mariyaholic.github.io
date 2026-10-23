@@ -82,8 +82,8 @@
   const sfx = (() => {
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return () => {};
-    let on = false, ac = null, out = null, noise = null;
-    try { on = localStorage.getItem('mh98-sound') === 'on'; } catch (e) { /* stays off */ }
+    let on = false, musicOn = false, ac = null, out = null, noise = null;
+    try { on = localStorage.getItem('mh98-sound') === 'on'; musicOn = localStorage.getItem('mh98-music') === 'on'; } catch (e) { /* stays off */ }
     const start = () => {
       if (!ac) {
         ac = new AC(); out = ac.createGain(); out.gain.value = .16; out.connect(ac.destination);
@@ -125,26 +125,116 @@
       cta: () => { fm(note(91), 0, .04, { index: 1, vol: .3 }); fm(note(96), .035, .06, { index: 1, vol: .3 }); },
       btn: () => hiss(0, .01, .25, 4200),                                                     // a status-bar button
     };
-    const play = (name, arg) => { if (on && ac && ac.state === 'running') SOUNDS[name](arg); };
+    const play = (name, arg) => {
+      if (!on || !ac || ac.state !== 'running') return;
+      SOUNDS[name](arg);
+      if (duck) { const t = ac.currentTime; duck.gain.setTargetAtTime(.45, t, .01); duck.gain.setTargetAtTime(1, t + .12, .08); }
+    };
 
-    if (on) {
-      start();
-      const wake = () => { start(); removeEventListener('pointerdown', wake, true); removeEventListener('keydown', wake, true); };
-      addEventListener('pointerdown', wake, true); addEventListener('keydown', wake, true);
+    /* Music: a four-voice chip player in the style of the PC-98's square-wave channels. Two pulse waves (25%
+       lead, 12.5% arpeggio), a triangle bass and noise drums play a song written below as text, one 16th note
+       per step. A lookahead scheduler books notes 150ms ahead on the audio clock, so timing holds even when
+       timers lag. The music sits under the effects and dips while one plays. It stops in hidden tabs, and the
+       position is kept for the session, so the next page carries on from the same beat. */
+    const DESKTOP = {
+      name: 'DESKTOP.MID', bpm: 90,
+      chords: 'Cmaj7 Am7 Fmaj7 G Cmaj7 Am7 Fmaj7 G Dm7 Em7 Fmaj7 G Dm7 Em7 Fmaj7 G',
+      lead: [ // eighth notes: a note, - holds it, . rests
+        'E5 - G5 - B5 - A5 G5', 'E5 - - - C5 - D5 E5', 'F5 - A5 - C6 - B5 A5', 'G5 - - - . . D5 E5',
+        'E5 - G5 - B5 - D6 C6', 'B5 - A5 - G5 - E5 -', 'F5 - E5 F5 A5 - G5 F5', 'G5 - - - - - . .',
+        'A5 - - F5 E5 - D5 -', 'G5 - - E5 D5 - B4 -', 'C5 - D5 - E5 - F5 -', 'G5 - A5 - B5 - D6 -',
+        'C6 - - A5 G5 - F5 -', 'E5 - - D5 E5 - G5 -', 'A5 - - - G5 - F5 E5', 'D5 - - - - - . .'],
+      kick: 'x......x..x.....', snare: '....x.......x...', fill: '....x.......xxxx', hat: 'x.x.x.x.x.x.x.x.',
+    };
+    const CHORDS = { Cmaj7: [60, 64, 67, 71], Am7: [57, 60, 64, 67], Fmaj7: [53, 57, 60, 64], G: [55, 59, 62, 67], Dm7: [50, 53, 57, 60], Em7: [52, 55, 59, 62] };
+    const BASS = { 0: [0, 3], 6: [12, 2], 8: [7, 2], 10: [0, 2], 14: [12, 2] }; // step in the bar: [semitones above the root, length in steps]
+    const midi = tok => { const m = /^([A-G])(#?)(\d)$/.exec(tok); return 12 * (+m[3] + 1) + 'C D EF G A B'.indexOf(m[1]) + (m[2] ? 1 : 0); };
+    let level = null, duck = null, waves = null, timer = null, step = 0, next = 0;
+    try { step = +sessionStorage.getItem('mh98-music-at') || 0; } catch (e) { /* from the top */ }
+    const song = DESKTOP, chords = song.chords.split(' ').map(c => CHORDS[c]), lead = song.lead.map(b => b.split(' '));
+    const STEP = 60 / song.bpm / 4, TOTAL = chords.length * 16;
+    // A pulse wave of duty d as a Fourier series: the chip sound comes from the narrow pulse.
+    const pulse = d => {
+      const re = new Float32Array(64), im = new Float32Array(64);
+      for (let k = 1; k < 64; k++) { re[k] = Math.sin(2 * Math.PI * k * d) / (k * Math.PI); im[k] = (1 - Math.cos(2 * Math.PI * k * d)) / (k * Math.PI); }
+      return ac.createPeriodicWave(re, im);
+    };
+    // One chip note: an instant attack, a quick fall to 60%, and a short release at the end.
+    const voice = (wave, n, t, dur, vol) => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      if (typeof wave === 'string') o.type = wave; else o.setPeriodicWave(wave);
+      o.frequency.value = note(n);
+      g.gain.setValueAtTime(vol, t); g.gain.linearRampToValueAtTime(vol * .6, t + Math.min(.08, dur / 2));
+      g.gain.setValueAtTime(vol * .6, t + dur - .01); g.gain.linearRampToValueAtTime(0, t + dur);
+      o.connect(g).connect(duck); o.start(t); o.stop(t + dur + .02);
+    };
+    const drum = (t, kind) => {
+      if (kind === 'kick') {
+        const o = ac.createOscillator(), g = ac.createGain();
+        o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(45, t + .12);
+        g.gain.setValueAtTime(.9, t); g.gain.exponentialRampToValueAtTime(.001, t + .14);
+        o.connect(g).connect(duck); o.start(t); o.stop(t + .16);
+        return;
+      }
+      const src = ac.createBufferSource(), hp = ac.createBiquadFilter(), g = ac.createGain(), len = kind === 'hat' ? .03 : .1;
+      src.buffer = noise; hp.type = 'highpass'; hp.frequency.value = kind === 'hat' ? 7000 : 1500;
+      g.gain.setValueAtTime(kind === 'hat' ? .18 : .45, t); g.gain.exponentialRampToValueAtTime(.001, t + len);
+      src.connect(hp).connect(g).connect(duck); src.start(t); src.stop(t + len + .02);
+    };
+    const book = (s, t) => {
+      const bar = s >> 4, i = s & 15, chord = chords[bar];
+      for (let k = 0; k < 3; k++) voice(waves.arp, chord[(s * 3 + k) % chord.length], t + k * STEP / 3, STEP / 3, .16); // the arpeggio: three notes per step
+      if (BASS[i]) voice('triangle', chord[0] - 12 + BASS[i][0], t, BASS[i][1] * STEP - .01, .8);
+      const tok = i % 2 ? null : lead[bar][i / 2];
+      if (tok && tok !== '-' && tok !== '.') {
+        let len = 1;
+        while (lead[bar][i / 2 + len] === '-') len++;
+        voice(waves.lead, midi(tok), t, len * 2 * STEP - .02, .38);
+      }
+      if (song.kick[i] === 'x') drum(t, 'kick');
+      if ((bar % 8 === 7 ? song.fill : song.snare)[i] === 'x') drum(t, 'snare');
+      if (song.hat[i] === 'x') drum(t, 'hat');
+    };
+    const pump = () => { while (next < ac.currentTime + .15) { book(step, next); next += STEP; step = (step + 1) % TOTAL; } };
+    const playMusic = () => {
+      if (timer || !musicOn || !ac || ac.state !== 'running' || document.hidden) return;
+      if (!level) { level = ac.createGain(); level.gain.value = .8; level.connect(out); waves = { lead: pulse(.25), arp: pulse(.125) }; }
+      duck = ac.createGain(); duck.connect(level);
+      step &= ~3; next = ac.currentTime + .05; pump(); timer = setInterval(pump, 25); // resume on a beat
+    };
+    const stopMusic = () => {
+      if (!timer) return;
+      clearInterval(timer); timer = null;
+      const old = duck, t = ac.currentTime; old.gain.cancelScheduledValues(t); old.gain.setTargetAtTime(0, t, .02);
+      setTimeout(() => old.disconnect(), 300); duck = null;
+    };
+    document.addEventListener('visibilitychange', () => (document.hidden ? stopMusic() : playMusic()));
+    addEventListener('pagehide', () => { try { sessionStorage.setItem('mh98-music-at', String(step)); } catch (e) { /* starts from the top */ } });
+
+    // Audio wakes on the first click or key when the browser held it back; then the music starts.
+    const wake = () => start().then(playMusic);
+    if (on || musicOn) {
+      wake();
+      const once = () => { wake(); removeEventListener('pointerdown', once, true); removeEventListener('keydown', once, true); };
+      addEventListener('pointerdown', once, true); addEventListener('keydown', once, true);
     }
     const foot = document.querySelector('.footer');
-    if (foot) {
+    const toggle = (label, key, get, set, onText, turnedOn, turnedOff) => {
       const btn = document.createElement('button');
-      btn.type = 'button'; btn.className = 'sound';
-      btn.innerHTML = 'SOUND<span aria-hidden="true"></span>';
-      const label = () => { btn.setAttribute('aria-pressed', String(on)); btn.lastChild.textContent = on ? ': ON' : ': OFF'; };
-      label();
+      btn.type = 'button'; btn.className = 'sound'; btn.dataset.toggle = key;
+      btn.innerHTML = `${label}<span aria-hidden="true"></span>`;
+      const show = () => { btn.setAttribute('aria-pressed', String(get())); btn.lastChild.textContent = get() ? onText : ': OFF'; };
+      show();
       btn.addEventListener('click', () => {
-        on = !on; label();
-        try { localStorage.setItem('mh98-sound', on ? 'on' : 'off'); } catch (e) { /* only this page remembers */ }
-        if (on) start().then(() => play('chime'));
+        set(!get()); show();
+        try { localStorage.setItem(key, get() ? 'on' : 'off'); } catch (e) { /* only this page remembers */ }
+        if (get()) start().then(turnedOn); else turnedOff();
       });
       foot.insertBefore(btn, foot.querySelector('nav'));
+    };
+    if (foot) {
+      toggle('SOUND', 'mh98-sound', () => on, v => { on = v; }, ': ON', () => play('chime'), () => {});
+      toggle('MUSIC', 'mh98-music', () => musicOn, v => { musicOn = v; }, `: ${song.name}`, playMusic, stopMusic);
     }
     document.addEventListener('click', e => {
       const a = e.target.closest('a[href]');
