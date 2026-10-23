@@ -348,6 +348,17 @@ html[data-motion=off] *,html[data-motion=off] *::before,html[data-motion=off] *:
 html[data-motion=off] .trace-pulse,html[data-motion=off] .receipt-pulse{display:none!important}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.trace-pulse,.receipt-pulse{display:none!important}}
 
+/* ---------- desktop canvas and boot (both drawn by site.js) ----------
+   The canvas replaces the body checker, which stays as the no-JS desktop. html.boot is set by the head
+   script on a first visit with motion on; its black cover lifts by itself after 4s if site.js never runs. */
+.desktop{position:fixed;left:0;top:0;z-index:-1;pointer-events:none;image-rendering:crisp-edges;image-rendering:pixelated}
+html.desk-live body{background:transparent}
+html.boot::before{content:"";position:fixed;inset:0;z-index:99;background:var(--c0);animation:boot-failsafe 0s 4s forwards}
+@keyframes boot-failsafe{to{visibility:hidden}}
+.boot-screen{position:fixed;inset:0;z-index:100;margin:0;padding:24px 28px;background:var(--c0);color:var(--c6);font:16px/1.5 var(--f-ui);white-space:pre;overflow:hidden;cursor:default}
+.boot-screen::after{content:"press any key";position:absolute;left:28px;bottom:20px;color:var(--c4)}
+@media print{.desktop{display:none}}
+
 /* ---------- responsive (Confluence breakpoints) ---------- */
 @media (max-width:1050px){.wrap{width:calc(100% - 64px)}.page-hero{gap:40px}.index-grid{gap:35px}.world-grid{gap:50px}.shelf-grid{gap:0 22px}}
 @media (max-width:767px){

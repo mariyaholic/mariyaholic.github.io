@@ -25,12 +25,14 @@ _____|░░░░░░░░░░░░░░░░░░░░░░░░�
 <title>Evidence | mariyaholic</title>
 <link rel="icon" href="data:,">
 <script>
-/* Motion before first paint: ?motion= (or #motion=) > on; reduced motion is handled in CSS. See README.md. */
+/* Motion before first paint: ?motion= (or #motion=) > on; reduced motion is handled in CSS. A first visit
+   (or ?boot) with motion on also gets html.boot, which site.js plays. See README.md. */
 (function(){
 var d=document.documentElement,q=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.slice(1)),m=q.get('motion')||h.get('motion');
 function on(){return d.getAttribute('data-motion')==='on'}
 d.classList.remove('no-js');
 d.setAttribute('data-motion',m==='off'?'off':'on');
+try{if(on()&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&(q.has('boot')||!localStorage.getItem('mh98-booted')))d.classList.add('boot')}catch(e){}
 window.AO={on:on};
 document.addEventListener('DOMContentLoaded',function(){
 var els=document.querySelectorAll('[data-anim]'),io,i;

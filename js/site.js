@@ -1,9 +1,110 @@
 /* Shared controls (rev 8). The inline head script sets motion before paint and exposes window.AO;
-   this file wires the desktop windows on the home page and the step sequences.
+   this file draws the desktop and the boot, wires the desktop windows on the home page, and runs the
+   app sketches and the step sequences.
    Motion follows prefers-reduced-motion (or ?motion=off); there is no on-page motion button. */
 (() => {
   const root = document.documentElement;
   const motionOn = () => root.dataset.motion === 'on';
+  const live = () => motionOn() && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Desktop: a canvas behind every page at half resolution, so one canvas pixel is one 2px cell of the CSS
+     checker it replaces. Each pixel holds a fixed phase (a wavy diagonal, Bayer-dithered at the edges) and
+     each step rotates the palette over the phases, so a band of brighter dither drifts across: the PC-98
+     palette-cycling trick. Stars sit on top in three layers that drift left and twinkle. Two steps a second,
+     none in hidden tabs; with motion off or reduced it draws one still frame, plain checker plus stars. */
+  {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      canvas.className = 'desktop'; canvas.setAttribute('aria-hidden', 'true');
+      document.body.append(canvas); root.classList.add('desk-live');
+      const css = getComputedStyle(root);
+      const col = n => { const h = css.getPropertyValue(`--c${n}`).trim().slice(1); return 0xff000000 | parseInt(h.slice(4, 6), 16) << 16 | parseInt(h.slice(2, 4), 16) << 8 | parseInt(h.slice(0, 2), 16); };
+      const LEVELS = [[col(1), col(2)], [col(2), col(2)], [col(2), col(3)]]; // [even, odd] cell of the checker
+      const N = 64, BAND = [1, 1, 2, 2, 2, 1, 1];                                // phases lit by the band; the rest plain
+      const STAR = [col(3), col(4), col(5), col(6), col(7)], SPEED = [1 / 16, 1 / 8, 1 / 4];
+      const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+      let seed = 98;
+      const rand = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
+      const ALL = Array.from({ length: 700 }, () => {
+        const layer = rand() < .5 ? 0 : rand() < .6 ? 1 : 2;
+        return { fx: rand(), fy: rand(), layer, lv: layer === 2 && rand() < .15 ? 4 : layer + 1 };
+      });
+      let W, H, img, px, cell, stars, t = 0, moving = false, rt;
+      function layout() {
+        W = Math.ceil(innerWidth / 2); H = Math.ceil(innerHeight / 2);
+        canvas.width = W; canvas.height = H;
+        canvas.style.width = W * 2 + 'px'; canvas.style.height = H * 2 + 'px';
+        img = ctx.createImageData(W, H); px = new Uint32Array(img.data.buffer);
+        cell = new Uint8Array(W * H);
+        for (let y = 0, i = 0; y < H; y++) for (let x = 0; x < W; x++, i++) {
+          const f = (x + y * 1.5) / 6 + 2.5 * Math.sin(y / 23) + 2 * Math.sin(x / 41) + BAYER[(y & 3) * 4 + (x & 3)] / 16;
+          cell[i] = (Math.floor(f) % N + N) % N * 2 + ((x + y) & 1);
+        }
+        stars = ALL.slice(0, Math.round(W * H / 2200)).map(s => ({ ...s, x: s.fx * W, y: Math.floor(s.fy * H), tw: false }));
+      }
+      const dot = (x, y, c) => { if (x >= 0 && x < W && y >= 0 && y < H) px[y * W + x] = c; };
+      function draw() {
+        const lut = new Uint32Array(N * 2);
+        for (let p = 0; p < N; p++) {
+          const k = (p - t % N + N) % N, lv = moving && k < BAND.length ? BAND[k] : 0;
+          lut[p * 2] = LEVELS[lv][0]; lut[p * 2 + 1] = LEVELS[lv][1];
+        }
+        for (let i = 0; i < px.length; i++) px[i] = lut[cell[i]];
+        for (const s of stars) {
+          const x = Math.floor(s.x), lv = s.tw ? s.lv - 1 : s.lv;
+          if (lv === 4) [[-1, 0], [1, 0], [0, -1], [0, 1]].forEach(([dx, dy]) => dot(x + dx, s.y + dy, STAR[1]));
+          dot(x, s.y, STAR[lv]);
+        }
+        ctx.putImageData(img, 0, 0);
+      }
+      layout(); draw();
+      setInterval(() => {
+        if (document.hidden) return;
+        if (live()) {
+          moving = true; t++;
+          for (const s of stars) { s.x -= SPEED[s.layer]; if (s.x < 0) s.x += W; s.tw = Math.random() < .04; }
+          draw();
+        } else if (moving) { moving = false; stars.forEach(s => { s.tw = false; }); draw(); }
+      }, 500);
+      addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { layout(); draw(); }, 200); });
+    }
+  }
+
+  /* Boot: on a first visit with motion on, the head script adds html.boot (CSS covers the page in black)
+     and this types a short text-mode boot, about 1.2-1.5s, then cuts to the page. The last line changes to
+     the page's directory. A key, click, tap or wheel skips it; ?boot replays it. The hero animations ran under
+     the cover, so they restart afterwards. */
+  if (root.classList.contains('boot')) {
+    const scr = document.createElement('div');
+    scr.className = 'boot-screen'; scr.setAttribute('aria-hidden', 'true');
+    document.body.append(scr);
+    const dir = (document.querySelector('.site-header .path')?.textContent || '').replace(/^A:\\|>$/g, '');
+    const cmd = dir ? `CD \\${dir}` : 'DESKTOP';
+    const head = ['mariyaholic-98 system  rev 8', ''], mem = 'Memory test   640 KB  OK', pal = 'Palette       16 colours  OK';
+    const done = [...head, mem, pal, 'Font          Departure Mono  OK', ''];
+    const frames = [0, 160, 320, 480, 640].map(kb => [...head, `Memory test   ${String(kb).padStart(3)} KB`]);
+    frames.push([...head, mem], [...head, mem, pal], done);
+    const typing = frames.length;
+    for (let n = 0; n < cmd.length; n += 2) frames.push([...done, 'A:\\>' + cmd.slice(0, n)]);
+    for (let n = 0; n < 3; n++) frames.push([...done, 'A:\\>' + cmd]);
+    let f = 0;
+    const show = () => { scr.textContent = frames[f].join('\n') + (f >= typing && f % 2 === 0 ? '_' : ''); };
+    const keys = ['keydown', 'wheel'];
+    const end = () => {
+      if (!scr.isConnected) return;
+      clearInterval(timer); scr.remove(); root.classList.remove('boot');
+      keys.forEach(e => removeEventListener(e, end, true));
+      try { localStorage.setItem('mh98-booted', '1'); } catch (e) { /* the boot just plays again next time */ }
+      const played = [...document.querySelectorAll('.in-view')];
+      played.forEach(el => el.classList.remove('in-view')); void document.body.offsetWidth;
+      played.forEach(el => el.classList.add('in-view'));
+    };
+    show();
+    const timer = setInterval(() => { if (++f >= frames.length) end(); else show(); }, 80);
+    keys.forEach(e => addEventListener(e, end, { capture: true, passive: true }));
+    scr.addEventListener('click', end);
+  }
 
   /* Home desktop: from 1200px CSS lays the windows out in two columns, then pin() fixes each one where
      it landed (absolute, .pinned) so it can be dragged by its title bar (the top --bar-h pixels, drawn by
