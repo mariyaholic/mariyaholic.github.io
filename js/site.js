@@ -11,8 +11,9 @@
      checker it replaces. Each pixel holds a fixed phase (a wavy diagonal, Bayer-dithered at the edges) and
      each step rotates the palette over the phases, so a band of brighter dither drifts across: the PC-98
      palette-cycling trick. Stars sit on top in three layers that drift left and twinkle. Two steps a second,
-     none in hidden tabs; with motion off or reduced it draws one still frame, plain checker plus stars. */
-  {
+     none in hidden tabs; with motion off or reduced it draws one still frame, plain checker plus stars.
+     It is decoration, so a failure here falls back to the CSS checker and never stops the code below. */
+  try {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     if (ctx) {
@@ -32,7 +33,7 @@
       });
       let W, H, img, px, cell, stars, t = 0, moving = false, rt;
       function layout() {
-        W = Math.ceil(innerWidth / 2); H = Math.ceil(innerHeight / 2);
+        W = Math.max(1, Math.ceil(innerWidth / 2)); H = Math.max(1, Math.ceil(innerHeight / 2)); // 0 in a hidden or unsized frame
         canvas.width = W; canvas.height = H;
         canvas.style.width = W * 2 + 'px'; canvas.style.height = H * 2 + 'px';
         img = ctx.createImageData(W, H); px = new Uint32Array(img.data.buffer);
@@ -69,12 +70,16 @@
       }, 500);
       addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { layout(); draw(); }, 200); });
     }
+  } catch (e) {
+    document.querySelector('canvas.desktop')?.remove(); root.classList.remove('desk-live');
   }
 
   /* Boot: on a first visit with motion on, the head script adds html.boot (CSS covers the page in black)
      and this types a short text-mode boot, about 1.2-1.5s, then cuts to the page. The last line changes to
      the page's directory. A key, click, tap or wheel skips it; ?boot replays it. The hero animations ran under
-     the cover, so they restart afterwards. */
+     the cover, so they restart afterwards. A page opened in a background tab skips it and leaves the flag
+     unset, so the boot waits for a page that is seen. */
+  if (root.classList.contains('boot') && document.hidden) root.classList.remove('boot');
   if (root.classList.contains('boot')) {
     const scr = document.createElement('div');
     scr.className = 'boot-screen'; scr.setAttribute('aria-hidden', 'true');
