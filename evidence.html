@@ -13,7 +13,6 @@ __..''  |     |   _____|░░░░░░░░░░░░░░░░░░�
 _____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
   you found the stairwell. it is quiet here.
-  plain html, no trackers. the lights stay on.
 -->
 <html lang="en" class="no-js" data-motion="on">
 <head>
@@ -26,12 +25,14 @@ _____|░░░░░░░░░░░░░░░░░░░░░░░░�
 <title>Evidence | mariyaholic</title>
 <link rel="icon" href="data:,">
 <script>
-/* Motion before first paint: ?motion= (or #motion=) > on; reduced motion is handled in CSS. See README.md. */
+/* Motion before first paint: ?motion= (or #motion=) > on; reduced motion is handled in CSS. A first visit
+   (or ?boot) with motion on also gets html.boot, which site.js plays. See README.md. */
 (function(){
 var d=document.documentElement,q=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.slice(1)),m=q.get('motion')||h.get('motion');
 function on(){return d.getAttribute('data-motion')==='on'}
 d.classList.remove('no-js');
 d.setAttribute('data-motion',m==='off'?'off':'on');
+try{if(on()&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&(q.has('boot')||!localStorage.getItem('mh98-booted')))d.classList.add('boot')}catch(e){}
 window.AO={on:on};
 document.addEventListener('DOMContentLoaded',function(){
 var els=document.querySelectorAll('[data-anim]'),io,i;
@@ -67,7 +68,7 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 <section class="section wrap win" data-win="WORKS\EVIDENCE\RULE.TXT" aria-labelledby="receipt-rule-title"><div class="feature-grid"><div class="feature-copy"><p class="eyebrow">The rule</p><h2 id="receipt-rule-title">If a limit matters, show it.</h2><p>Put a real table or a text description next to every chart. Say whether a value is public, aggregated, synthetic or private. Keep the date and the limits close to the number.</p><div class="rights-note"><strong>What this does not prove</strong><br>A public receipt isn't a native Tester result, broker result, live result, deployment result, promotion decision or legal privacy clearance.</div></div><div class="timeline"><article><h3>Question</h3><p>What was the work trying to show?</p></article><article><h3>Observation</h3><p>What actually happened, and in which mode?</p></article><article><h3>Limitation</h3><p>What remains private, unverified, or outside the check?</p></article><article><h3>Next check</h3><p>What would change your mind?</p></article></div></div><div class="proposal-links"><a href="method.html">Method ↗</a><a href="efficiency.html">Efficiency ↗</a><a href="privacy.html">Privacy ↗</a></div></section>
 </main>
 <footer class="footer">
-  <p>mariyaholic · plain html, no trackers</p>
+  <p>mariyaholic</p>
   <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
 </footer>
 </body>

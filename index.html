@@ -13,7 +13,6 @@ __..''  |     |   _____|░░░░░░░░░░░░░░░░░░�
 _____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
   you found the stairwell. it is quiet here.
-  plain html, no trackers. the lights stay on.
 -->
 <html lang="en" class="no-js" data-motion="on">
 <head>
@@ -26,12 +25,14 @@ _____|░░░░░░░░░░░░░░░░░░░░░░░░�
 <title>Home | mariyaholic</title>
 <link rel="icon" href="data:,">
 <script>
-/* Motion before first paint: ?motion= (or #motion=) > on; reduced motion is handled in CSS. See README.md. */
+/* Motion before first paint: ?motion= (or #motion=) > on; reduced motion is handled in CSS. A first visit
+   (or ?boot) with motion on also gets html.boot, which site.js plays. See README.md. */
 (function(){
 var d=document.documentElement,q=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.slice(1)),m=q.get('motion')||h.get('motion');
 function on(){return d.getAttribute('data-motion')==='on'}
 d.classList.remove('no-js');
 d.setAttribute('data-motion',m==='off'?'off':'on');
+try{if(on()&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&(q.has('boot')||!localStorage.getItem('mh98-booted')))d.classList.add('boot')}catch(e){}
 window.AO={on:on};
 document.addEventListener('DOMContentLoaded',function(){
 var els=document.querySelectorAll('[data-anim]'),io,i;
@@ -103,6 +104,15 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
     </div>
     <div class="status"><span>nothing on sale yet</span><a href="marketplace.html">OPEN ↗</a></div>
   </section>
+
+  <section class="win" id="w-vivy" data-win="FLUORITE.EYE — 8bit" aria-labelledby="vivy-title">
+    <div class="body">
+      <h2 class="sr-only" id="vivy-title">Vivy, Fluorite Eye's Song, in 8-bit</h2>
+      <a class="yt" href="https://www.youtube.com/watch?v=7Lnzb9ri_j8" data-yt="7Lnzb9ri_j8" data-title="Vivy「Fluorite Eye's Song」8bit風, by akiy2344"><span class="yt-name">Vivy「Fluorite Eye's Song」8bit風</span><span class="yt-play">▶ PLAY</span></a>
+      <p class="credit">One of my favs...a song from the heart, by Vivy.<br>8-bit arrangement by <b>akiy2344</b>.</p>
+    </div>
+    <div class="status"><span>a favourite</span><a href="https://www.youtube.com/watch?v=7Lnzb9ri_j8">YOUTUBE ↗</a></div>
+  </section>
   </div>
   <div class="col col-b">
   <section class="win" id="w-cygnus" data-win="CYGNUS.EXE — sky map" aria-labelledby="cygnus-title">
@@ -165,8 +175,8 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
   </div>
 </main>
 <footer class="footer">
-  <p>mariyaholic · plain html, no trackers</p>
-  <div class="tasks" aria-hidden="true"><button type="button" tabindex="-1" data-for="w-readme">README</button><button type="button" tabindex="-1" data-for="w-cygnus">CYGNUS</button><button type="button" tabindex="-1" data-for="w-files">WORKS</button><button type="button" tabindex="-1" data-for="w-progs">PROGRAMS</button><button type="button" tabindex="-1" data-for="w-pic">STARFIRE</button><button type="button" tabindex="-1" data-for="w-market">MARKET</button></div>
+  <p>mariyaholic</p>
+  <div class="tasks" aria-hidden="true"><button type="button" tabindex="-1" data-for="w-readme">README</button><button type="button" tabindex="-1" data-for="w-cygnus">CYGNUS</button><button type="button" tabindex="-1" data-for="w-files">WORKS</button><button type="button" tabindex="-1" data-for="w-progs">PROGRAMS</button><button type="button" tabindex="-1" data-for="w-pic">STARFIRE</button><button type="button" tabindex="-1" data-for="w-market">MARKET</button><button type="button" tabindex="-1" data-for="w-vivy">VIVY</button></div>
   <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
 </footer>
 </body>

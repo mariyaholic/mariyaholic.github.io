@@ -315,6 +315,8 @@ section,[id]{scroll-margin-top:56px}
 .tasks{display:none;gap:6px}
 .tasks button{font:inherit;background:var(--c7);color:var(--c1);border:2px solid var(--c0);padding:0 8px}
 .tasks button.on{background:var(--c10);color:var(--c7)}
+.footer .sound{font:inherit;background:var(--c7);color:var(--c1);border:2px solid var(--c0);padding:0 8px;cursor:pointer}
+.footer .sound[aria-pressed=true]{background:var(--c14);color:var(--c0)}
 
 /* ---------- motion: the resting CSS above is every END frame ----------
    Animations run only under .in-view and no-preference. The hero has .in-view in its markup (plays on
@@ -347,6 +349,17 @@ html[data-motion=off]{scroll-behavior:auto}
 html[data-motion=off] *,html[data-motion=off] *::before,html[data-motion=off] *::after{animation:none!important;transition:none!important}
 html[data-motion=off] .trace-pulse,html[data-motion=off] .receipt-pulse{display:none!important}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.trace-pulse,.receipt-pulse{display:none!important}}
+
+/* ---------- desktop canvas and boot (both drawn by site.js) ----------
+   The canvas replaces the body checker, which stays as the no-JS desktop. html.boot is set by the head
+   script on a first visit with motion on; its black cover lifts by itself after 4s if site.js never runs. */
+.desktop{position:fixed;left:0;top:0;z-index:-1;pointer-events:none;image-rendering:crisp-edges;image-rendering:pixelated}
+html.desk-live body{background:transparent}
+html.boot::before{content:"";position:fixed;inset:0;z-index:99;background:var(--c0);animation:boot-failsafe 0s 4s forwards}
+@keyframes boot-failsafe{to{visibility:hidden}}
+.boot-screen{position:fixed;inset:0;z-index:100;margin:0;padding:24px 28px;background:var(--c0);color:var(--c6);font:16px/1.5 var(--f-ui);white-space:pre;overflow:hidden;cursor:default}
+.boot-screen::after{content:"press any key";position:absolute;left:28px;bottom:20px;color:var(--c4)}
+@media print{.desktop{display:none}}
 
 /* ---------- responsive (Confluence breakpoints) ---------- */
 @media (max-width:1050px){.wrap{width:calc(100% - 64px)}.page-hero{gap:40px}.index-grid{gap:35px}.world-grid{gap:50px}.shelf-grid{gap:0 22px}}
@@ -534,13 +547,23 @@ h1 em,h2 em,h3 em,.project-name em{color:var(--c11)}
 .thumbs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .thumbs img{border:2px solid var(--c0)}
 .pic figcaption{margin-top:8px;font-size:12px;color:var(--c5)}
+.yt,.yt-box{display:block;width:100%;aspect-ratio:16/9;border:2px solid var(--c0)}
+.yt-box{background:var(--c0)}
+.yt-box iframe{display:block;width:100%;height:100%;border:0}
+.yt{display:grid;place-content:center;justify-items:center;gap:14px;background:repeating-conic-gradient(var(--c2) 0 25%,var(--c0) 0 50%) 0 0/4px 4px;color:var(--c7);text-align:center;padding:10px}
+.yt:hover{color:var(--c7);background:repeating-conic-gradient(var(--c3) 0 25%,var(--c0) 0 50%) 0 0/4px 4px}
+.yt-name{background:var(--c0);padding:0 6px}
+.yt-play{background:var(--c10);padding:2px 14px;border:2px solid var(--c0);box-shadow:3px 3px 0 var(--c0)}
+.yt:hover .yt-play{background:var(--c12);color:var(--c1)}
+.credit{margin-top:8px;font-size:12px;color:var(--c5)}
+.credit b{font-weight:400;color:var(--c12)}
 .ico.exe{background:var(--c6)}.ico.exe::before{content:"";position:absolute;inset:0 0 auto;height:7px;background:var(--c10)}.ico.exe::after{content:">_";position:absolute;inset:7px 0 0;display:grid;place-items:center;color:var(--c1);font-size:13px}
 .files img[src*="-icon"]{object-fit:contain;background:var(--c0)}
 .strip{margin:0 0 10px;padding:8px 10px}
 /* Two columns, in flow; from 1200px js/site.js pins every window where the columns put it (.pinned),
    so they can be dragged. Without JS the columns simply stay. Below 1200px: one column, readme first. */
 .desk .col{display:contents}
-#w-readme{order:1}#w-cygnus{order:2}#w-progs{order:3}#w-files{order:4}#w-market{order:5}#w-pic{order:6}
+#w-readme{order:1}#w-cygnus{order:2}#w-progs{order:3}#w-files{order:4}#w-market{order:5}#w-pic{order:6}#w-vivy{order:7}
 .desk{display:flex;flex-direction:column}
 .desk .icons{order:0}
 @media (min-width:1200px){
