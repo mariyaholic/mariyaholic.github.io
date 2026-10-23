@@ -178,10 +178,9 @@
   /* Boot: on a first visit with motion on, the head script adds html.boot (CSS covers the page in black)
      and this types a short text-mode boot, about 1.2-1.5s, then cuts to the page. The last line changes to
      the page's directory. A key, click, tap or wheel skips it; ?boot replays it. The hero animations ran under
-     the cover, so they restart afterwards. A page opened in a background tab skips it and leaves the flag
-     unset, so the boot waits for a page that is seen. */
-  if (root.classList.contains('boot') && document.hidden) root.classList.remove('boot');
-  if (root.classList.contains('boot')) {
+     the cover, so they restart afterwards. A page opened in a background tab keeps the cover and starts
+     the boot when it is first shown. */
+  const boot = () => {
     const scr = document.createElement('div');
     scr.className = 'boot-screen'; scr.setAttribute('aria-hidden', 'true');
     document.body.append(scr);
@@ -214,6 +213,13 @@
     const timer = setInterval(() => { if (++f >= frames.length) end(); else show(); }, 80);
     keys.forEach(e => addEventListener(e, end, { capture: true, passive: true }));
     scr.addEventListener('click', end);
+  };
+  if (root.classList.contains('boot')) {
+    if (!document.hidden) boot();
+    else {
+      const shown = () => { if (!document.hidden) { document.removeEventListener('visibilitychange', shown); boot(); } };
+      document.addEventListener('visibilitychange', shown);
+    }
   }
 
   /* Home desktop: from 1200px CSS lays the windows out in two columns, then pin() fixes each one where
