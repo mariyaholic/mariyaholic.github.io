@@ -313,8 +313,8 @@ section,[id]{scroll-margin-top:56px}
 .footer nav{display:flex;gap:20px}
 .footer a:hover{background:var(--c1);color:var(--c6)}
 .tasks{display:none;gap:6px}
-.tasks button{font:inherit;background:var(--c7);color:var(--c1);border:2px solid var(--c0);padding:0 8px}
-.tasks button.on{background:var(--c10);color:var(--c7)}
+.tasks a{background:var(--c7);color:var(--c1);border:2px solid var(--c0);padding:0 8px;text-decoration:none}
+.tasks a.on{background:var(--c10);color:var(--c7)}
 .footer .sound{font:inherit;background:var(--c7);color:var(--c1);border:2px solid var(--c0);padding:0 8px;cursor:pointer}
 .footer .sound[aria-pressed=true]{background:var(--c14);color:var(--c0)}
 
