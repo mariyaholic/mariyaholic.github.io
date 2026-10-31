@@ -12,7 +12,10 @@ Plain static HTML, CSS and JS. No build step, no framework, and no external requ
 - `.nojekyll` tells Pages to serve the files untouched.
 
 ## Editing
-1. Edit the HTML/CSS/JS directly. Preview with `python3 -m http.server 8080` and open http://127.0.0.1:8080/.
-2. Commit and push. Pages redeploys from `main` (root) in a minute or two.
+All changes after the initial commit go through a branch and a pull request that Maria merges. Nothing is pushed straight to `main`.
+1. Branch off `main` (e.g. `site/fix-arcade-links`).
+2. Edit the HTML/CSS/JS directly. Preview with `python3 -m http.server 8080` and open http://127.0.0.1:8080/.
+3. Commit, push the branch, open a PR against `main`.
+4. Once Maria merges it, Pages redeploys from `main` (root) in a minute or two.
 
 Pages still marked `TODO` have slots waiting for content (portrait, TickAtlas screenshot, game links, Yozora line, efficiency figures).
