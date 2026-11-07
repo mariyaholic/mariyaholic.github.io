@@ -56,24 +56,15 @@
   "models": [
     {
       "id": "demo-model-1",
-      "harness": "demo-tool-a",
       "tokens_7d": 300000000,
       "tokens_30d": 4000000000,
       "share_pct": 66
     },
     {
       "id": "demo-model-2",
-      "harness": "demo-tool-b",
       "tokens_7d": 90000000,
       "tokens_30d": 1500000000,
       "share_pct": 25
-    },
-    {
-      "id": "unknown",
-      "harness": "demo-tool-c",
-      "tokens_7d": 30000000,
-      "tokens_30d": 600000000,
-      "share_pct": 9
     }
   ]
 }

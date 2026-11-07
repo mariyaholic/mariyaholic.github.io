@@ -18,7 +18,7 @@
     for (var i = 0; i < u.length; i++) if (n >= u[i][0]) return String(Number((n / u[i][0]).toPrecision(2))) + u[i][1];
     return String(Math.round(n));
   }
-  function usd(n) { return n > 0 ? '$' + (n >= 10 ? Math.round(n) : Number(n.toPrecision(2))) : '$0'; }
+  function usd(n) { return n > 0 ? '$' + (n >= 10 ? Math.round(n) : Number(n.toPrecision(2))) : '–'; }
   function pct(w) { return w.below_one ? '<1%' : w.pct + '%'; }
   function ago(ms) {
     var m = Math.max(0, Math.round(ms / 60000));
@@ -40,7 +40,6 @@
     $('t7').textContent = fmt(d.totals.tokens_7d);
     $('t30').textContent = fmt(d.totals.tokens_30d);
     $('spend').textContent = usd(d.totals.spend_usd_30d);
-    $('u-caption').textContent = d.caption || '';
 
     var mix = d.totals.mix_pct, m = $('mix'), lg = $('mix-legend'), desc = [];
     clear(m); clear(lg);
@@ -89,7 +88,6 @@
       var tr = el('tr'), th = el('th', null, mo.id);
       th.setAttribute('scope', 'row');
       tr.appendChild(th);
-      tr.appendChild(el('td', null, mo.harness));
       tr.appendChild(el('td', 'n c7', fmt(mo.tokens_7d)));
       tr.appendChild(el('td', 'n', fmt(mo.tokens_30d)));
       var sh = el('td', 'share');

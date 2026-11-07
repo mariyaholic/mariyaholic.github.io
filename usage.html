@@ -99,21 +99,16 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 <main id="main">
 <section class="page-hero page-hero--quiet wrap in-view win" data-win="INDEX\USAGE\README.TXT" data-anim>
   <div class="reveal">
-    <p class="eyebrow">Usage · aggregated</p>
-    <h1>How much AI do <em>I use?</em></h1>
-    <p class="intro">Rounded token counts across the coding tools I run on my own PC, refreshed every hour while it is awake.</p>
+    <p class="eyebrow">Aggregated</p>
+    <h1>Usage</h1>
     <div class="u-status" id="u-status" data-state="loading"><span><i class="u-dot" aria-hidden="true"></i><span id="u-when" aria-live="polite">Loading…</span></span><span id="u-next"></span></div>
     <p class="u-banner" id="u-banner" hidden></p>
-    <noscript><p class="u-banner">This page needs JavaScript to read the hourly file. The raw data is at <a href="https://raw.githubusercontent.com/mariyaholic/mariyaholic.github.io/usage-data/usage.json">usage.json</a>.</p></noscript>
-  </div>
-  <div class="reveal delay-1">
-    <p class="kicker">Display class</p>
-    <p class="hero-note">Aggregated. Totals are rounded and cover 7 and 30 days; nothing is per session, per day or per hour. <a href="privacy.html">The privacy ladder</a> sets the rule.</p>
+    <noscript><p class="u-banner">Needs JavaScript. Raw data: <a href="https://raw.githubusercontent.com/mariyaholic/mariyaholic.github.io/usage-data/usage.json">usage.json</a></p></noscript>
   </div>
 </section>
 
 <section class="section section--rule wrap win js-only" data-win="INDEX\USAGE\TOTALS.TXT" aria-labelledby="totals-title">
-  <div class="section-head"><div><p class="eyebrow">Totals</p><h2 id="totals-title">All tools, <em>together.</em></h2></div><p id="u-caption" class="u-note"></p></div>
+  <div class="section-head"><div><h2 id="totals-title">Totals</h2></div></div>
   <dl class="u-stats">
     <div><dt>Tokens · 7 days</dt><dd id="t7">–</dd></div>
     <div><dt>Tokens · 30 days</dt><dd id="t30">–</dd></div>
@@ -124,42 +119,31 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 </section>
 
 <section class="section wrap win js-only" data-win="INDEX\USAGE\TOOLS.TXT" aria-labelledby="tools-title">
-  <div class="section-head"><div><p class="eyebrow">By tool</p><h2 id="tools-title">Which tools <em>do the work.</em></h2></div><p class="u-note">Tokens include cache reads, which are most of them. Spend counts only tools that record a cost, so $0 means not recorded, not free.</p></div>
-  <table class="u-table">
-    <caption>Tokens by tool, busiest first</caption>
-    <thead><tr><th scope="col">Tool</th><th scope="col" class="n c7">7 days</th><th scope="col" class="n">30 days</th><th scope="col" class="share">Share of 30 days</th><th scope="col" class="n">Spend · 30 d</th></tr></thead>
+  <div class="section-head"><div><h2 id="tools-title">Tools</h2></div></div>
+  <table class="u-table" aria-labelledby="tools-title">
+    <thead><tr><th scope="col">Tool</th><th scope="col" class="n c7">7 days</th><th scope="col" class="n">30 days</th><th scope="col" class="share">Share</th><th scope="col" class="n">Spend</th></tr></thead>
     <tbody id="tools"></tbody>
   </table>
 </section>
 
-<section class="section wrap win js-only" data-win="INDEX\USAGE\MODELS.TXT" aria-labelledby="models-title">
-  <div class="section-head"><div><p class="eyebrow">By model</p><h2 id="models-title">Which models <em>get the tokens.</em></h2></div><p class="u-note">The 15 busiest model and tool pairs; the rest are grouped as "other". "unknown" means the tool does not record a model name.</p></div>
-  <table class="u-table">
-    <caption>Tokens by model, busiest first</caption>
-    <thead><tr><th scope="col">Model</th><th scope="col">Tool</th><th scope="col" class="n c7">7 days</th><th scope="col" class="n">30 days</th><th scope="col" class="share">Share of 30 days</th></tr></thead>
+<section class="section wrap win js-only" data-win="INDEX\USAGE\FAVORITES.TXT" aria-labelledby="models-title">
+  <div class="section-head"><div><h2 id="models-title">Favorites</h2></div></div>
+  <table class="u-table" aria-labelledby="models-title">
+    <thead><tr><th scope="col">Model</th><th scope="col" class="n c7">7 days</th><th scope="col" class="n">30 days</th><th scope="col" class="share">Share</th></tr></thead>
     <tbody id="models"></tbody>
   </table>
 </section>
 
 <section class="section wrap win js-only" data-win="INDEX\USAGE\WEEKS.TXT" aria-labelledby="weeks-title">
-  <div class="section-head"><div><p class="eyebrow">Last 12 weeks</p><h2 id="weeks-title">How busy, <em>week by week.</em></h2></div><p class="u-note">An index, not a count: the busiest 7-day block is 100. The newest block is the right-hand one, in orange.</p></div>
+  <div class="section-head"><div><h2 id="weeks-title">Weeks</h2></div></div>
   <ol class="u-weeks" id="weeks" aria-label="Weekly activity index, oldest to newest"></ol>
   <div class="u-weeks-axis" aria-hidden="true"><span>12 weeks ago</span><span>now</span></div>
-</section>
-
-<section class="section section--tight wrap win" data-win="INDEX\USAGE\HOW.TXT" aria-labelledby="how-title">
-  <div class="section-head"><div><p class="eyebrow">How it works</p><h2 id="how-title">Private every hour, <em>public rounded.</em></h2></div></div>
-  <div class="feature-copy">
-    <p>An hourly job on my PC reads the usage records my coding tools already write, adds them to a private ledger, and builds one small rounded file. It keeps nothing finer than a week, and it leaves out sessions, projects, paths, models per session, accounts and keys. The file is replaced each hour on a data-only branch, so this site is not rebuilt and its history does not grow.</p>
-    <p>If my PC is asleep or off, the file stops updating and this page says so. Gemini and Antigravity keep no token counts on disk, so they show a quota line only once a reading exists.</p>
-    <p><a href="privacy.html">Privacy</a> · <a href="https://raw.githubusercontent.com/mariyaholic/mariyaholic.github.io/usage-data/usage.json">The raw file</a></p>
-  </div>
 </section>
 </main>
 <footer class="footer">
   <p>mariyaholic</p>
-  <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
+  <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="privacy.html">Privacy</a><a href="https://raw.githubusercontent.com/mariyaholic/mariyaholic.github.io/usage-data/usage.json">Data</a></nav>
 </footer>
-<script src="js/usage.js?v=2" defer></script>
+<script src="js/usage.js?v=3" defer></script>
 </body>
 </html>
