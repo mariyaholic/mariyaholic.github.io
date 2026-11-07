@@ -83,26 +83,20 @@
       wk.appendChild(li);
     });
 
-    var qb = $('quota');
-    clear(qb);
-    d.quota.forEach(function (x) {
-      qb.appendChild(el('h3', null, x.label + (x.kind === 'estimate' ? ' · estimate' : x.kind === 'pending' ? ' · pending' : '')));
-      if (x.note) qb.appendChild(el('p', 'u-note', x.note));
-      var groups = [['windows', x.plan_windows ? 'This model' : 'Quota used'], ['plan_windows', 'Whole plan, all models']];
-      groups.forEach(function (g) {
-        var ws = x[g[0]];
-        if (!ws || !ws.length) return;
-        qb.appendChild(el('p', 'u-note', g[1]));
-        var box = el('div', 'resource-bars');
-        ws.forEach(function (w) {
-          var r = el('div', 'resource-row');
-          r.appendChild(el('span', null, w.id === '5h' ? '5 hours' : w.id === 'week' ? 'Week' : 'Month'));
-          r.appendChild(bar(w.pct / 100));
-          r.appendChild(el('strong', null, pct(w)));
-          box.appendChild(r);
-        });
-        qb.appendChild(box);
-      });
+    var mb = $('models');
+    clear(mb);
+    (d.models || []).forEach(function (mo) {
+      var tr = el('tr'), th = el('th', null, mo.id);
+      th.setAttribute('scope', 'row');
+      tr.appendChild(th);
+      tr.appendChild(el('td', null, mo.harness));
+      tr.appendChild(el('td', 'n c7', fmt(mo.tokens_7d)));
+      tr.appendChild(el('td', 'n', fmt(mo.tokens_30d)));
+      var sh = el('td', 'share');
+      sh.appendChild(bar(mo.share_pct / 100));
+      sh.appendChild(el('span', 'u-note', mo.share_pct + '%'));
+      tr.appendChild(sh);
+      mb.appendChild(tr);
     });
   }
 
@@ -135,7 +129,7 @@
       return r.json();
     });
   }
-  function valid(d) { return d && d.schema === 1 && d.totals && d.harnesses && d.weekly_index && d.quota; }
+  function valid(d) { return d && d.schema === 1 && d.totals && d.harnesses && d.weekly_index; }
 
   function apply(d, demo) {
     st.data = d; st.demo = demo; st.loadedAt = Date.now(); st.fails = 0;

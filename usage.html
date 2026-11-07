@@ -67,6 +67,7 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
 .u-table th,.u-table td{padding:9px 10px 9px 0;border-bottom:1px solid var(--rule);text-align:left;vertical-align:middle}
 .u-table td.n,.u-table th.n{text-align:right;font-family:var(--f-mono);white-space:nowrap}
 .u-table .share{min-width:120px}
+.u-table th[scope=row]{overflow-wrap:anywhere;font-weight:400}
 .u-table .bar-track{display:block;width:100%;height:14px;margin-bottom:4px}
 @media (max-width:560px){.u-table .c7{display:none}.u-table .share{min-width:64px}.u-table th,.u-table td{padding-right:6px}.u-table caption{font-size:var(--ui-xs)}}
 .u-mix{display:flex;height:22px;border:1px solid var(--stroke);margin-top:14px}
@@ -131,15 +132,19 @@ for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els
   </table>
 </section>
 
+<section class="section wrap win js-only" data-win="INDEX\USAGE\MODELS.TXT" aria-labelledby="models-title">
+  <div class="section-head"><div><p class="eyebrow">By model</p><h2 id="models-title">Which models <em>get the tokens.</em></h2></div><p class="u-note">The 15 busiest model and tool pairs; the rest are grouped as "other". "unknown" means the tool does not record a model name.</p></div>
+  <table class="u-table">
+    <caption>Tokens by model, busiest first</caption>
+    <thead><tr><th scope="col">Model</th><th scope="col">Tool</th><th scope="col" class="n c7">7 days</th><th scope="col" class="n">30 days</th><th scope="col" class="share">Share of 30 days</th></tr></thead>
+    <tbody id="models"></tbody>
+  </table>
+</section>
+
 <section class="section wrap win js-only" data-win="INDEX\USAGE\WEEKS.TXT" aria-labelledby="weeks-title">
   <div class="section-head"><div><p class="eyebrow">Last 12 weeks</p><h2 id="weeks-title">How busy, <em>week by week.</em></h2></div><p class="u-note">An index, not a count: the busiest 7-day block is 100. The newest block is the right-hand one, in orange.</p></div>
   <ol class="u-weeks" id="weeks" aria-label="Weekly activity index, oldest to newest"></ol>
   <div class="u-weeks-axis" aria-hidden="true"><span>12 weeks ago</span><span>now</span></div>
-</section>
-
-<section class="section wrap win js-only u-quota" data-win="INDEX\USAGE\QUOTA.TXT" aria-labelledby="quota-title">
-  <div class="section-head"><div><p class="eyebrow">Plan quota</p><h2 id="quota-title">How close to <em>the limit.</em></h2></div><p class="u-note">Estimates from recorded charge against each plan's published limits, not a reading from the provider.</p></div>
-  <div id="quota"></div>
 </section>
 
 <section class="section section--tight wrap win" data-win="INDEX\USAGE\HOW.TXT" aria-labelledby="how-title">
