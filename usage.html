@@ -1,0 +1,160 @@
+<!doctype html>
+<!--
+   [▓███▓]                                __..''
+   ░▒▓▓▓▒░                          __..''  |
+  ░░▒▒▒▒▒░░                   __..''  |     |
+ .:;Il!lI;:.            __..''  |     |   _____|
+  . ' . ' .       __..''  |     |   _____|░░░░░░
+            __..''  |     |   _____|░░░░░░░░░░░░
+      __..''  |     |   _____|░░░░░░░░░░░░░░░░░░
+__..''  |     |   _____|░░░░░░░░░░░░░░░░░░░░░░░░
+  |     |   _____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+  |   _____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+_____|░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+  you found the stairwell. it is quiet here.
+-->
+<html lang="en" class="no-js" data-motion="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#120c24">
+<meta name="description" content="Rounded, aggregate token use across my AI coding tools, updated hourly while my PC is awake.">
+<title>Usage | mariyaholic</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script>
+/* Motion before first paint: ?motion= (or #motion=) > on; reduced motion is handled in CSS. A first visit
+   (or ?boot) with motion on also gets html.boot, which site.js plays. See README.md. */
+(function(){
+var d=document.documentElement,q=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.slice(1)),m=q.get('motion')||h.get('motion');
+function on(){return d.getAttribute('data-motion')==='on'}
+d.classList.remove('no-js');
+d.setAttribute('data-motion',m==='off'?'off':'on');
+try{if(on()&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&(q.has('boot')||!localStorage.getItem('mh98-booted')))d.classList.add('boot')}catch(e){}
+window.AO={on:on};
+document.addEventListener('DOMContentLoaded',function(){
+var els=document.querySelectorAll('[data-anim]'),io,i;
+if(!on())for(i=0;i<els.length;i++)els[i].classList.remove('in-view');
+if(!('IntersectionObserver' in window))return;
+io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){io.unobserve(e.target);if(on())e.target.classList.add('in-view')}})});
+for(i=0;i<els.length;i++)if(!els[i].classList.contains('in-view'))io.observe(els[i]);
+});
+})();
+</script>
+<link rel="preload" href="fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/site.css">
+<script src="js/site.js" defer></script>
+<noscript><style>.js-only{display:none}</style></noscript>
+<style>
+/* page-specific only; every colour is a palette token from css/site.css */
+.u-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;border-block:1px solid var(--rule);margin:0}
+.u-stats>div{padding:18px 16px 20px 0}
+.u-stats>div+div{padding-left:16px;border-left:1px solid var(--rule)}
+.u-stats dt{font:var(--ui-xs) var(--f-ui);letter-spacing:var(--label-track);color:var(--muted);text-transform:uppercase}
+.u-stats dd{margin:6px 0 0;font:var(--num-sm) var(--f-display);color:var(--accent);font-size:28px;line-height:1.1}
+.u-status{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;font:var(--ui-sm) var(--f-ui);color:var(--muted);margin-top:18px}
+.u-dot{display:inline-block;width:10px;height:10px;background:var(--c15);margin-right:8px}
+.u-status[data-state=stale] .u-dot{background:var(--c10)}
+.u-status[data-state=demo] .u-dot{background:var(--c12)}
+.u-status[data-state=loading] .u-dot{background:var(--c4)}
+.u-banner{border:1px solid var(--c12);padding:12px 14px;margin:18px 0 0;color:var(--c12);font:var(--ui-sm) var(--f-ui)}
+.u-table{width:100%;border-collapse:collapse;font:var(--ui-sm) var(--f-ui)}
+.u-table caption{text-align:left;color:var(--muted);padding-bottom:10px}
+.u-table th,.u-table td{padding:9px 10px 9px 0;border-bottom:1px solid var(--rule);text-align:left;vertical-align:middle}
+.u-table td.n,.u-table th.n{text-align:right;font-family:var(--f-mono);white-space:nowrap}
+.u-table .share{min-width:120px}
+.u-table .bar-track{display:block;width:100%;height:14px;margin-bottom:4px}
+@media (max-width:560px){.u-table .c7{display:none}.u-table .share{min-width:64px}.u-table th,.u-table td{padding-right:6px}.u-table caption{font-size:var(--ui-xs)}}
+.u-mix{display:flex;height:22px;border:1px solid var(--stroke);margin-top:14px}
+.u-mix span{display:block;height:100%}
+.u-mix .m0{background:var(--c11)}.u-mix .m1{background:var(--c14)}.u-mix .m2{background:var(--c12)}.u-mix .m3{background:var(--c5)}
+.u-legend{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;padding:0;margin:10px 0 0;font:var(--ui-xs) var(--f-ui);color:var(--muted)}
+.u-legend i{display:inline-block;width:10px;height:10px;margin-right:6px}
+.u-weeks{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;align-items:end;height:140px;margin:0;padding:0;list-style:none}
+.u-weeks li{background:var(--c14);min-height:2px;position:relative}
+.u-weeks li:last-child{background:var(--c11)}
+.u-weeks-axis{display:flex;justify-content:space-between;font:var(--ui-xs) var(--f-ui);color:var(--muted);margin-top:8px}
+.u-quota h3{font-size:var(--ui-lg);margin:22px 0 4px}
+.u-note{color:var(--muted);font:var(--ui-sm) var(--f-ui);max-width:62ch}
+</style>
+</head>
+<body id="top">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="wordmark" href="index.html" aria-label="mariyaholic home">◆ mariyaholic-98</a>
+  <nav class="site-nav" aria-label="Primary">
+    <a href="works.html">Portfolio</a>
+    <a href="programs.html">Programs</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="about.html">About</a>
+    <a href="sitemap.html" aria-current="true">Index</a>
+  </nav>
+  <span class="path" aria-hidden="true">A:\INDEX\USAGE&gt;</span>
+</header>
+<main id="main">
+<section class="page-hero page-hero--quiet wrap in-view win" data-win="INDEX\USAGE\README.TXT" data-anim>
+  <div class="reveal">
+    <p class="eyebrow">Usage · aggregated</p>
+    <h1>How much AI do <em>I use?</em></h1>
+    <p class="intro">Rounded token counts across the coding tools I run on my own PC, refreshed every hour while it is awake.</p>
+    <div class="u-status" id="u-status" data-state="loading"><span><i class="u-dot" aria-hidden="true"></i><span id="u-when" aria-live="polite">Loading…</span></span><span id="u-next"></span></div>
+    <p class="u-banner" id="u-banner" hidden></p>
+    <noscript><p class="u-banner">This page needs JavaScript to read the hourly file. The raw data is at <a href="https://raw.githubusercontent.com/mariyaholic/mariyaholic.github.io/usage-data/usage.json">usage.json</a>.</p></noscript>
+  </div>
+  <div class="reveal delay-1">
+    <p class="kicker">Display class</p>
+    <p class="hero-note">Aggregated. Totals are rounded and cover 7 and 30 days; nothing is per session, per day or per hour. <a href="privacy.html">The privacy ladder</a> sets the rule.</p>
+  </div>
+</section>
+
+<section class="section section--rule wrap win js-only" data-win="INDEX\USAGE\TOTALS.TXT" aria-labelledby="totals-title">
+  <div class="section-head"><div><p class="eyebrow">Totals</p><h2 id="totals-title">All tools, <em>together.</em></h2></div><p id="u-caption" class="u-note"></p></div>
+  <dl class="u-stats">
+    <div><dt>Tokens · 7 days</dt><dd id="t7">–</dd></div>
+    <div><dt>Tokens · 30 days</dt><dd id="t30">–</dd></div>
+    <div><dt>Recorded spend · 30 days</dt><dd id="spend">–</dd></div>
+  </dl>
+  <div class="u-mix" id="mix" role="img" aria-label="Token mix"></div>
+  <ul class="u-legend" id="mix-legend"></ul>
+</section>
+
+<section class="section wrap win js-only" data-win="INDEX\USAGE\TOOLS.TXT" aria-labelledby="tools-title">
+  <div class="section-head"><div><p class="eyebrow">By tool</p><h2 id="tools-title">Which tools <em>do the work.</em></h2></div><p class="u-note">Tokens include cache reads, which are most of them. Spend counts only tools that record a cost, so $0 means not recorded, not free.</p></div>
+  <table class="u-table">
+    <caption>Tokens by tool, busiest first</caption>
+    <thead><tr><th scope="col">Tool</th><th scope="col" class="n c7">7 days</th><th scope="col" class="n">30 days</th><th scope="col" class="share">Share of 30 days</th><th scope="col" class="n">Spend · 30 d</th></tr></thead>
+    <tbody id="tools"></tbody>
+  </table>
+</section>
+
+<section class="section wrap win js-only" data-win="INDEX\USAGE\WEEKS.TXT" aria-labelledby="weeks-title">
+  <div class="section-head"><div><p class="eyebrow">Last 12 weeks</p><h2 id="weeks-title">How busy, <em>week by week.</em></h2></div><p class="u-note">An index, not a count: the busiest 7-day block is 100. The newest block is the right-hand one, in orange.</p></div>
+  <ol class="u-weeks" id="weeks" aria-label="Weekly activity index, oldest to newest"></ol>
+  <div class="u-weeks-axis" aria-hidden="true"><span>12 weeks ago</span><span>now</span></div>
+</section>
+
+<section class="section wrap win js-only u-quota" data-win="INDEX\USAGE\QUOTA.TXT" aria-labelledby="quota-title">
+  <div class="section-head"><div><p class="eyebrow">Plan quota</p><h2 id="quota-title">How close to <em>the limit.</em></h2></div><p class="u-note">Estimates from recorded charge against each plan's published limits, not a reading from the provider.</p></div>
+  <div id="quota"></div>
+</section>
+
+<section class="section section--tight wrap win" data-win="INDEX\USAGE\HOW.TXT" aria-labelledby="how-title">
+  <div class="section-head"><div><p class="eyebrow">How it works</p><h2 id="how-title">Private every hour, <em>public rounded.</em></h2></div></div>
+  <div class="feature-copy">
+    <p>An hourly job on my PC reads the usage records my coding tools already write, adds them to a private ledger, and builds one small rounded file. It keeps nothing finer than a week, and it leaves out sessions, projects, paths, models per session, accounts and keys. The file is replaced each hour on a data-only branch, so this site is not rebuilt and its history does not grow.</p>
+    <p>If my PC is asleep or off, the file stops updating and this page says so. Gemini and Antigravity keep no token counts on disk, so they show a quota line only once a reading exists.</p>
+    <p><a href="privacy.html">Privacy</a> · <a href="https://raw.githubusercontent.com/mariyaholic/mariyaholic.github.io/usage-data/usage.json">The raw file</a></p>
+  </div>
+</section>
+</main>
+<footer class="footer">
+  <p>mariyaholic</p>
+  <nav aria-label="Footer"><a href="sitemap.html">Index</a><a href="colophon.html">Colophon</a></nav>
+</footer>
+<script src="js/usage.js" defer></script>
+</body>
+</html>
