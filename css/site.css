@@ -312,7 +312,7 @@ section,[id]{scroll-margin-top:56px}
 .footer>p{margin-right:auto}
 .footer nav{display:flex;gap:20px}
 .footer a:hover{background:var(--c1);color:var(--c6)}
-.tasks{display:none;gap:6px}
+.footer .tasks{display:none;gap:6px}
 .tasks a{background:var(--c7);color:var(--c1);border:2px solid var(--c0);padding:0 8px;text-decoration:none}
 .tasks a.on{background:var(--c10);color:var(--c7)}
 .footer .sound{font:inherit;background:var(--c7);color:var(--c1);border:2px solid var(--c0);padding:0 8px;cursor:pointer}
