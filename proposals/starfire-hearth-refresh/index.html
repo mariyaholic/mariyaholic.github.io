@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="dark">
+<title>Starfire Hearth refresh proposal | mariyaholic</title>
+<link rel="stylesheet" href="../../css/site.css">
+<style>
+.proposal-label{display:flex;align-items:center;gap:12px;color:var(--c12);font:var(--ui-xs) var(--f-ui);letter-spacing:.1em;text-transform:uppercase}
+.proposal-label:before{content:"";width:8px;height:8px;background:var(--c12);display:inline-block}
+.proposal-head{padding-block:48px 34px}
+.proposal-head h1{max-width:18ch;margin-top:14px;font-size:33px}
+.proposal-head>p:last-child{max-width:76ch;margin-top:18px;color:var(--muted);font-size:17px}
+.review-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:28px;align-items:start}
+.review-card{min-width:0;background:var(--paper);border:1px solid var(--rule);padding:16px}
+.review-card h2{font-size:22px;margin:8px 0 14px}
+.review-card>p:last-child{margin-top:14px;color:var(--muted);font-size:14px}
+.snapshot-frame{display:block;width:100%;height:330px;border:1px solid var(--rule);background:var(--well)}
+.mock-page{margin-top:26px;border:1px solid var(--rule);background:var(--paper);box-shadow:8px 8px 0 var(--well)}
+.mock-bar{display:flex;justify-content:space-between;gap:20px;padding:8px 14px;background:var(--c10);border-bottom:2px solid var(--c0);color:var(--c7);font:var(--ui-xs) var(--f-ui);text-transform:uppercase;letter-spacing:.06em}
+.mock-hero{display:grid;grid-template-columns:.78fr 1.22fr;gap:32px;align-items:center;padding:34px 30px 24px}
+.mock-copy h2{font-size:36px;line-height:1.17;color:var(--c7);margin-top:10px}
+.mock-copy h2 em{display:block;color:var(--c11);font-style:normal}
+.mock-copy .lede{margin-top:18px;color:var(--c6);font-size:16px;line-height:1.55}
+.status-stamp{display:inline-flex;margin-top:18px;border:1px solid var(--c14);color:var(--c15);padding:5px 9px;font:var(--ui-xs) var(--f-ui);letter-spacing:.08em}
+.mock-actions{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:21px;font:var(--ui-xs) var(--f-ui)}
+.mock-actions a{padding:7px 9px;border:1px solid var(--c5);color:var(--c12)}
+.mock-actions a:first-child{background:var(--c13);border-color:var(--c14);color:var(--c7)}
+.mock-actions a:hover{background:var(--c9);color:var(--c7)}
+.mock-figure{background:var(--well);border:1px solid var(--rule);padding:7px}
+.mock-figure iframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#101d2c}
+.mock-figure figcaption{display:flex;justify-content:space-between;gap:12px;padding:8px 2px 1px;color:var(--c6);font:var(--ui-xs) var(--f-ui)}
+.mock-figure figcaption span{color:var(--c5)}
+.mock-meta{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule);margin:0 30px;padding:16px 0 19px}
+.mock-meta div{padding-right:14px;border-right:1px solid var(--rule)}
+.mock-meta div+div{padding-left:18px}
+.mock-meta div:last-child{border:0}
+.mock-meta b{display:block;color:var(--c11);font:var(--ui-xs) var(--f-ui);letter-spacing:.06em;text-transform:uppercase}
+.mock-meta span{display:block;margin-top:5px;color:var(--c6);font-size:13px;line-height:1.45}
+.section-wrap{padding-block:54px 68px}
+.section-wrap h2{font-size:26px}
+.section-wrap .section-intro{max-width:65ch;margin-top:12px;color:var(--muted);font-size:15px}
+.evidence-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:24px}
+.evidence-card{min-width:0;background:var(--paper);border:1px solid var(--rule);padding:20px}
+.evidence-card .eyebrow{color:var(--c12)}
+.evidence-card h3{margin-top:10px;font-size:20px;color:var(--c7)}
+.evidence-card p{margin-top:10px;color:var(--muted);font-size:14px;line-height:1.55}
+.evidence-card a{display:inline-block;margin-top:15px;color:var(--c12);font:var(--ui-xs) var(--f-ui)}
+.source-stamp{margin-top:15px;padding-top:12px;border-top:1px solid var(--rule);color:var(--muted);font:var(--ui-xs) var(--f-ui);line-height:1.6;overflow-wrap:anywhere}
+.capture-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:24px}
+.capture{min-width:0;margin:0;padding:12px;background:var(--paper);border:1px solid var(--rule)}
+.capture img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:var(--well);border:1px solid var(--rule)}
+.capture figcaption{padding:10px 2px 3px;color:var(--muted);font-size:13px;line-height:1.45}
+.capture figcaption strong{display:block;margin-bottom:4px;color:var(--c7);font:var(--ui-xs) var(--f-ui);letter-spacing:.05em;text-transform:uppercase}
+.status-note{margin-top:24px;padding:15px 18px;border:1px solid var(--c13);background:var(--well-2);color:var(--c6);font-size:14px;line-height:1.55}
+.status-note strong{color:var(--c15);font:var(--ui-xs) var(--f-ui);letter-spacing:.07em;text-transform:uppercase}
+.proposal-footer{padding:22px 0 42px;border-top:1px solid var(--rule);color:var(--muted);font:var(--ui-xs) var(--f-ui)}
+@media(max-width:1180px){.review-grid{grid-template-columns:1fr}}
+@media(max-width:850px){.mock-hero{grid-template-columns:1fr}.mock-copy{max-width:48ch}.mock-meta{grid-template-columns:1fr;gap:12px}.mock-meta div,.mock-meta div+div{padding:0;border:0}.evidence-grid{grid-template-columns:1fr}.capture-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.proposal-head{padding-block:34px 24px}.proposal-head h1{font-size:26px}.mock-hero{padding:24px 17px 18px}.mock-copy h2{font-size:28px}.mock-meta{margin-inline:17px}.mock-bar{font-size:10px}.review-card{padding:11px}.capture-grid{grid-template-columns:1fr}.capture figcaption,.mock-figure figcaption{flex-wrap:wrap}}
+</style>
+</head>
+<body id="top">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="wordmark" href="../../index.html" aria-label="mariyaholic home">◆ mariyaholic-98</a>
+  <nav class="site-nav" aria-label="Primary"><a href="../../works.html">Portfolio</a><a href="../../programs.html">Programs</a><a href="../../marketplace.html" aria-current="true">Marketplace</a><a href="../../about.html">About</a><a href="../../sitemap.html">Index</a></nav>
+  <span class="path" aria-hidden="true">A:\PROPOSALS\HEARTH&gt;</span>
+</header>
+<main id="main">
+  <section class="proposal-head wrap">
+    <p class="proposal-label">Visual proposal · updated 26 October 2026</p>
+    <h1>Put the 3D colony in the foreground.</h1>
+    <p>A refresh for <code>/hearth.html</code> that keeps the mariyaholic-98 frame and puts the current 3D game view at the centre. The published portfolio page remains unchanged while this local proposal is reviewed.</p>
+  </section>
+  <section class="review-grid wrap" aria-label="Current and proposed website presentation">
+    <article class="review-card">
+      <p class="eyebrow">Before · current public page</p>
+      <h2>Current presentation</h2>
+      <iframe class="snapshot-frame" title="Current Starfire Hearth website page" src="../../hearth.html?motion=off" loading="lazy"></iframe>
+      <p>It leads with “A hopeful frontier” and concept art. The current game has a 3D immersive colony scene, but this page does not show it.</p>
+    </article>
+    <article class="review-card">
+      <p class="eyebrow">After · page direction</p>
+      <h2>Proposed Hearth hero</h2>
+      <div class="mock-page">
+          <div class="mock-bar"><span>MARKET\HEARTH\CURRENT_BUILD.TXT</span><span>LOCAL PROPOSAL</span></div>
+        <div class="mock-hero">
+          <div class="mock-copy">
+            <p class="eyebrow">Turn-based colony strategy · in development</p>
+            <h2>A new world,<em> in three dimensions.</em></h2>
+            <p class="lede">Lead a frontier settlement from orbit to the colony floor. Explore a 3D terrain, place buildings, and shape what your people can build next.</p>
+            <span class="status-stamp">LIVE WEB BUILD · 3D VIEW</span>
+            <div class="mock-actions"><a href="https://mariyaholic.github.io/starfire_hearth_v2/">Open the current game ↗</a><a href="https://github.com/mariyaholic/starfire_hearth_v2/actions/runs/40157308704#artifacts">See the screenshot run ↗</a></div>
+          </div>
+          <figure class="mock-figure"><iframe src="https://mariyaholic.github.io/starfire_hearth_v2/" title="Interactive entry point for the current Starfire Hearth web build" loading="lazy" allow="fullscreen; gamepad; pointer-lock"></iframe><figcaption><b>Current game build</b><span>Campaign → First Light → Play → Begin → Esc to dismiss “First orders”</span></figcaption></figure>
+        </div>
+        <div class="mock-meta"><div><b>View</b><span>Immersive 3D colony scene</span></div><div><b>On screen</b><span>Terrain, ark, settlement, hex borders and controls</span></div><div><b>Status</b><span>Early build · in development</span></div></div>
+      </div>
+      <p>The live build takes the hero position so visitors can enter the current game. The embed opens at its normal start point; after “First orders” is dismissed, the colony scene loads in 3D.</p>
+    </article>
+  </section>
+  <section class="section-wrap wrap" aria-labelledby="captures-title">
+    <h2 id="captures-title">Current game captures, with the 3D view kept live.</h2>
+    <p class="section-intro">These real desktop captures come from the screenshot bundle for run 40157308704. They show the current navigation map, research cards, and event writing. The bundle does not contain a frozen 3D colony image, so the live embed above remains the only 3D scene proof.</p>
+    <div class="capture-grid" aria-label="Current Starfire Hearth screenshot captures">
+      <figure class="capture"><img src="snapshots/pc_100-38_game_galaxy.png" alt="Starfire Hearth Galaxy screen with a connected star-system map and view controls" loading="lazy"><figcaption><strong>Galaxy map</strong>System navigation and strategic-view controls · desktop, 100% UI scale.</figcaption></figure>
+      <figure class="capture"><img src="snapshots/pc_100-34_game_research.png" alt="Starfire Hearth research screen showing Physics, Society, and Engineering cards" loading="lazy"><figcaption><strong>Research choices</strong>Three research disciplines with progress, costs, and selectable cards · desktop, 100% UI scale.</figcaption></figure>
+      <figure class="capture"><img src="snapshots/pc_100-39_game_event.png" alt="Starfire Hearth Labor Strike event with narrative art and three response choices" loading="lazy"><figcaption><strong>Event decision</strong>A colony event with narrative art, context, and three response options · desktop, 100% UI scale.</figcaption></figure>
+    </div>
+    <div class="source-stamp">Source: GitHub Actions run 40157308704 · commit <code>c280f71c069bd6a159c6ae1908e3e448b9819d92</code> · <code>screens</code> artifact SHA-256 <code>451d6076e790e0e9ba407b391e0c69697ba67d0290a66eb88d437392343c245b</code>. <a href="https://github.com/mariyaholic/starfire_hearth_v2/actions/runs/40157308704#artifacts">Open the screenshot run ↗</a></div>
+    <aside class="status-note"><strong>Capture boundary</strong><br>The ZIP contains no 3D colony screenshot. Its colony and system captures have a blank planner viewport, so they are not used as 3D evidence. The live build was separately navigated into the immersive colony view; the embed opens at the start screen and the caption gives the exact route.</aside>
+  </section>
+  <footer class="proposal-footer wrap">Local proposal only · <a href="../../hearth.html">hearth.html</a> remains unchanged · game preview: <a href="https://mariyaholic.github.io/starfire_hearth_v2/">current hosted build</a> · screenshot source: <a href="https://github.com/mariyaholic/starfire_hearth_v2/actions/runs/40157308704#artifacts">CI run 40157308704</a></footer>
+</main>
+</body>
+</html>
