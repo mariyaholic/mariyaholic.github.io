@@ -77,6 +77,7 @@ li+li{margin-top:.25em}
 a{color:var(--link);text-underline-offset:2px}
 hr{border:0;border-top:1px solid var(--rule);margin:2em 0}
 strong{font-weight:600}
+sup,sub{line-height:0}
 .lede{font-size:1.125rem;color:var(--ink)}
 .meta{font-size:14px;color:var(--muted)}
 dl.facts{display:grid;grid-template-columns:max-content 1fr;gap:4px 16px;font-size:14px}
