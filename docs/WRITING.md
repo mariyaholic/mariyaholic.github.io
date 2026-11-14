@@ -68,19 +68,22 @@ These rules follow Google's developer documentation style guide, Material Design
 1. **Headings.** Use sentence case. Use one `<h1>` on each page. Do not skip heading levels.
 2. **Text width.** The reading column is 72 characters wide or less.
 3. **Links.** The link text tells the reader where the link goes. Do not use "click here" or "this link".
-4. **Contrast.** Body text has a contrast of 4.5:1 or more against its background, in light mode and in dark mode. The colours in `plain.css` meet this.
-5. **Targets.** Navigation links are 48 px high or more.
-6. **Focus.** Each link and control shows a visible focus ring.
-7. **Tables.** Use `<th scope="col">` for column heads. Put a wide table in `<div class="table-wrap">` so that it scrolls on a phone, not the page.
-8. **No layout shift.** Give each image a `width` and a `height`.
-9. **No scripts.** Document pages do not load `site.js` or any other script.
-10. **No external requests.** Use system fonts. Do not load web fonts, analytics or embeds.
+4. **Theme.** Put one theme class on `<html>`. The theme does not follow the system colour setting.
+   - `class="theme-docs"`: dark gray, like the documentation on a code host. Use it for project documentation.
+   - `class="theme-paper"`: light and wiki-like, with serif headings. Use it for papers.
+5. **Contrast.** Body text has a contrast of 4.5:1 or more against its background in each theme. The colours in `plain.css` meet this.
+6. **Targets.** Navigation links are 48 px high or more.
+7. **Focus.** Each link and control shows a visible focus ring.
+8. **Tables.** Use `<th scope="col">` for column heads. Put a wide table in `<div class="table-wrap">` so that it scrolls on a phone, not the page.
+9. **No layout shift.** Give each image a `width` and a `height`.
+10. **No scripts.** Document pages do not load `site.js` or any other script.
+11. **No external requests.** Use system fonts. Do not load web fonts, analytics or embeds.
 
 ## Page template (documentation)
 
 ```html
 <!doctype html>
-<html lang="en">
+<html lang="en" class="theme-docs">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -142,7 +145,8 @@ A paper page is a landing page for one paper. The PDF is the full text. These ru
 4. Add one `ScholarlyArticle` JSON-LD block with the same data.
 5. Give a "Cite" section with BibTeX and one plain text form.
 6. Link the PDF, the DOI and the archive. Write the file type and size in the link text, for example "PDF, 440 KB".
-7. Do not add the main-site look, animation or personal labels to a paper page.
+7. Use `class="theme-paper"` on the `<html>` element.
+8. Do not add the main-site look, animation or personal labels to a paper page.
 
 ### Indexing
 
