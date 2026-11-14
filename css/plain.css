@@ -25,7 +25,7 @@
   --f-serif:"Linux Libertine","Georgia","Times New Roman",Times,serif;
   --f-head:var(--f-serif);
   --f-mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace;
-  --measure:72ch;
+  --measure:46rem;    /* about 72 characters of body text */
 }
 .theme-docs{
   color-scheme:dark;
@@ -125,6 +125,7 @@ ol.steps>li+li{margin-top:.5em}
 
 /* Index lists (docs hub and paper list) */
 .list{list-style:none;padding:0;margin:0 0 1em;border-top:1px solid var(--rule)}
+h2+.list{border-top:0}
 .list>li{margin:0;padding:16px 0;border-bottom:1px solid var(--rule)}
 .list h2,.list h3{border:0;margin:0 0 4px;padding:0;font-size:1.125rem}
 .list p{margin:0 0 4px}

@@ -11,7 +11,8 @@ These rules apply to pages that use the document look (`css/plain.css`): project
 | `docs/uika-public/` | Document look |
 | `docs/mariyaholic.github.io/` | Document look |
 | `papers/` and `papers/<paper>/` | Document look |
-| All other `docs/` pages and `docs/index.html` | Main look (not changed yet) |
+| `docs/index.html` (the hub) | Document look |
+| All other `docs/` pages | Main look (not changed yet). The hub marks them "Older layout". |
 
 To move a page to the document look, copy the page template below and move the content into it. Then rewrite the text with the language rules.
 
@@ -66,7 +67,7 @@ A notice gives the risk and the action. Do not use a notice for general text.
 These rules follow Google's developer documentation style guide, Material Design 3 and web.dev guidance.
 
 1. **Headings.** Use sentence case. Use one `<h1>` on each page. Do not skip heading levels.
-2. **Text width.** The reading column is 72 characters wide or less.
+2. **Text width.** The reading column is 46 rem wide (about 72 characters) or less.
 3. **Links.** The link text tells the reader where the link goes. Do not use "click here" or "this link".
 4. **Theme.** Put one theme class on `<html>`. The theme does not follow the system colour setting.
    - `class="theme-docs"`: dark gray, like the documentation on a code host. Use it for project documentation.
