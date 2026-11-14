@@ -1,7 +1,146 @@
 <!doctype html>
-<html lang="en" class="no-js" data-motion="off"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="dark"><title>Uika | documentation</title><link rel="icon" href="../../favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../css/site.css"><link rel="stylesheet" href="../../docs/docs.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header"><a class="wordmark" href="../../index.html">◆ mariyaholic-98</a><nav class="site-nav" aria-label="Primary"><a href="../../works.html">Portfolio</a><a href="../../programs.html">Programs</a><a href="../../docs/" aria-current="page">Docs</a><a href="../../marketplace.html">Marketplace</a><a href="../../about.html">About</a><a href="../../sitemap.html">Index</a></nav></header><main id="main" class="docs-shell"><div class="doc-layout"><article class="doc-content win" data-win="DOCS\UIKA-PUBLIC"><p><a href="../">← All projects</a></p><p class="eyebrow">Developer tools</p><h1>Uika</h1><p>Generated coding-agent instructions, skills and session handoffs.</p><p class="meta">Source version 0.1.0 · No published GitHub release verified · Source ab1cb25 · Changed 2026-11-07 02:28:57 UTC</p><p><a href="https://github.com/mariyaholic/uika-public">Source repository ↗</a></p><h2 id="start">Inspect the public preview</h2><p>Use Node 22 or later and work from a public source checkout. Run the check and tests before trying a disposable synthetic estate. Read each command’s help and dry-run behavior before applying changes.</p><h2 id="workflow">How it works</h2><p>The command suite validates and manages the documented estate structure. Most writes require --apply, with command-specific exceptions documented in the manual.</p><h2 id="requirements">Requirements and commands</h2><p>Node.js 22+; Git for selected deploy/find commands.</p><p>Run these from the source checkout where applicable. Commands were source-inspected for this documentation; environment-specific execution is not claimed.</p><pre><code>node bin/uika.mjs check
-npm test
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Run Uika from source to generate and check the instruction files, skills and session hand-offs that coding agents read.">
+<title>Uika documentation | mariyaholic</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../css/plain.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar"><div class="bar-in">
+  <a class="site" href="../../index.html">mariyaholic</a>
+  <nav aria-label="Sections"><a href="../" aria-current="page">Docs</a><a href="../../papers/">Papers</a><a href="../../works.html">Portfolio</a></nav>
+</div></header>
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../">Docs</a></li><li><span aria-current="page">Uika</span></li></ol></nav>
+
+<div class="page has-toc">
+<main id="main" class="doc">
+<h1>Uika</h1>
+<p class="lede">Uika is a command-line tool for coding agents. It makes the instruction files, skills and session hand-offs in your repositories from one source. It then checks that the files do not change from that source.</p>
+<dl class="facts">
+  <dt>Status</dt><dd>0.1.0 source preview</dd>
+  <dt>Runtime</dt><dd>Node.js 22 or later, no npm dependencies</dd>
+  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/uika-public">mariyaholic/uika-public</a>, commit <code>89b46db</code></dd>
+  <dt>License</dt><dd>MIT</dd>
+</dl>
+
+<div class="notice caution" role="note"><span class="label">Caution</span>
+<p>The npm package is not published. Do not use <code>npm i -g uika</code> or <code>npx uika</code>. Run Uika from a source checkout, or from a package file that you make from the source.</p></div>
+
+<h2 id="concepts">Concepts</h2>
+<dl>
+  <dt><strong>Estate</strong></dt>
+  <dd>The directory that holds your configuration: <code>estate.json</code>, your rules file and your skills. Uika finds it from <code>--root</code>, then from <code>UIKA_ESTATE_HOME</code>, then from the current directory.</dd>
+  <dt><strong>Law block</strong></dt>
+  <dd>A marked section that Uika writes into the <code>AGENTS.md</code> file of a repository. It has a SHA-256 fingerprint. Do not edit the text between the markers.</dd>
+  <dt><strong>Skill</strong></dt>
+  <dd>A folder with a <code>SKILL.md</code> file. The source has 39 skills.</dd>
+  <dt><strong>Hand-off</strong></dt>
+  <dd>A six-line entry in <code>WORKSTACK.md</code> that records what a session did and what to do next.</dd>
+</dl>
+<div class="notice" role="note"><span class="label">Note</span>
+<p>Configuration files keep the names of environment variables only. They do not keep the values of keys or tokens.</p></div>
+
+<h2 id="install">Install from source</h2>
+<ol class="steps">
+  <li>Install Node.js 22 or later.</li>
+  <li>Clone the source repository:
+<pre><code>git clone https://github.com/mariyaholic/uika-public.git
+cd uika-public</code></pre></li>
+  <li>Run the machine check:
+<pre><code>node bin/uika.mjs check</code></pre></li>
+  <li>Optional: to put <code>uika</code> on your <code>PATH</code>, make a package file and install it:
+<pre><code>npm pack
+npm install -g ./uika-0.1.0.tgz</code></pre></li>
+</ol>
+
+<h2 id="estate">Make an estate</h2>
+<ol class="steps">
+  <li>Make a new estate:
+<pre><code>node bin/uika.mjs init my-estate --apply</code></pre></li>
+  <li>Check the new estate:
+<pre><code>cd my-estate
+node ../bin/uika.mjs lint</code></pre></li>
+  <li>Copy the skills that you need from the <code>skills/</code> folder of the checkout into <code>my-estate/skills/</code>. The <code>init</code> command does not copy skills.</li>
+  <li>Validate the skills:
+<pre><code>node ../bin/uika.mjs skills validate --strict</code></pre></li>
+</ol>
+
+<h2 id="apply">Write changes</h2>
+<div class="notice caution" role="note"><span class="label">Caution</span>
+<p>A command that writes files does a dry run first. It writes only when you add <code>--apply</code>. Read the dry-run output before you add <code>--apply</code>.</p></div>
+<p>Two commands are different:</p>
+<ul>
+  <li><code>deploy hook-run</code> writes when Git runs it as a post-commit hook. You install this hook with <code>--apply</code>.</li>
+  <li><code>session check --stop</code> writes a one-byte marker file.</li>
+</ul>
+<p>If you use <code>--apply</code> and <code>--dry-run</code> together, the command stops with an error before it does anything.</p>
+
+<h2 id="commands">Commands</h2>
+<div class="table-wrap"><table>
+  <thead><tr><th scope="col">Command</th><th scope="col">Function</th><th scope="col">Git</th></tr></thead>
+  <tbody>
+    <tr><td><code>init</code></td><td>Makes a new estate.</td><td>Not used</td></tr>
+    <tr><td><code>check</code></td><td>Shows runtimes, agent home folders and disk space.</td><td>Optional</td></tr>
+    <tr><td><code>lint</code></td><td>Checks file sizes, law-block changes and skills.</td><td>Optional</td></tr>
+    <tr><td><code>adopt</code></td><td>Writes the law block into a repository.</td><td>Not used</td></tr>
+    <tr><td><code>sync</code></td><td>Copies estate configuration into a clean repository.</td><td>Not used</td></tr>
+    <tr><td><code>skills</code></td><td>Validates skills and copies them into agent skill folders.</td><td>Not used</td></tr>
+    <tr><td><code>session check</code></td><td>Checks the hand-off and the end-of-session list.</td><td>Not used</td></tr>
+    <tr><td><code>docs</code></td><td>Checks, renders and repairs the Markdown files.</td><td>Optional</td></tr>
+    <tr><td><code>deploy</code></td><td>Distributes changes after a commit.</td><td>Required</td></tr>
+    <tr><td><code>find</code> / <code>where</code></td><td>Finds files and projects in the estate.</td><td>Optional</td></tr>
+    <tr><td><code>video</code>, <code>figure</code></td><td>Checks videos and makes figures. Needs external tools.</td><td>Not used</td></tr>
+    <tr><td><code>ref</code>, <code>eval</code></td><td>Reads the reference list. Runs your own test tasks.</td><td>Not used</td></tr>
+  </tbody>
+</table></div>
+<p>For the full list of 19 commands, see the <a href="https://github.com/mariyaholic/uika-public/blob/main/docs/manual.md">manual</a>.</p>
+
+<h2 id="verify">Verify a checkout</h2>
+<p>Run these commands from the root of the checkout. All of them must pass.</p>
+<pre><code>npm test
 npm run scrub
 node bin/uika.mjs lint --strict
-node bin/uika.mjs docs check --strict
-npm pack</code></pre><h2 id="limits">Limits and safety</h2><aside><p>This is a source preview, not a published npm package. Do not use an npm install or npx command as if a release existed. Keep real harness homes and credentials out of examples.</p></aside><h2 id="changes">Release changes</h2><h3>Unreleased source</h3><p class="plus">+ Media tools: add video and figure inspection commands with optional dependencies.</p><h2 id="reference">Reference</h2><p>Detailed source guides and contracts:</p><ul><li><a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/README.md">README.md</a></li><li><a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/docs/manual.md">docs/manual.md</a></li><li><a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/docs/harness-matrix.md">docs/harness-matrix.md</a></li><li><a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/docs/SKILL_PORT_AUDIT.md">docs/SKILL_PORT_AUDIT.md</a></li><li><a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/CHANGELOG.md">CHANGELOG.md</a></li><li><a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/CONTRIBUTING.md">CONTRIBUTING.md</a></li></ul><p class="meta">Snapshot checked 7 November 2026 UTC. Source and release versions can change independently.</p></article><nav class="toc win" data-win="CONTENTS" aria-label="On this page"><p class="eyebrow">On this page</p><ul><li><a href="#start">Get started</a></li><li><a href="#workflow">How it works</a></li><li><a href="#requirements">Requirements</a></li><li><a href="#limits">Limits</a></li><li><a href="#changes">Changes</a></li><li><a href="#reference">Reference</a></li></ul></nav></div></main><footer class="footer"><p>mariyaholic</p><nav aria-label="Footer"><a href="../../sitemap.html">Index</a><a href="../../colophon.html">Colophon</a></nav></footer></body></html>
+node bin/uika.mjs docs check --strict</code></pre>
+
+<h2 id="limits">Limits</h2>
+<ul>
+  <li>The commands, the <code>estate.json</code> fields and the law-block format can change before version 1.0.</li>
+  <li>Uika does not run a model. The agent tool runs the model and controls access.</li>
+  <li>A test run on Linux does not verify Windows or macOS.</li>
+  <li>Do not put real agent home folders or credentials in examples.</li>
+</ul>
+
+<h2 id="changes">Release changes</h2>
+<h3>Unreleased</h3>
+<ul>
+  <li>Added: 22 skills. The library now has 39 skills.</li>
+  <li>Added: <code>uika video</code>, <code>uika figure</code>, <code>uika ref</code> and <code>uika eval</code>.</li>
+</ul>
+
+<h2 id="reference">Reference</h2>
+<ul>
+  <li><a href="https://github.com/mariyaholic/uika-public/blob/main/README.md">README</a></li>
+  <li><a href="https://github.com/mariyaholic/uika-public/blob/main/docs/manual.md">Manual</a></li>
+  <li><a href="https://github.com/mariyaholic/uika-public/blob/main/docs/harness-matrix.md">Agent tool matrix</a></li>
+  <li><a href="https://github.com/mariyaholic/uika-public/blob/main/SECURITY.md">Security</a></li>
+  <li><a href="https://github.com/mariyaholic/uika-public/blob/main/CHANGELOG.md">Changelog</a></li>
+  <li><a href="https://github.com/mariyaholic/uika-public/blob/main/CONTRIBUTING.md">Contributing</a></li>
+</ul>
+<p class="meta">Last checked 14 November 2026 against source commit <code>89b46db</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
+</main>
+
+<nav class="toc" aria-labelledby="toc-h"><h2 id="toc-h">On this page</h2><ol>
+  <li><a href="#concepts">Concepts</a></li><li><a href="#install">Install</a></li><li><a href="#estate">Make an estate</a></li>
+  <li><a href="#apply">Write changes</a></li><li><a href="#commands">Commands</a></li><li><a href="#verify">Verify</a></li>
+  <li><a href="#limits">Limits</a></li><li><a href="#changes">Changes</a></li><li><a href="#reference">Reference</a></li>
+</ol></nav>
+</div>
+
+<footer class="foot"><span>mariyaholic · Documentation</span><span><a href="../../sitemap.html">Index</a> · <a href="../../colophon.html">Colophon</a></span></footer>
+</body>
+</html>

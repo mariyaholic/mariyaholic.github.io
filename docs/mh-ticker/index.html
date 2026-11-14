@@ -1,3 +1,166 @@
 <!doctype html>
-<html lang="en" class="no-js" data-motion="off"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="dark"><title>MH Ticker | documentation</title><link rel="icon" href="../../favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../css/site.css"><link rel="stylesheet" href="../../docs/docs.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header"><a class="wordmark" href="../../index.html">◆ mariyaholic-98</a><nav class="site-nav" aria-label="Primary"><a href="../../works.html">Portfolio</a><a href="../../programs.html">Programs</a><a href="../../docs/" aria-current="page">Docs</a><a href="../../marketplace.html">Marketplace</a><a href="../../about.html">About</a><a href="../../sitemap.html">Index</a></nav></header><main id="main" class="docs-shell"><div class="doc-layout"><article class="doc-content win" data-win="DOCS\MH-TICKER"><p><a href="../">← All projects</a></p><p class="eyebrow">Desktop utilities</p><h1>MH Ticker</h1><p>Native taskbar price strip, with Classic and Ultra source builds.</p><p class="meta">Source version 1.7.1 · Published release v1.2.3 (2026-10-16) · Source 6f6ee3c · Changed 2026-11-06 13:24:30 UTC</p><p><a href="https://github.com/mariyaholic/mh-ticker">Source repository ↗</a></p><p><a href="https://github.com/mariyaholic/mh-ticker/releases/tag/v1.2.3">Open v1.2.3 release and assets ↗</a></p><h2 id="start">Choose release or source</h2><p>The published Windows executable is v1.2.3. Download it from that release and start it to use the taskbar strip. The newer 1.7.1 source builds Classic and Ultra; do not assume Ultra features are in the v1.2.3 download.</p><h2 id="workflow">How it works</h2><p>The panel displays price age; a stale or offline indicator means the quote is not current. Quote requests use the network. Optional webhook destinations should be treated as secrets.</p><h2 id="requirements">Requirements and commands</h2><p>Windows 10+; Stable Rust for source builds.</p><p>Run these from the source checkout where applicable. Commands were source-inspected for this documentation; environment-specific execution is not claimed.</p><pre><code>cargo test
-cargo build --release</code></pre><h2 id="limits">Limits and safety</h2><aside><p>Price information is illustrative and is not investment advice. Verify the executable’s release and checksum before running it.</p></aside><h2 id="changes">Release changes</h2><h3>v1.2.3 · 2026-10-16</h3><p class="plus">+ App icon: add a distinct price-line icon for Explorer, desktop and Task Manager.</p><h2 id="reference">Reference</h2><p>Detailed source guides and contracts:</p><ul><li><a href="https://github.com/mariyaholic/mh-ticker/blob/main/README.md">README.md</a></li><li><a href="https://github.com/mariyaholic/mh-ticker/blob/main/THEMES.md">THEMES.md</a></li><li><a href="https://github.com/mariyaholic/mh-ticker/blob/main/docs/STATE-AUDIT-2026-11.md">docs/STATE-AUDIT-2026-11.md</a></li></ul><p class="meta">Snapshot checked 7 November 2026 UTC. Source and release versions can change independently.</p></article><nav class="toc win" data-win="CONTENTS" aria-label="On this page"><p class="eyebrow">On this page</p><ul><li><a href="#start">Get started</a></li><li><a href="#workflow">How it works</a></li><li><a href="#requirements">Requirements</a></li><li><a href="#limits">Limits</a></li><li><a href="#changes">Changes</a></li><li><a href="#reference">Reference</a></li></ul></nav></div></main><footer class="footer"><p>mariyaholic</p><nav aria-label="Footer"><a href="../../sitemap.html">Index</a><a href="../../colophon.html">Colophon</a></nav></footer></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Install and use MH Ticker, a Windows app that shows market prices in the free space of the taskbar.">
+<title>MH Ticker documentation | mariyaholic</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../css/plain.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar"><div class="bar-in">
+  <a class="site" href="../../index.html">mariyaholic</a>
+  <nav aria-label="Sections"><a href="../" aria-current="page">Docs</a><a href="../../papers/">Papers</a><a href="../../works.html">Portfolio</a></nav>
+</div></header>
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../">Docs</a></li><li><span aria-current="page">MH Ticker</span></li></ol></nav>
+
+<div class="page has-toc">
+<main id="main" class="doc">
+<h1>MH Ticker</h1>
+<p class="lede">MH Ticker is a Windows app. It shows market prices in the free space of the taskbar. When you click it, a larger panel opens with one card for each symbol. Prices come from the public CNBC quotes. You do not need an account.</p>
+<dl class="facts">
+  <dt>Platform</dt><dd>Windows 10 or later</dd>
+  <dt>Latest release</dt><dd><a href="https://github.com/mariyaholic/mh-ticker/releases/tag/v1.2.3">v1.2.3</a>, 16 October 2026</dd>
+  <dt>Source version</dt><dd>1.9.0, commit <code>efde053</code></dd>
+  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/mh-ticker">mariyaholic/mh-ticker</a></dd>
+  <dt>License</dt><dd>MIT</dd>
+</dl>
+
+<div class="notice" role="note"><span class="label">Note</span>
+<p>The latest release (v1.2.3) is older than the source (1.9.0). Functions that were added after v1.2.3 are only in a build from source. This includes the Ultra build.</p></div>
+
+<h2 id="builds">Builds</h2>
+<p>The source makes two programs from the same engine. They can run at the same time. Each one has its own settings file and tray icon.</p>
+<div class="table-wrap"><table>
+  <thead><tr><th scope="col"></th><th scope="col"><code>MH_Ticker.exe</code> (Classic)</th><th scope="col"><code>MH_Ticker_Ultra.exe</code> (Ultra)</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Look</th><td>One theme</td><td>26 themes and 22 fonts</td></tr>
+    <tr><th scope="row">Symbols</th><td><strong>Symbols</strong> menu</td><td><strong>Symbols</strong> menu and a picker in the panel</td></tr>
+    <tr><th scope="row">Alerts</th><td>None</td><td>Price alerts, quiet hours, optional webhook</td></tr>
+    <tr><th scope="row">Chart</th><td>None</td><td>Candle chart, 1D to 5Y</td></tr>
+    <tr><th scope="row">Memory after 1 minute</th><td class="num">≈ 5.7 MB</td><td class="num">≈ 5.8 MB</td></tr>
+  </tbody>
+</table></div>
+<p class="meta">Memory values were measured on 1.7.1.</p>
+
+<h2 id="install">Install MH Ticker</h2>
+<div class="notice caution" role="note"><span class="label">Caution</span>
+<p>The program does not have a code signature. Download it only from the release page of the source repository.</p></div>
+<ol class="steps">
+  <li>Go to the <a href="https://github.com/mariyaholic/mh-ticker/releases/latest">latest release</a>.</li>
+  <li>Download <code>MH_Ticker.exe</code>.</li>
+  <li>Double-click <code>MH_Ticker.exe</code>.</li>
+  <li>If Windows SmartScreen shows a message, select <strong>More info</strong>, then select <strong>Run anyway</strong>.</li>
+</ol>
+<p>The strip moves into the free space of the taskbar. Only one copy can run at a time.</p>
+
+<h2 id="use">Use the panel</h2>
+<ul>
+  <li><strong>Open the panel:</strong> click the strip, or click the tray icon.</li>
+  <li><strong>Close the panel:</strong> select the minimize button, push <kbd>Esc</kbd>, or click the tray icon.</li>
+  <li><strong>Open a symbol on CNBC:</strong> click its card. In Ultra, a click locks the card. Use <strong>Open on CNBC</strong> on the locked card.</li>
+  <li><strong>Copy a price:</strong> right-click a card and select <strong>Copy</strong>.</li>
+</ul>
+<p>Each card shows the price, the change for the day in percent and in points, the range for the day, the 52-week range, and the age of the price. A dim price is not current.</p>
+
+<h2 id="symbols">Select symbols</h2>
+<ol class="steps">
+  <li>Right-click the strip.</li>
+  <li>Select <strong>Symbols</strong>.</li>
+  <li>Select the symbols to show. You can show up to 24 symbols. The strip changes immediately.</li>
+</ol>
+<p>To add a symbol that is not in the list, select <strong>Symbols &gt; Add symbol...</strong> and type a CNBC symbol, for example <code>AAPL</code> or <code>EUR=</code>. The app sends one request to CNBC to check the symbol. If CNBC does not know the symbol, the app does not add it.</p>
+<p>To return to the six default symbols, select <strong>Symbols &gt; Reset to default</strong>.</p>
+
+<h2 id="position">Change the position</h2>
+<ol class="steps">
+  <li>Right-click the strip.</li>
+  <li>Select <strong>Position</strong>.</li>
+  <li>Select one of these options:
+    <ul>
+      <li><strong>Auto</strong> (default): the app finds free space in the taskbar.</li>
+      <li><strong>Taskbar, left of Start</strong> or <strong>Taskbar, next to the tray</strong>.</li>
+      <li><strong>Floating</strong>: drag the strip to a position. The app keeps this position.</li>
+      <li>A corner of the screen.</li>
+      <li>A display, if you have more than one.</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="poll">Set the update interval</h2>
+<p>Right-click the strip and select <strong>Poll every</strong>. The range is 1 to 60 seconds. A shorter interval uses more network data.</p>
+<p>Two options can decrease the number of requests:</p>
+<ul>
+  <li><strong>Slow down when nothing moves</strong>: when no price changes for 10 minutes, the app polls each 15 seconds. After 30 minutes, it polls each 60 seconds.</li>
+  <li><strong>Rest while the PC is locked</strong>: the app polls each 5 minutes while the PC is locked and no alert is set.</li>
+</ul>
+<p>Ultra has the two options on by default. Classic has them off.</p>
+
+<h2 id="settings">Settings file</h2>
+<p>The app keeps its settings in <code>%LOCALAPPDATA%\MH_Ticker\config.json</code>. Ultra uses <code>config_ultra.json</code> in the same folder. To open the folder, select <strong>Open config folder</strong> in the menu.</p>
+<p>The menus apply changes immediately. If you edit the file manually, restart the app.</p>
+<p>If the app cannot read the file, it does not overwrite it. It renames the file to <code>config.bad.json</code> and starts with the default settings.</p>
+<div class="notice warning" role="note"><span class="label">Warning</span>
+<p>The <code>webhook</code> value in Ultra is a secret. Anyone with the URL can send messages to your channel. Do not share the settings file or a <code>config.bad.json</code> file before you remove this value.</p></div>
+
+<h2 id="probe">Check the price feed</h2>
+<p>Use <code>--probe</code> to check that the price feed operates correctly. The app reads the settings but does not change them.</p>
+<pre><code>MH_Ticker --probe</code></pre>
+<div class="table-wrap"><table>
+  <thead><tr><th scope="col">Result</th><th scope="col">Meaning</th><th scope="col">Exit code</th></tr></thead>
+  <tbody>
+    <tr><td>PASS</td><td>The check is correct.</td><td class="num">0</td></tr>
+    <tr><td>WARN</td><td>The check failed.</td><td class="num">1</td></tr>
+    <tr><td>NOTE</td><td>The data cannot show the result, for example when the market is closed. A NOTE does not cause a failure.</td><td class="num">0</td></tr>
+    <tr><td>Usage error</td><td><code>--dump</code> was used without a folder or without <code>--probe</code>.</td><td class="num">2</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="build">Build from source</h2>
+<p>Requirements: Windows 10 or later and the latest stable Rust.</p>
+<pre><code>cargo test
+cargo build --release</code></pre>
+<p>The build makes <code>target/release/MH_Ticker.exe</code> and <code>target/release/MH_Ticker_Ultra.exe</code>.</p>
+
+<h2 id="limits">Limits</h2>
+<ul>
+  <li>The prices are for information only. They are not investment advice.</li>
+  <li>Fallback price sources are off by default. A fallback price shows <code>age unknown</code> and cannot start an alert.</li>
+  <li>The data use with 24 symbols is not measured.</li>
+</ul>
+
+<h2 id="changes">Release changes</h2>
+<h3>Source 1.9.0, 14 November 2026 (not released)</h3>
+<ul>
+  <li>Added: <code>--probe</code> checks the price feed and shows PASS, WARN or NOTE.</li>
+  <li>Added: <strong>Copy diagnostics report</strong> in the right-click menu.</li>
+  <li>Added: a data meter line in the menu.</li>
+  <li>Added (Ultra): the chart shows when its data is old.</li>
+</ul>
+<h3>v1.2.3, 16 October 2026</h3>
+<ul><li>Added: a separate app icon for Explorer, the desktop and Task Manager.</li></ul>
+
+<h2 id="reference">Reference</h2>
+<ul>
+  <li><a href="https://github.com/mariyaholic/mh-ticker/blob/main/README.md">README</a></li>
+  <li><a href="https://github.com/mariyaholic/mh-ticker/blob/main/CHANGELOG.md">Changelog</a></li>
+  <li><a href="https://github.com/mariyaholic/mh-ticker/blob/main/THEMES.md">Themes</a></li>
+  <li><a href="https://github.com/mariyaholic/mh-ticker/blob/main/ARCHITECTURE.md">Architecture</a></li>
+</ul>
+<p class="meta">Last checked 14 November 2026 against source commit <code>efde053</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
+</main>
+
+<nav class="toc" aria-labelledby="toc-h"><h2 id="toc-h">On this page</h2><ol>
+  <li><a href="#builds">Builds</a></li><li><a href="#install">Install</a></li><li><a href="#use">Use the panel</a></li>
+  <li><a href="#symbols">Symbols</a></li><li><a href="#position">Position</a></li><li><a href="#poll">Update interval</a></li>
+  <li><a href="#settings">Settings</a></li><li><a href="#probe">Check the feed</a></li><li><a href="#build">Build</a></li>
+  <li><a href="#limits">Limits</a></li><li><a href="#changes">Changes</a></li><li><a href="#reference">Reference</a></li>
+</ol></nav>
+</div>
+
+<footer class="foot"><span>mariyaholic · Documentation</span><span><a href="../../sitemap.html">Index</a> · <a href="../../colophon.html">Colophon</a></span></footer>
+</body>
+</html>
