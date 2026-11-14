@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en" class="theme-paper">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Google Scholar and Google Search skip pages with noindex. Remove this line to let them index the paper (owner decision). -->
+<meta name="robots" content="noindex,nofollow">
+<title>Formal Verification and Lower-Bound Records for Cubic Acute Sets (OEIS A089676) in Lean 4 | mariyaholic</title>
+<meta name="description" content="Preprint. A dependency-free Lean 4 library for cubic acute sets (OEIS A089676): exact values a(0) to a(7), certified witnesses for n up to 24, and new lower bounds for 16 ≤ n ≤ 24 and 47 ≤ n ≤ 53.">
+<link rel="canonical" href="https://mariyaholic.github.io/papers/cubic-acute-sets/">
+<!-- Google Scholar inclusion guidelines: highwire-style citation_* tags -->
+<meta name="citation_title" content="Formal Verification and Lower-Bound Records for Cubic Acute Sets (OEIS A089676) in Lean 4">
+<meta name="citation_author" content="Sugui, Mar Allen P.">
+<meta name="citation_publication_date" content="2026/11/13">
+<meta name="citation_publisher" content="Zenodo">
+<meta name="citation_language" content="en">
+<meta name="citation_keywords" content="acute sets; hypercube vertices; OEIS A089676; Lean 4; formal verification; discrete geometry">
+<meta name="citation_abstract_html_url" content="https://mariyaholic.github.io/papers/cubic-acute-sets/">
+<!-- TODO(finish): add the Zenodo DOI and PDF address (accept: these two tags exist with real values and the DOI resolves)
+<meta name="citation_doi" content="10.5281/zenodo.NNNNNNN">
+<meta name="citation_pdf_url" content="https://zenodo.org/records/NNNNNNN/files/cubic-acute-sets.pdf">
+-->
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../css/plain.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": "Formal Verification and Lower-Bound Records for Cubic Acute Sets (OEIS A089676) in Lean 4",
+  "name": "Formal Verification and Lower-Bound Records for Cubic Acute Sets (OEIS A089676) in Lean 4",
+  "author": [{"@type": "Person", "name": "Mar Allen P. Sugui", "url": "https://mariyaholic.github.io/"}],
+  "datePublished": "2026-11-13",
+  "version": "1.0.0",
+  "inLanguage": "en",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "keywords": ["acute sets", "hypercube vertices", "OEIS A089676", "Lean 4", "formal verification", "discrete geometry"],
+  "about": "Maximum acute subsets of the vertices of the n-dimensional cube",
+  "url": "https://mariyaholic.github.io/papers/cubic-acute-sets/",
+  "isBasedOn": "https://oeis.org/A089676"
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar"><div class="bar-in">
+  <a class="site" href="../../index.html">mariyaholic</a>
+  <nav aria-label="Sections"><a href="../../docs/">Docs</a><a href="../" aria-current="page">Papers</a><a href="../../works.html">Portfolio</a></nav>
+</div></header>
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../">Papers</a></li><li><span aria-current="page">Cubic acute sets</span></li></ol></nav>
+
+<div class="page">
+<main id="main" class="doc">
+<p class="meta">Preprint · Version 1.0.0 · 13 November 2026</p>
+<h1 class="paper-title">Formal Verification and Lower-Bound Records for Cubic Acute Sets (OEIS A089676) in Lean&nbsp;4</h1>
+<p class="authors">Mar Allen P. Sugui</p>
+<p class="meta">MSC 2020: 52C17, 68V20 (primary); 05D05, 51M04 (secondary)</p>
+
+<!-- TODO(finish): replace the three disabled links with the Zenodo record, PDF file and archive file (accept: each link opens the published file; remove aria-disabled and the todo class) -->
+<ul class="actions" aria-label="Files and links">
+  <li><a class="btn primary todo" aria-disabled="true">PDF, 440 KB</a></li>
+  <li><a class="btn todo" aria-disabled="true">Zenodo record (DOI)</a></li>
+  <li><a class="btn todo" aria-disabled="true">Lean source archive, ZIP</a></li>
+  <li><a class="btn" href="#cite">Cite</a></li>
+  <li><a class="btn" href="https://oeis.org/A089676">OEIS A089676</a></li>
+</ul>
+
+<h2 id="summary">Summary</h2>
+<div class="abstract">
+<p>Let <i>a</i>(<i>n</i>) be the largest size of a set <i>S</i> ⊆ {0,1}<sup><i>n</i></sup> in which every three distinct points form only strictly acute angles in ℝ<sup><i>n</i></sup> (OEIS A089676). The paper gives a dependency-free Lean&nbsp;4.35.0 library for these cubic acute sets. Every result below is checked by the Lean kernel.</p>
+<ol>
+  <li>Four definitions of an acute set are equivalent: the dot-product condition, a Boolean “sandwich” exclusion, a coordinate separation criterion and a bit-packed decision procedure.</li>
+  <li>General bounds |<i>S</i>| ≤ 2<sup><i>n</i></sup> and |<i>S</i>| ≤ 2<sup><i>n</i>−1</sup> for <i>n</i> ≥ 2, and the composition constructions of Bevan (2006) and Harangi (2011, case <i>s</i> = 2).</li>
+  <li>Exact values <i>a</i>(0..7) = 1, 2, 2, 4, 5, 6, 8, 9, with lower-bound witnesses for 0 ≤ <i>n</i> ≤ 15.</li>
+  <li>New lower bounds for 16 ≤ <i>n</i> ≤ 24 and 47 ≤ <i>n</i> ≤ 53 that exceed the OEIS table of 2 November 2026.</li>
+</ol>
+<p>Upper bounds for <i>a</i>(8) = 10, <i>a</i>(9) = 16 and <i>a</i>(10) = 17 are not yet formalized. Exact values for <i>n</i> ≥ 11 remain open.</p>
+</div>
+<p class="meta">This summary is a shortened form. The PDF has the full abstract and the provenance statement.</p>
+
+<h2 id="results">New lower bounds</h2>
+<p>For 16 ≤ <i>n</i> ≤ 24, the witnesses come from iterated bipartite 2-colouring lifts. For 47 ≤ <i>n</i> ≤ 53, the bounds come from Bevan products of those witnesses and from monotonicity.</p>
+<div class="table-wrap"><table>
+  <caption>Certified bounds compared with the OEIS <code>a089676_2.txt</code> table (2 November 2026)</caption>
+  <thead><tr><th scope="col" class="num"><i>n</i></th><th scope="col" class="num">OEIS</th><th scope="col" class="num">This paper</th><th scope="col" class="num">Gain</th><th scope="col">Method</th></tr></thead>
+  <tbody>
+    <tr><td class="num">16</td><td class="num">128</td><td class="num">129</td><td class="num">+1</td><td>Bipartite lift</td></tr>
+    <tr><td class="num">17</td><td class="num">129</td><td class="num">130</td><td class="num">+1</td><td>Bipartite lift</td></tr>
+    <tr><td class="num">18</td><td class="num">129</td><td class="num">132</td><td class="num">+3</td><td>Bipartite lift</td></tr>
+    <tr><td class="num">19</td><td class="num">130</td><td class="num">133</td><td class="num">+3</td><td>Bipartite lift</td></tr>
+    <tr><td class="num">20</td><td class="num">130</td><td class="num">136</td><td class="num">+6</td><td>Bipartite lift</td></tr>
+    <tr><td class="num">21</td><td class="num">131</td><td class="num">138</td><td class="num">+7</td><td>Bipartite lift</td></tr>
+    <tr><td class="num">22</td><td class="num">131</td><td class="num">139</td><td class="num">+8</td><td>Bipartite lift</td></tr>
+    <tr><td class="num">23</td><td class="num">132</td><td class="num">140</td><td class="num">+8</td><td>Bipartite lift</td></tr>
+    <tr><td class="num">24</td><td class="num">133</td><td class="num">142</td><td class="num">+9</td><td>Bipartite lift</td></tr>
+    <tr><td class="num">47</td><td class="num">16,385</td><td class="num">16,512</td><td class="num">+127</td><td>Bevan product, 128 × 129</td></tr>
+    <tr><td class="num">48</td><td class="num">16,385</td><td class="num">16,641</td><td class="num">+256</td><td>Bevan square, 129²</td></tr>
+    <tr><td class="num">49</td><td class="num">16,386</td><td class="num">16,641</td><td class="num">+255</td><td>Monotonicity from <i>n</i> = 48</td></tr>
+    <tr><td class="num">50</td><td class="num">16,386</td><td class="num">16,770</td><td class="num">+384</td><td>Bevan product, 129 × 130</td></tr>
+    <tr><td class="num">51</td><td class="num">16,387</td><td class="num">16,900</td><td class="num">+513</td><td>Bevan square, 130²</td></tr>
+    <tr><td class="num">52</td><td class="num">16,387</td><td class="num">17,028</td><td class="num">+641</td><td>Bevan product, 129 × 132</td></tr>
+    <tr><td class="num">53</td><td class="num">16,514</td><td class="num">17,160</td><td class="num">+646</td><td>Bevan product, 130 × 132</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="verification">Verification</h2>
+<ul>
+  <li>Lean 4.35.0, no external packages. <code>lake clean &amp;&amp; lake build</code> completes in 10 jobs.</li>
+  <li>No <code>sorry</code>, custom axioms, <code>native_decide</code> or trust overrides in the source.</li>
+  <li>All exported theorems use only <code>propext</code>, <code>Classical.choice</code> and <code>Quot.sound</code>.</li>
+</ul>
+
+<h2 id="cite">Cite</h2>
+<!-- TODO(finish): put the DOI into both citations (accept: no "DOI pending" text remains) -->
+<div class="cite">
+<p><strong>Text</strong></p>
+<pre><code>Sugui, M. A. P. (2026). Formal verification and lower-bound records for cubic acute sets (OEIS A089676) in Lean 4 (Version 1.0.0) [Preprint]. Zenodo. DOI pending.</code></pre>
+<p><strong>BibTeX</strong></p>
+<pre><code>@misc{sugui2026cubic,
+  author    = {Sugui, Mar Allen P.},
+  title     = {Formal Verification and Lower-Bound Records for
+               Cubic Acute Sets ({OEIS} {A089676}) in {Lean} 4},
+  year      = {2026},
+  month     = nov,
+  publisher = {Zenodo},
+  version   = {1.0.0},
+  note      = {Preprint. DOI pending}
+}</code></pre>
+</div>
+
+<h2 id="details">Details</h2>
+<dl class="facts">
+  <dt>Type</dt><dd>Preprint, 6 pages</dd>
+  <dt>Published</dt><dd>13 November 2026, version 1.0.0</dd>
+  <dt>Licence</dt><dd>Paper: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Source code: Apache 2.0.</dd>
+  <dt>Keywords</dt><dd>acute sets, hypercube vertices, OEIS A089676, Lean 4, formal verification, discrete geometry</dd>
+  <dt>Related</dt><dd><a href="https://oeis.org/A089676">OEIS A089676</a></dd>
+</dl>
+</main>
+</div>
+
+<footer class="foot"><span>mariyaholic · Papers</span><span><a href="../../sitemap.html">Index</a> · <a href="../../colophon.html">Colophon</a></span></footer>
+</body>
+</html>
