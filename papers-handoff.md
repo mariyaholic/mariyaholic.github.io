@@ -1,15 +1,14 @@
 # papers hand-off
 
-Open `TODO(finish)` markers: 3, all in `papers/cubic-acute-sets/index.html`. All three wait for the Zenodo record of the cubic acute sets preprint.
+The DOI slots are filled. No `TODO(finish)` markers remain in `papers/`.
 
-1. `<head>`: uncomment `citation_doi` and `citation_pdf_url` and put in the real record number.
-2. `.actions` list: give the PDF, Zenodo record and archive links their real `href`. Remove `aria-disabled="true"` and the `todo` class.
-3. Cite section: replace "DOI pending" in the text and BibTeX forms with the DOI (add `doi = {...}` to the BibTeX).
+- DOI: `10.5281/zenodo.24210870` (record `https://zenodo.org/records/24210870`).
+- The PDF and archive links use the file names from the release plan: `cubic-acute-sets.pdf` and `cubic-acute-sets-v1.0.0.zip`. The build environment could not reach Zenodo. Open the two buttons on the published page once. If a file name on the record is different, change the two `href` values and `citation_pdf_url` in `papers/cubic-acute-sets/index.html`.
 
 Owner decisions (not markers):
 
 - `noindex` is on the paper page and `papers/index.html`, as on every page. Google Scholar does not index these pages until it is removed.
-- The PDF is not copied into this repository. Its abstract and provenance paragraph name the AI tools used, and the repository rule says no committed file names an AI model or vendor. The page links to Zenodo instead. Copy the PDF in only if the owner allows that exception (Google Scholar prefers a PDF on the same site).
-- The primary navigation of the main look does not have a Papers link yet. `sitemap.html` and the docs hub link to it.
+- The PDF is not copied into this repository. Its abstract and provenance paragraph name the AI tools used, and the repository rule says no committed file names an AI model or vendor. The page links to Zenodo instead.
+- The primary navigation of the main look does not have a Papers link yet. `sitemap.html`, the docs hub and the document-look header link to it.
 
-Accept: `grep -rn "TODO(finish)" papers/` prints nothing, and each link on the paper page opens the published file.
+Accept: each button on `papers/cubic-acute-sets/` opens the published file or record.
