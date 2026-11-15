@@ -530,6 +530,7 @@ h1 em,h2 em,h3 em,.project-name em{color:var(--c11)}
 .ico.dir{background:var(--c12)}.ico.dir::before{content:"";position:absolute;left:-2px;top:-8px;width:18px;height:8px;background:var(--c12);border:2px solid var(--c0);border-bottom:0}
 .ico.app{background:var(--c3)}.ico.app::after{content:"";position:absolute;inset:7px 12px;background:var(--c12);box-shadow:0 0 0 3px var(--c10)}
 .ico.cart{background:var(--c14)}.ico.cart::after{content:"$";position:absolute;inset:0;display:grid;place-items:center;color:var(--c0);font-size:20px}
+.ico.art{background:var(--c7)}.ico.art::before{content:"";position:absolute;inset:4px 5px;background:var(--c12);border:2px solid var(--c0)}.ico.art::after{content:"";position:absolute;left:9px;top:9px;width:9px;height:9px;background:var(--c14)}
 .readme h1{font-size:33px;line-height:1.15}
 .readme p{margin-top:10px}
 .files{list-style:none;padding:0;display:grid;gap:2px}
