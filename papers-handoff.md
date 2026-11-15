@@ -1,6 +1,18 @@
 # papers hand-off
 
-The DOI slots are filled. No `TODO(finish)` markers remain in `papers/`.
+## Part II (`papers/cubic-acute-sets-ii/`)
+
+Open `TODO(finish)` markers: 3, all in `papers/cubic-acute-sets-ii/index.html`. They wait for the Part II Zenodo record (version 2.0.0, a new version of the Part I record).
+
+1. `<head>`: uncomment `citation_doi` and `citation_pdf_url` and put in the real record number.
+2. `.actions` list: give the PDF, Zenodo record and archive links their real `href`. Expected file names: `cubic-acute-sets-ii.pdf` and `cubic-acute-sets-v2.0.0.zip`. Remove `aria-disabled="true"` and the `todo` class.
+3. Cite section: replace "DOI pending" with the DOI in the text and BibTeX forms. Add the DOI to the papers index entry too.
+
+Accept: `grep -rn "TODO(finish)" papers/` prints nothing.
+
+## Part I (`papers/cubic-acute-sets/`)
+
+The DOI slots are filled.
 
 - DOI: `10.5281/zenodo.24210870` (record `https://zenodo.org/records/24210870`).
 - The PDF and archive links use the file names from the release plan: `cubic-acute-sets.pdf` and `cubic-acute-sets-v1.0.0.zip`. The build environment could not reach Zenodo. Open the two buttons on the published page once. If a file name on the record is different, change the two `href` values and `citation_pdf_url` in `papers/cubic-acute-sets/index.html`.
