@@ -77,8 +77,8 @@ These rules follow Google's developer documentation style guide, Material Design
 7. **Focus.** Each link and control shows a visible focus ring.
 8. **Tables.** Use `<th scope="col">` for column heads. Put a wide table in `<div class="table-wrap">` so that it scrolls on a phone, not the page.
 9. **No layout shift.** Give each image a `width` and a `height`.
-10. **No scripts.** Document pages do not load `site.js` or any other script.
-11. **No external requests.** Use system fonts. Do not load web fonts, analytics or embeds.
+10. **No scripts.** Document pages do not load `site.js` or any other script. The one exception: paper pages load `js/track.js`, the click counter.
+11. **No external requests.** Use system fonts. Do not load web fonts, analytics or embeds. The one exception is the paper click counter (`tools/click-counter/`).
 
 ## Page template (documentation)
 
@@ -151,4 +151,11 @@ A paper page is a landing page for one paper. The PDF is the full text. These ru
 
 ### Indexing
 
-Google Scholar and Google Search do not index a page that has `noindex`. The site has `noindex` on all pages now. A paper page can be found in Google Scholar only after the owner removes `noindex` from that page and from `papers/index.html`.
+Paper pages and `papers/index.html` have no `noindex`, so Google Scholar and Google Search can index them. All other pages keep `noindex`. When you add a paper page, also add it to `sitemap.xml`.
+
+### PDF and click counting
+
+1. Put the PDF in the paper folder, for example `papers/cubic-acute-sets/cubic-acute-sets.pdf`. Point `citation_pdf_url` at its full address on this site.
+2. Add `data-track="<paper>/<link>"` to the PDF, record and archive links.
+3. Add the `click-endpoint` meta tag and `<script src="../../js/track.js" defer></script>` to the page head.
+4. Add the line that tells readers that clicks are counted. See `tools/click-counter/README.md`.
