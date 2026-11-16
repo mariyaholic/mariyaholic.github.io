@@ -1,11 +1,16 @@
-// Paper click counter: a Cloudflare Worker with a D1 database.
+// Paper click counter: a Cloudflare Worker with a Workers KV namespace.
 //
 //   POST /hit    body {"link":"cubic-acute-sets/pdf"}  -> 204. Counts one click.
 //   GET  /stats  header "Authorization: Bearer <STATS_TOKEN>" -> JSON counts.
 //
+// Keys in the CLICKS namespace:
+//   t:<link>            {"clicks": n, "first_seen": iso, "last_seen": iso}
+//   u:<link>:<visitor>  first click time of one visitor on one link
+//
 // A unique visitor is a keyed hash (HMAC-SHA-256 with the SALT secret) of the client IP address and user agent.
 // The raw IP address and user agent are never stored. The same person on a new network or browser counts again,
-// so "unique" is an approximation. See README.md.
+// so "unique" is an approximation. KV is eventually consistent, so two clicks at the same moment can count as one.
+// See README.md.
 
 const LINK_PATTERN = /^[a-z0-9-]{1,40}\/[a-z0-9-]{1,20}$/;
 const BOT_PATTERN = /bot|crawl|spider|slurp|preview|fetch|headless|monitor/i;
@@ -55,13 +60,15 @@ async function hit(request, env, cors) {
   const visitor = await keyedHash(env.SALT, `${ip}\n${ua}`);
   const now = new Date().toISOString();
 
-  await env.DB.batch([
-    env.DB.prepare('INSERT OR IGNORE INTO uniques (link, visitor, first_seen) VALUES (?1, ?2, ?3)').bind(link, visitor, now),
-    env.DB.prepare(
-      'INSERT INTO totals (link, clicks, first_seen, last_seen) VALUES (?1, 1, ?2, ?2) ' +
-      'ON CONFLICT(link) DO UPDATE SET clicks = clicks + 1, last_seen = excluded.last_seen'
-    ).bind(link, now),
-  ]);
+  const uKey = `u:${link}:${visitor}`;
+  const tKey = `t:${link}`;
+  const [seen, total] = await Promise.all([env.CLICKS.get(uKey), env.CLICKS.get(tKey, 'json')]);
+  const next = total
+    ? { clicks: total.clicks + 1, first_seen: total.first_seen, last_seen: now }
+    : { clicks: 1, first_seen: now, last_seen: now };
+  const writes = [env.CLICKS.put(tKey, JSON.stringify(next))];
+  if (seen === null) writes.push(env.CLICKS.put(uKey, now));
+  await Promise.all(writes);
   return done();
 }
 
@@ -70,14 +77,28 @@ async function stats(request, env) {
   if (!env.STATS_TOKEN || !(await sameText(auth, `Bearer ${env.STATS_TOKEN}`))) {
     return new Response('Unauthorized', { status: 401 });
   }
-  const { results } = await env.DB.prepare(
-    'SELECT t.link, t.clicks, t.first_seen, t.last_seen, ' +
-    '(SELECT COUNT(*) FROM uniques u WHERE u.link = t.link) AS unique_visitors ' +
-    'FROM totals t ORDER BY t.link'
-  ).all();
-  return new Response(JSON.stringify({ generated_at: new Date().toISOString(), links: results }, null, 2), {
+  const links = [];
+  for (const key of await listAll(env.CLICKS, 't:')) {
+    const link = key.slice(2);
+    const total = (await env.CLICKS.get(key, 'json')) || { clicks: 0 };
+    const uniques = (await listAll(env.CLICKS, `u:${link}:`)).length;
+    links.push({ link, clicks: total.clicks, unique_visitors: uniques, first_seen: total.first_seen, last_seen: total.last_seen });
+  }
+  links.sort((a, b) => a.link.localeCompare(b.link));
+  return new Response(JSON.stringify({ generated_at: new Date().toISOString(), links }, null, 2), {
     headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' },
   });
+}
+
+async function listAll(kv, prefix) {
+  const names = [];
+  let cursor;
+  do {
+    const page = await kv.list({ prefix, cursor });
+    for (const k of page.keys) names.push(k.name);
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor);
+  return names;
 }
 
 async function keyedHash(secret, text) {
