@@ -2,7 +2,7 @@
 
 Maria's personal site: software, an astronomy project, and games. Live at https://mariyaholic.github.io.
 
-Plain static HTML, CSS and JS. No build step, no framework, and no external requests except the YouTube player in the home page's FLUORITE.EYE window.
+Plain static HTML, CSS and JS. No build step, no framework, and no external requests except the YouTube player in the home page's FLUORITE.EYE window and, once it is set up, the paper click counter (`tools/click-counter/`, paper pages only).
 
 ## Layout
 - One `.html` file per page at the root. `404.html` is GitHub Pages' not-found page and uses root paths (`/css/...`) so it works at any URL.
