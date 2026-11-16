@@ -2,13 +2,18 @@
 
 ## Open
 
-- None for the local proposal. Owner review of the proposal is the next step.
+- Agent and owner review of the `feat/serigraph-gallery` pull request against `main`.
+- Owner review of `proposals/starfire-hearth-refresh/` remains open from PR #9.
 
 ## Verification
 
-- Extracted three captures from the user-supplied `screens.zip` after confirming its SHA-256 matches the run 40157308704 artifact: galaxy, research, and event screens. The archive has no frozen 3D colony image; colony/system screenshots contain a blank planner viewport and are excluded from the gallery.
-- Static source review completed for the local proposal. Browser render verification of the proposal page was done over a localhost HTTP server (the browser blocks `file://`): the three captures load, the page has no horizontal overflow, and the live-game embed was fixed from 155px to 483px wide at a 1024px viewport by stacking the Before/After grid below 1180px. In a hidden browser tab, navigated the hosted game through Campaign → First Light → Play → Begin, dismissed “First orders” with Esc, and visually confirmed the 3D colony scene rendered.
+- `node --check js/site.js` exited 0.
+- Python link and navigation audit across all 36 non-gallery HTML files confirmed 30 active site pages (`404.html`, 16 root pages, 2 `docs/*.html`, 10 `docs/*/index.html`, and `proposals/starfire-hearth-refresh/index.html`) include `Gallery` in `<nav class="site-nav">` with resolved targets; the 6 legacy pages under `studies/` remain unchanged.
+- `gallery/` contains static build outputs (`index.html`, `favicon.svg`, `favicon-32.png`, `assets/`, `fonts/JetBrainsMono-OFL.txt`, and 76 `.webp` files under `gallery/posters/`) with `<meta name="robots" content="noindex,nofollow">`.
+- Headless Chromium verification against a local HTTP server passed with exit code 0: zero console errors, zero page errors, zero local HTTP >= 400 responses, zero non-YouTube external requests, zero broken images across `index.html`, `works.html`, `sitemap.html`, `colophon.html`, and `gallery/` (`38` initial visible plate images decoded), working `Darkroom` theme toggle (`data-theme="dark"`), `/` search focus, `Wave 1 (14)` filter tab (`14` cards), `Loupe 1.5x`, `Fit Frame`, `Compare V1 & V2` (`2` images), `Escape` close, and zero horizontal overflow at `1280x800` and `375x812`.
+- Prior `imagegen/gallery` source suite (`npm run typecheck`, `npm run lint`, `vitest run` 19/19 across 3 files, `npm run build` reporting 37 active series with 72 active plates, 2 queued, and 4 archive studies) exited 0 before copying `dist/` into `gallery/`.
 
 ## Scope
 
-- Local proposal only. `hearth.html`, the public portfolio catalogue, the game repository, and the published site remain unchanged.
+- `feat/serigraph-gallery` adds `gallery/`, `img/gallery.png`, `img/98/gallery.png`, `.ico.art` in `css/site.css`, `Gallery` nav links across the 30 active pages, gallery entries on `index.html`, `works.html`, `sitemap.html`, and `colophon.html`, and this `WORKSTACK.md` update.
+- `main` has not been pushed to directly; `studies/` remains unchanged.
