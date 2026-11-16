@@ -1,10 +1,8 @@
 # papers hand-off
 
-## Open marker
+## Click counter
 
-`TODO(finish)` in `papers/cubic-acute-sets/index.html`: the `click-endpoint` meta tag is empty. Deploy the counter with the steps in `tools/click-counter/README.md`, then put its address in the tag.
-
-Accept: a click on the PDF button shows up in `GET /stats`. Until then, the page sends nothing.
+The counter runs at `https://paper-clicks.guimauveqt.workers.dev` (Cloudflare Worker `paper-clicks`, KV namespace `paper-clicks`). `papers/cubic-acute-sets/index.html` points at it. Read the counts with the command in `tools/click-counter/README.md`. No `TODO(finish)` markers remain.
 
 ## Part I (`papers/cubic-acute-sets/`)
 
