@@ -1,0 +1,18 @@
+# Cloudflare Worker settings for the paper click counter. See README.md.
+name = "paper-clicks"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+[vars]
+# Pages that may send clicks. Separate several origins with commas.
+ALLOWED_ORIGINS = "https://mariyaholic.github.io"
+
+[[kv_namespaces]]
+binding = "CLICKS"
+# The namespace that "wrangler kv namespace create paper-clicks" made.
+id = "4ad08d1541784f1591e69d88042c687f"
+
+# Secrets (set with "wrangler secret put", never written in this file):
+#   SALT         random text for the visitor hash
+#   STATS_TOKEN  password for GET /stats

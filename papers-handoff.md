@@ -1,14 +1,17 @@
 # papers hand-off
 
-The DOI slots are filled. No `TODO(finish)` markers remain in `papers/`.
+## Click counter
+
+The counter runs at `https://paper-clicks.guimauveqt.workers.dev` (Cloudflare Worker `paper-clicks`, KV namespace `paper-clicks`). `papers/cubic-acute-sets/index.html` points at it. Read the counts with the command in `tools/click-counter/README.md`. No `TODO(finish)` markers remain.
+
+## Part I (`papers/cubic-acute-sets/`)
 
 - DOI: `10.5281/zenodo.24210870` (record `https://zenodo.org/records/24210870`).
-- The PDF and archive links use the file names from the release plan: `cubic-acute-sets.pdf` and `cubic-acute-sets-v1.0.0.zip`. The build environment could not reach Zenodo. Open the two buttons on the published page once. If a file name on the record is different, change the two `href` values and `citation_pdf_url` in `papers/cubic-acute-sets/index.html`.
+- The PDF is on this site: `papers/cubic-acute-sets/cubic-acute-sets.pdf`, copied from commit `75b994a` of the paper repository (the build uploaded to Zenodo). `citation_pdf_url` points at this copy.
+- The archive link uses the file name from the release plan, `cubic-acute-sets-v1.0.0.zip`. Open it once on the live page. If the name on the record is different, change its `href`.
+- The paper pages have no `noindex`. `robots.txt` points to `sitemap.xml`, which lists `papers/` and `papers/cubic-acute-sets/`.
+- Clicks on the PDF, Zenodo and archive links have `data-track` names `cubic-acute-sets/pdf`, `cubic-acute-sets/zenodo` and `cubic-acute-sets/archive`.
 
-Owner decisions (not markers):
+## Part II
 
-- `noindex` is on the paper page and `papers/index.html`, as on every page. Google Scholar does not index these pages until it is removed.
-- The PDF is not copied into this repository. Its abstract and provenance paragraph name the AI tools used, and the repository rule says no committed file names an AI model or vendor. The page links to Zenodo instead.
-- The primary navigation of the main look does not have a Papers link yet. `sitemap.html`, the docs hub and the document-look header link to it.
-
-Accept: each button on `papers/cubic-acute-sets/` opens the published file or record.
+On hold until it is published. See pull request #15.
