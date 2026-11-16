@@ -1,0 +1,18 @@
+# Cloudflare Worker settings for the paper click counter. See README.md.
+name = "paper-clicks"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+
+[vars]
+# Pages that may send clicks. Separate several origins with commas.
+ALLOWED_ORIGINS = "https://mariyaholic.github.io"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "paper-clicks"
+# Replace with the database_id that "wrangler d1 create paper-clicks" prints.
+database_id = "00000000-0000-0000-0000-000000000000"
+
+# Secrets (set with "wrangler secret put", never written in this file):
+#   SALT         random text for the visitor hash
+#   STATS_TOKEN  password for GET /stats
