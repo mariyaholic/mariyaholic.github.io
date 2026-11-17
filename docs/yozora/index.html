@@ -24,7 +24,7 @@
 <dl class="facts">
   <dt>Platform</dt><dd>Windows (per-user install)</dd>
   <dt>Latest release</dt><dd><!--ver:yozora--><a href="https://github.com/mariyaholic/yozora/releases/tag/v0.2.2">v0.2.2</a><!--/ver-->, 14 November 2026</dd>
-  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/yozora">mariyaholic/yozora</a>, commit <code>dc196ef</code></dd>
+  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/yozora">mariyaholic/yozora</a>, commit <code>6a881bc</code></dd>
   <dt>License</dt><dd>MIT</dd>
 </dl>
 
@@ -41,6 +41,7 @@
   <li>Open Yozora from the Start menu. The control panel opens.</li>
 </ol>
 <p>A portable <code>Yozora.exe</code> is also on the release page. The automatic update procedure does not apply to the portable file.</p>
+<p>A newer installer over an existing install upgrades in place. Setup stops the running Yozora first, keeps your settings and starts Yozora again if it was running. A fresh install starts nothing on its own. If start at sign-in is on and Yozora now runs from a different folder, Yozora points the sign-in entry at its current location the next time it starts.</p>
 
 <h2 id="setup">Set up the Discord card</h2>
 <p>Discord desktop must run on the same computer. You do not need a Discord client secret.</p>
@@ -51,7 +52,7 @@
   <li>Select <strong>Send test card</strong>. Discord shows the card “Yozora test card” for 15 seconds.</li>
   <li>If the card does not show, in Discord go to <strong>Settings &gt; Activity Privacy</strong> and turn on <strong>Share my activity</strong>.</li>
 </ol>
-<p>When all checks pass, the checklist closes. To show it again, select <strong>Show setup checklist</strong> in the <strong>Diagnostics</strong> section.</p>
+<p>When all checks pass, the checklist closes. To show it again, select <strong>Show setup checklist</strong> in the <strong>Diagnostics</strong> section. Yozora has its own Discord application ID built in, so nothing needs entering. If Discord refuses the handshake, the checklist shows an application ID field. It accepts 17 to 20 digits. An empty value goes back to Yozora's app.</p>
 
 <h2 id="sources">Select sources and priority</h2>
 <p>A source is a type of player, for example Spotify or a browser. Yozora shows one source at a time. The source at the top of the priority list wins when it plays.</p>
@@ -63,6 +64,115 @@
 </ol>
 <div class="notice" role="note"><span class="label">Note</span>
 <p>On a new install, <strong>Browser media / videos</strong> and <strong>Other media players</strong> are off. YouTube, Twitch and background browser tabs each have a separate switch. These switches are also off by default.</p></div>
+<p>Yozora reads music through the Windows media controls. For YouTube and Twitch, it can also read the address bar of the active browser tab. This read happens only while a track plays, and Yozora keeps only the video ID or the channel name.</p>
+<ul>
+  <li><strong>YouTube</strong> needs <strong>Browser media / videos</strong>. It matches an exact Edge or Chrome window title. When one window matches, the card shows <strong>Watching YouTube</strong> with the video thumbnail and a <strong>Watch on YouTube</strong> button. With YouTube off, matching tracks stay hidden.</li>
+  <li><strong>Twitch</strong> works the same way. The card shows the live preview from Twitch and a <strong>Watch on Twitch</strong> button. An offline channel has no preview. VODs, clips and directory pages have no channel login, so they show no button.</li>
+  <li><strong>Background Edge tabs</strong> reads the tab names of up to 8 browser windows and looks for a YouTube tab that plays audio. A tab name alone gives no video address, so it shows no Watch button. With the switch off, matching tracks stay hidden.</li>
+</ul>
+<div class="notice" role="note"><span class="label">Note</span>
+<p>Yozora never reads the address bar of an unrelated foreground tab to identify a background video.</p></div>
+<p>If Yozora verified a video address while its tab was active, the same media item keeps its YouTube identity, thumbnail and Watch button when the tab changes. A different media item, a different browser or a long gap drops the kept evidence. Edge must continue to expose the media session. Two videos with identical metadata cannot be told apart by this check.</p>
+<p>Browser videos use only the thumbnail the browser supplies through the Windows media controls. Browser titles are never matched against music catalogs. Discord's servers cannot read the local dashboard art cache, so a browser card can appear on Discord without a large image.</p>
+<p>The priority list is a total order over the six sources: <code>applemusic</code>, <code>spotify</code>, <code>spotifyapi</code>, <code>youtubemusic</code>, <code>browser</code> and <code>generic</code>. If the top source stops, the next source that is on takes over. The order saves to <code>sources.order</code> in <code>cadence.toml</code> together with the source switches. The panel drops unknown or duplicate entries on load.</p>
+<p>The tray menu is built each time it opens. The first row is greyed and names the current track, or says <strong>Nothing playing</strong>. YouTube, Twitch and <strong>Background Edge tabs</strong> appear below a separator, checked as saved.</p>
+
+<h2 id="spotify">Connect the Spotify Web API</h2>
+<p>The desktop Spotify app works with no setup. The Spotify Web API source adds exact artwork and track links. You need a free Spotify developer app.</p>
+<ol class="steps">
+  <li>Create an app at the <a href="https://developer.spotify.com/dashboard">Spotify developer dashboard</a> with the Web API enabled. Add the <strong>Redirect URI</strong> the panel shows (<code>http://127.0.0.1:&lt;panel port&gt;/spotify/callback</code>). No client secret is needed.</li>
+  <li>Paste the app's client ID (32 characters, 0-9 and a-f) into the panel and select <strong>Connect</strong>. Your normal browser opens Spotify's sign-in page.</li>
+  <li>After you agree, Spotify returns to the panel. Yozora stores the refresh token in Windows Credential Manager and starts at once. A restart is not needed.</li>
+</ol>
+<p>The flow is Authorization Code with PKCE (S256). The code verifier stays in memory and expires after 10 minutes. The <code>state</code> value is random, is checked in constant time and works once, so a replayed or forged callback is refused without contacting Spotify. Tokens and codes are never logged or shown. Selecting <strong>Disconnect</strong> stops the polling, deletes the token and sets <code>spotify.mode</code> back to <code>system</code>.</p>
+<p>The panel picks a free port each run. Spotify checks the redirect URI against the ones registered for the app, so set a fixed port in <code>[server] port</code> if you reconnect often. An existing connection keeps working whatever the port.</p>
+
+<h2 id="card">Shape the Discord card</h2>
+<p>The <strong>Discord card</strong> section of the panel edits the card settings. <strong>Apply changes</strong> saves all at once or not at all, <strong>Discard changes</strong> goes back to what is saved, and <strong>Reset to defaults</strong> fills the form for you. Yozora picks the change up on its next update.</p>
+<ul>
+  <li><strong>Presets:</strong> Default, Compact, Album and Detailed. <strong>Load into form</strong> previews a preset. Loading does not save; select <strong>Apply</strong> to keep it.</li>
+  <li><strong>Text lines:</strong> the top line, the second line and the two image tooltips are Go templates of at most 256 characters. The panel shows the rendered result and refuses a template that does not run. <strong>Placeholders</strong> lists what a template can use.</li>
+  <li><strong>Choices:</strong> what the card shows while a track is paused (<code>show</code> or <code>hide</code>), the activity type (<code>listening</code>, <code>watching</code>, <code>playing</code>) and the status display (<code>app</code>, <code>state</code>, <code>details</code>).</li>
+  <li><strong>Buttons:</strong> the listen-along label (at most 32 characters; empty or <code>Listen along</code> gives the service-specific label) and the search fallback.</li>
+</ul>
+<p>The panel saves through <code>/api/card</code>, which rejects unknown fields, out-of-range choices and bad templates without changing the file.</p>
+<p>Card text uses the track you play. The header names the player: <strong>Listening to Spotify</strong>, <strong>Listening to Apple Music</strong>, or the player's name. Browser sessions name the browser, not a guess at the streaming service in it. Players are matched from a fixed table of Windows app IDs and exe names in the source. Tidal, Deezer, Qobuz, Amazon Music, foobar2000, MusicBee, AIMP, VLC, iTunes, Apple TV, Media Player and Windows Media Player stay under <strong>Other media players</strong>. An app that is not in the table is also <code>generic</code> and gets a name from its exe or app ID.</p>
+<p>Artwork is found asynchronously, so a slow artwork service does not delay the song text. Yozora asks the iTunes Search service first, for the storefront of your Windows region. If iTunes has nothing, it asks Deezer's public search, which needs no key, and uses the image only when the title and the artist both match. Deezer art carries no track link, so it adds no <strong>Listen</strong> button. Results are cached for a day per storefront. Override the storefront in <code>cadence.toml</code>; it takes effect from the next track:</p>
+<pre><code>[art]
+  country = "GB"   # ISO 3166 alpha-2 code; empty follows the Windows region</code></pre>
+<p>The small image is Yozora's application icon. Override <code>discord.small_image</code> with a Discord asset key or a publicly accessible image URL.</p>
+<p>The second card button links to the Yozora repository. The built-in address lives in <code>internal/config/config.go</code>, in <code>Defaults()</code> as <code>Buttons.YozoraURL</code>. To point it somewhere else, set it in <code>%APPDATA%\uika-resonance\cadence.toml</code>:</p>
+<pre><code>[buttons]
+  enabled = true
+  label = "Listen along"
+  spotify_search_fallback = true
+  yozora_url = "https://github.com/mariyaholic/yozora"</code></pre>
+<p>No local drive path or enclosing repository name is used to build the address. A folder move therefore needs no code change.</p>
+<h3>Hide tracks</h3>
+<p>Some tracks should never reach your profile, and that is okay. A hidden track is treated like a blocked source: it is never sent to Discord, nothing is looked up for it, and a card already showing for it is cleared at the next rate step. The panel preview still shows it, marked <strong>Hidden from Discord</strong>.</p>
+<ol class="steps">
+  <li>Select <strong>Hide this song</strong> (artist and title together) or <strong>Hide this artist</strong> on the preview.</li>
+  <li>To remove a rule again, open the <strong>Hidden from Discord</strong> list in the Discord card section.</li>
+</ol>
+<p>Rules live in <code>cadence.toml</code>, one table each. Every named field must match:</p>
+<pre><code>[[sources.hidden]]
+  artist = "Some Artist"
+
+[[sources.hidden]]
+  artist = "Another Artist"
+  title = "Song * (Live)"</code></pre>
+<p>A field matches the whole value, ignoring case and surrounding spaces. <code>*</code> stands for any run of characters. There is nothing else, so there are no regular expressions. A rule made only of <code>*</code>, or empty, is ignored so it can never hide everything. At most 200 rules, each field at most 128 characters. While a hidden track is playing from the highest-priority source, a lower-priority source is not used instead.</p>
+<h3>Back up panel settings</h3>
+<p><strong>Panel settings backup</strong> exports the saved card fields, source switches, priority and appearance as <code>yozora-panel-settings.json</code>. Unsaved form edits are not included. Account connections, client IDs, hidden-track rules, startup and system settings are outside the backup. Card text you wrote is included, so review the file before you share it.</p>
+<ol class="steps">
+  <li>To restore, choose a JSON backup of up to 64 KiB and review its values.</li>
+  <li>Select <strong>Apply import</strong>. Validation and preview do not save.</li>
+  <li>If another panel or the tray changed supported settings after the preview, make a fresh preview first.</li>
+</ol>
+<p>Invalid hand-edited saved settings return an export error, but a valid backup can still restore supported values.</p>
+
+<h2 id="look">Change the look</h2>
+<p>The <strong>Appearance</strong> button in the panel header opens 11 themes, the motion setting and the language. Each choice applies at once and saves in <code>cadence.toml</code>:</p>
+<pre><code>[ui]
+  theme = "yozora"
+  motion = "system"
+  language = "system"</code></pre>
+<div class="table-wrap"><table>
+  <caption>Themes</caption>
+  <thead><tr><th scope="col">Theme id</th><th scope="col">Name</th><th scope="col">Mode</th></tr></thead>
+  <tbody>
+    <tr><td><code>yozora</code> (default)</td><td>Night sky</td><td>Dark</td></tr>
+    <tr><td><code>uika</code></td><td>Uika</td><td>Dark</td></tr>
+    <tr><td><code>pine</code></td><td>Pine</td><td>Dark</td></tr>
+    <tr><td><code>kurisu</code></td><td>Kurisu</td><td>Dark</td></tr>
+    <tr><td><code>ava</code></td><td>Ava</td><td>Dark</td></tr>
+    <tr><td><code>astra</code></td><td>Astra</td><td>Dark</td></tr>
+    <tr><td><code>mariyaholic-98</code></td><td>Mariyaholic-98</td><td>Dark</td></tr>
+    <tr><td><code>sumimi</code></td><td>Sumimi</td><td>Light</td></tr>
+    <tr><td><code>ledger</code></td><td>Ledger</td><td>Light</td></tr>
+    <tr><td><code>confluence</code></td><td>Confluence</td><td>Light</td></tr>
+    <tr><td><code>astra-light</code></td><td>Astra light</td><td>Light</td></tr>
+  </tbody>
+</table></div>
+<p>Themes that looked nearly identical were merged: Omoi Panel into Night sky, and Residual Night and Paper into Astra and Astra light. Saved ids <code>panel</code>, <code>residual</code> and <code>residual-light</code> load as the theme that absorbed them. An unknown or missing <code>theme</code> value loads as <code>yozora</code>.</p>
+<p>Motion answers an event only: a hover or press, a drag, a reorder, a new track or play state, or a save in progress. Nothing animates while the panel sits idle. <strong>Follow Windows</strong> uses the Windows “Show animations” setting, <strong>Reduced</strong> turns every animation off, and <strong>Full</strong> keeps motion on even when Windows asks for reduced motion.</p>
+<div class="table-wrap"><table>
+  <caption>Motion per theme</caption>
+  <thead><tr><th scope="col">Theme</th><th scope="col">On events</th><th scope="col">Buttons</th><th scope="col">Drag and reorder</th></tr></thead>
+  <tbody>
+    <tr><td>Night sky</td><td>New track: artwork fades in, the crescent's star twinkles</td><td>Lift 1px, gold border</td><td>Rows part around the drop point; glowing drop line; rows slide 200ms</td></tr>
+    <tr><td>Uika</td><td>Wine glow fades in once when the theme loads; new track: artwork fades in</td><td>Gold underline sweeps in</td><td>Lifted row glows gold; rows glide 300ms</td></tr>
+    <tr><td>Pine, Kurisu, Ava</td><td>Live playback dot. Kurisu: new text warms up. Ava: readouts flash on track or play-state change</td><td>0.15s colour, 1px accent outline on press</td><td>2px accent edge on the dragged row; rows snap. Kurisu: amber afterglow. Ava: the drop line sweeps</td></tr>
+    <tr><td>Ledger</td><td>None</td><td>Ink colour</td><td>A double rule opens at the drop point; rows snap</td></tr>
+    <tr><td>Astra, Astra light</td><td>None (colour changes only, 120ms)</td><td>Colour only</td><td>Dashed placeholder, ruler-tick drop line; rows snap</td></tr>
+    <tr><td>Mariyaholic-98</td><td>A block cursor blinks while a save is in flight</td><td>Keys sink into their hard shadow</td><td>Hard-shadow preview on a 4px grid; rows move in four frames</td></tr>
+    <tr><td>Sumimi</td><td>New track: the card fades in</td><td>A gold wash spreads from the press point</td><td>Paper-lift preview; rows ease 300ms</td></tr>
+    <tr><td>Confluence</td><td>None</td><td>Oxblood underline</td><td>Oxblood drop rule; rows slide 200ms</td></tr>
+  </tbody>
+</table></div>
+<p>The panel and the tray menu come in English and Japanese. <strong>Follow Windows</strong> uses the Windows display language, <strong>English</strong> and <strong>日本語</strong> fix one. Product and service names stay in Latin script, and the Discord card is not translated: its text comes from your own template settings.</p>
+<p>With a Windows contrast theme on, the panel uses the system colours, so nothing depends on the theme's own colours.</p>
+<p>Colours are copied from each source palette. Where a colour would fall below 4.5:1 as text, a lighter or darker value is used instead and marked <code>derived</code> in <code>internal/server/ui.html</code>. Each theme's faces ship inside the binary (Latin subsets, about 370 KB, under the SIL Open Font License) and the panel serves them itself, so nothing is fetched from the network. Night sky uses Segoe UI and Confluence uses Georgia and Consolas, which Windows already has.</p>
 
 <h2 id="pause">Pause sharing</h2>
 <p>A pause removes your Discord card in approximately five seconds. Yozora continues to find media, but it does not send it to Discord.</p>
@@ -70,21 +180,24 @@
   <li>To pause, select <strong>Pause sharing for 1 hour</strong> or <strong>Pause until I resume</strong> in the tray menu. Or, select <strong>Pause sharing</strong> in the control panel.</li>
   <li>To stop the pause, select <strong>Resume sharing</strong>.</li>
 </ul>
-<p>A pause stays in memory only. When Yozora starts again, the pause stops.</p>
+<p>A pause stays in memory only. When Yozora starts again, the pause stops. While paused, the preview shows “Sharing paused until 15:30” (or “Sharing paused”) with a <strong>Resume</strong> button.</p>
+<p>The panel also offers an interface: <code>POST /api/pause</code> with <code>{"action":"pause","minutes":60}</code> (1 to 1440), <code>{"action":"pause"}</code> (until resumed) or <code>{"action":"resume"}</code>. <code>/api/state</code> reports <code>paused</code> and <code>paused_until</code>.</p>
 
 <h2 id="update">Update Yozora</h2>
-<p>Yozora checks GitHub for a new release approximately one time each day. A check does not install a release.</p>
+<p>Yozora checks GitHub for a new release approximately one time each day. The first check starts about two minutes after launch. A check does not install a release.</p>
 <ol class="steps">
   <li>To check now, go to the <strong>Startup</strong> section and select <strong>Check for updates</strong>.</li>
   <li>When a new release is available, select <strong>Update now</strong>.</li>
   <li>Yozora downloads the installer, compares its SHA-256 checksum with <code>SHA256SUMS.txt</code> and installs it. Your settings stay the same.</li>
   <li>Open the control panel again from the tray icon.</li>
 </ol>
-<div class="notice" role="note"><span class="label">Note</span>
-<p>An unsigned build checks the checksum only. The checksum comes from the same release as the installer. It finds a damaged download. It does not find a changed release. If this is not sufficient for you, update manually from the release page.</p></div>
-<p>To stop all update checks, add this to <code>%APPDATA%\uika-resonance\cadence.toml</code>:</p>
+<p>A check goes to <code>api.github.com</code> with the user agent <code>Yozora/&lt;version&gt;</code> and nothing else about you or your machine. The time and result are remembered in <code>update.json</code>, so a restart does not force another check. A local <code>dev</code> build never checks. To stop all update checks, add this to <code>%APPDATA%\uika-resonance\cadence.toml</code>:</p>
 <pre><code>[update]
 check = false</code></pre>
+<p><strong>Update now</strong> downloads only over HTTPS, only from github.com and GitHub's release download hosts, up to 50 MB, and runs the installer silently. Nothing is ever installed unless you press one of these.</p>
+<div class="notice" role="note"><span class="label">Note</span>
+<p>An unsigned build checks the checksum only. The checksum comes from the same release as the installer. It finds a damaged download. It does not find a changed release. If this is not sufficient for you, update manually from the release page.</p></div>
+<p>To test the update path from an older build, install the pinned <a href="https://github.com/mariyaholic/yozora/releases/download/v0.2.1/Yozora-Setup.exe">v0.2.1 Setup</a> and follow the <a href="https://github.com/mariyaholic/yozora/blob/main/docs/ROLLOUT.md">rollout guide</a>.</p>
 
 <h2 id="remove">Remove Yozora</h2>
 <ol class="steps">
@@ -99,6 +212,23 @@ check = false</code></pre>
   <li><code>%TEMP%\uika-probe</code></li>
   <li>The Spotify entries in Windows Credential Manager</li>
 </ul>
+<p>A silent uninstall (<code>unins000.exe /VERYSILENT</code>) keeps all of these unless you add <code>/PURGE=1</code>.</p>
+
+<h2 id="settings">The settings file</h2>
+<p>Settings live in <code>%APPDATA%\uika-resonance\cadence.toml</code>. Each time the file loads or saves cleanly, Yozora keeps a copy beside it as <code>cadence.toml.last-good</code>.</p>
+<p>If a hand edit breaks the file while Yozora runs, the change is ignored, the previous settings stay in use, and the log says why. If the file is broken when Yozora starts, Yozora starts with the last good copy and moves your edited file to <code>cadence.toml.broken-YYYYMMDD-HHMMSS</code> so you can fix it. Without a usable last-good copy, startup fails with the parse error.</p>
+<p><code>log.level</code> is read at startup and again at every config reload, so a hand edit or a panel save takes effect without a restart.</p>
+
+<h2 id="performance">Speed</h2>
+<p>With media playing, Yozora checks the Windows media sessions every <code>sources.poll_ms</code> (default 1000 ms) and updates its state every 250 ms. After a minute with no media session and nothing on your Discord profile, it slows to one session check every 5 seconds and one update every 2 seconds. It returns to full speed as soon as any session appears.</p>
+<p>A newly started track shows in Yozora within about 5.25 seconds at worst, and on Discord after the usual <code>presence.track_debounce_ms</code> (default 500 ms) on top. While a card is still on your profile, Yozora stays at full speed so the clear is not delayed. A <code>poll_ms</code> of 5000 or more is left as it is.</p>
+
+<h2 id="logs">Logs</h2>
+<p>The background process writes <code>%LOCALAPPDATA%\uika-resonance\logs\uika-resonance.log</code>. Past 5 MB the file is renamed to <code>uika-resonance.log.1</code> and a new file starts, so the logs never take more than about 10 MB.</p>
+<pre><code>[log]
+level = "info"   # debug, info, warn, error or off</code></pre>
+<p><code>debug</code> adds the source file and line to each entry and <code>off</code> writes no log file. The log lines carry no severity yet, so <code>warn</code> and <code>error</code> currently write the same lines as <code>info</code>. An unknown value is logged and treated as <code>info</code>.</p>
+<p><strong>Copy report</strong> under Diagnostics copies a plain-text report for bug reports: version, Windows build, source, artwork route, Discord state, last error, enabled sources and theme. It never contains track titles, artists, tokens, client IDs or file paths with your user name. <strong>Save report</strong> downloads the same report as <code>yozora-diagnostics.txt</code>. If the browser refuses clipboard access, the text is shown in a box to select by hand.</p>
 
 <h2 id="build">Build from source</h2>
 <p>Requirements: Windows and Go 1.27.1 or later.</p>
@@ -124,6 +254,18 @@ go build -ldflags=-H=windowsgui -o Yozora.exe ./cmd/yozora
 <p>The build stamps the version with <code>-ldflags "-X uika-resonance/internal/version.Version=0.2.N"</code>, as the release workflow does. Without this option, <code>version</code> shows <code>dev</code>.</p>
 <p>The icon of <code>Yozora.exe</code> comes from <code>cmd/yozora/rsrc_windows_amd64.syso</code>. To generate that file again from <code>assets/yozora.ico</code>, run <code>go-winres simply --arch amd64 --icon ../../assets/yozora.ico --manifest gui</code>.</p>
 
+<h2 id="limits">Limits</h2>
+<ul>
+  <li>The regression tests use a private Windows named pipe, not the live Discord client. Ordinary <code>go test ./...</code> never publishes anything to a Discord profile.</li>
+  <li>The browser regression check exercises the panel with synthetic media and settings. It does not exercise native WebView2 or media detection.</li>
+  <li>The Spotify connect flow is tested against a local fake token endpoint. It has not yet been tried against Spotify itself.</li>
+  <li>Native WebView2 download handling still needs a Windows smoke test for the report download in this build.</li>
+</ul>
+
+<h2 id="repo">Repository and release</h2>
+<p>A merge to <code>main</code> that changes what ships builds and publishes a release automatically. What ships: Go sources (not <code>_test.go</code> files), <code>go.mod</code>/<code>go.sum</code>, the icon resources, the installer, the embedded panel or the workflow itself. Documentation, scripts and test-only merges do not cut a release. The version is <code>&lt;series&gt;.N</code>: the latest tag of the series plus one, starting at <code>.0</code> for a new series. The series (<code>0.2</code> now) is set by hand in the workflow and raised for a big change. Use the “Run workflow” button on the release workflow to republish without a code change.</p>
+<p><code>packaging/winget/</code> holds manifest templates for package <code>Mariyaholic.Yozora</code> (Inno installer, per-user scope). Each release fills in the version, download URL and installer SHA256 and uploads them as a build artifact. Nothing is sent to winget automatically. To publish, open a pull request to <a href="https://github.com/microsoft/winget-pkgs">microsoft/winget-pkgs</a> with the three files under <code>manifests/m/Mariyaholic/Yozora/&lt;version&gt;/</code>. Validate locally first with <code>winget validate</code>.</p>
+
 <h2 id="changes">Release changes</h2>
 <h3>v0.2.2, 14 November 2026</h3>
 <ul>
@@ -139,14 +281,20 @@ go build -ldflags=-H=windowsgui -o Yozora.exe ./cmd/yozora
   <li><a href="https://github.com/mariyaholic/yozora/blob/main/docs/RELEASE-NOTES-v0.2.2.md">Release notes v0.2.2</a></li>
   <li><a href="https://github.com/mariyaholic/yozora/blob/main/docs/ROLLOUT.md">Rollout guide</a></li>
   <li><a href="https://github.com/mariyaholic/yozora/blob/main/docs/STATE-MACHINE-AUDIT.md">State machine audit</a></li>
+  <li><a href="https://github.com/mariyaholic/yozora/blob/main/docs/FEATURE-PLAN.md">Feature plan</a></li>
+  <li><a href="https://github.com/mariyaholic/yozora/blob/main/docs/FEATURE-ASSESSMENT.md">Feature assessment</a></li>
+  <li><a href="https://github.com/mariyaholic/yozora/blob/main/docs/FEATURE-STATES.md">Feature states</a></li>
 </ul>
-<p class="meta">Last checked 17 November 2026 against source commit <code>dc196ef</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
+<p class="meta">Last checked 17 November 2026 against source commit <code>6a881bc</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
 </main>
 
 <nav class="toc" aria-labelledby="toc-h"><h2 id="toc-h">On this page</h2><ol>
   <li><a href="#install">Install</a></li><li><a href="#setup">Set up</a></li><li><a href="#sources">Sources</a></li>
+  <li><a href="#spotify">Spotify</a></li><li><a href="#card">Card</a></li><li><a href="#look">Look</a></li>
   <li><a href="#pause">Pause</a></li><li><a href="#update">Update</a></li><li><a href="#remove">Remove</a></li>
-  <li><a href="#build">Build</a></li><li><a href="#changes">Changes</a></li><li><a href="#reference">Reference</a></li>
+  <li><a href="#settings">Settings</a></li><li><a href="#performance">Speed</a></li><li><a href="#logs">Logs</a></li>
+  <li><a href="#build">Build</a></li><li><a href="#limits">Limits</a></li><li><a href="#repo">Repository</a></li>
+  <li><a href="#changes">Changes</a></li><li><a href="#reference">Reference</a></li>
 </ol></nav>
 </div>
 
