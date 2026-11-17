@@ -24,7 +24,7 @@
 <dl class="facts">
   <dt>Platform</dt><dd>Windows (per-user install)</dd>
   <dt>Latest release</dt><dd><!--ver:yozora--><a href="https://github.com/mariyaholic/yozora/releases/tag/v0.2.2">v0.2.2</a><!--/ver-->, 14 November 2026</dd>
-  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/yozora">mariyaholic/yozora</a>, commit <code>6b1912c</code></dd>
+  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/yozora">mariyaholic/yozora</a>, commit <code>dc196ef</code></dd>
   <dt>License</dt><dd>MIT</dd>
 </dl>
 
@@ -106,7 +106,7 @@ check = false</code></pre>
 go test ./... -count=1
 go build -ldflags=-H=windowsgui -o Yozora.exe ./cmd/yozora
 ./Yozora.exe serve</code></pre>
-<p><code>Yozora.exe</code> without an argument opens the control panel. With an argument, it operates as a command-line tool.</p>
+<p><code>Yozora.exe</code> without an argument opens the control panel. With an argument, it operates as a command-line tool. One file does both jobs. The control panel starts the background process by re-launching itself with <code>serve</code>. The background process owns the tray icon. Its <strong>Open control panel</strong> item re-launches the file with the internal <code>panel</code> command. The panel window runs in its own short-lived process. It exits when it closes or when the background process stops.</p>
 <div class="table-wrap"><table>
   <caption>Commands</caption>
   <thead><tr><th scope="col">Command</th><th scope="col">Function</th></tr></thead>
@@ -120,6 +120,9 @@ go build -ldflags=-H=windowsgui -o Yozora.exe ./cmd/yozora
     <tr><td><code>version</code></td><td>Shows the version. A local build shows <code>dev</code>.</td></tr>
   </tbody>
 </table></div>
+<p>The build uses the <code>windowsgui</code> linker flag. A double-click on <code>Yozora.exe</code> opens no console window.</p>
+<p>The build stamps the version with <code>-ldflags "-X uika-resonance/internal/version.Version=0.2.N"</code>, as the release workflow does. Without this option, <code>version</code> shows <code>dev</code>.</p>
+<p>The icon of <code>Yozora.exe</code> comes from <code>cmd/yozora/rsrc_windows_amd64.syso</code>. To generate that file again from <code>assets/yozora.ico</code>, run <code>go-winres simply --arch amd64 --icon ../../assets/yozora.ico --manifest gui</code>.</p>
 
 <h2 id="changes">Release changes</h2>
 <h3>v0.2.2, 14 November 2026</h3>
@@ -137,7 +140,7 @@ go build -ldflags=-H=windowsgui -o Yozora.exe ./cmd/yozora
   <li><a href="https://github.com/mariyaholic/yozora/blob/main/docs/ROLLOUT.md">Rollout guide</a></li>
   <li><a href="https://github.com/mariyaholic/yozora/blob/main/docs/STATE-MACHINE-AUDIT.md">State machine audit</a></li>
 </ul>
-<p class="meta">Last checked 14 November 2026 against source commit <code>6b1912c</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
+<p class="meta">Last checked 17 November 2026 against source commit <code>dc196ef</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
 </main>
 
 <nav class="toc" aria-labelledby="toc-h"><h2 id="toc-h">On this page</h2><ol>
