@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "class": "synthetic",
+  "caption": "Synthetic demonstration - not a measured result.",
+  "generated_at": "2026-01-01T00:00:00Z",
+  "stale_after_min": 240,
+  "rounding": "2 significant figures",
+  "totals": {
+    "tokens_7d": 420000000,
+    "tokens_30d": 6100000000,
+    "spend_usd_30d": 12,
+    "mix_pct": {
+      "fresh_input": 2,
+      "cache_read": 90,
+      "cache_write": 2,
+      "output": 6
+    }
+  },
+  "harnesses": [
+    {
+      "id": "demo-tool-a",
+      "tokens_7d": 300000000,
+      "tokens_30d": 4000000000,
+      "share_pct": 66,
+      "spend_usd_30d": 0
+    },
+    {
+      "id": "demo-tool-b",
+      "tokens_7d": 90000000,
+      "tokens_30d": 1500000000,
+      "share_pct": 25,
+      "spend_usd_30d": 9.5
+    },
+    {
+      "id": "demo-tool-c",
+      "tokens_7d": 30000000,
+      "tokens_30d": 600000000,
+      "share_pct": 9,
+      "spend_usd_30d": 2.4
+    }
+  ],
+  "weekly_index": [
+    10,
+    22,
+    35,
+    50,
+    44,
+    61,
+    70,
+    66,
+    80,
+    100,
+    72,
+    58
+  ],
+  "models": [
+    {
+      "id": "demo-model-1",
+      "tokens_7d": 300000000,
+      "tokens_30d": 4000000000,
+      "share_pct": 66
+    },
+    {
+      "id": "demo-model-2",
+      "tokens_7d": 90000000,
+      "tokens_30d": 1500000000,
+      "share_pct": 25
+    }
+  ]
+}
