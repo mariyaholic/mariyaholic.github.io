@@ -25,7 +25,7 @@
   <dt>Platform</dt><dd>Windows x64 for the desktop app and Explorer; Linux and macOS for the terminal pipeline</dd>
   <dt>Runtime</dt><dd>Rust 1.85 or later</dd>
   <dt>Status</dt><dd>0.1.0 source preview, no release</dd>
-  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/csv-viewer">mariyaholic/csv-viewer</a>, commit <code>44d2ce8</code></dd>
+  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/csv-viewer">mariyaholic/csv-viewer</a>, commit <code>012f28d</code></dd>
   <dt>License</dt><dd>Apache-2.0</dd>
 </dl>
 
@@ -44,6 +44,70 @@
 <p>A limited scan checks only the reported range. When <strong>Find</strong> shows no match, this does not prove that the whole file has no match. An explicit full scan checks the whole file.</p></div>
 <div class="notice caution" role="note"><span class="label">Caution</span>
 <p>The table can show a shortened value. If you copy a shortened display value, the clipboard may miss the full original.</p></div>
+<p>The first preview keeps a bounded head of 256 KiB. You ask for the full scan yourself. In the preview window, push the <code>F</code> key. In the terminal viewer, use <code>--full</code> or push the <code>f</code> key.</p>
+<p>The report is honest about coverage. A partial scan reports the scanned records, the bytes read and an incomplete reason. It never reports an exact total. Only a complete scan sets <code>total_records</code>.</p>
+<p>A date range appears only when you ask for it. You give a 1-based column number and an explicit interpretation: <code>ymd</code>, <code>dmy</code> or <code>mdy</code>. The range appears only after a complete scan (see <a href="#terminal">Use the terminal viewer</a>).</p>
+
+<h2 id="notes">Read the review notes</h2>
+<p>The viewer writes review notes, not conversions. The source cells stay unchanged. The notes flag leading zeros, ambiguous day/month dates, mixed types, boolean spellings, long numbers, formula-like text, link-like text, quoted multiline fields, ragged rows, duplicate header names and replacement errors. Each note carries bounded samples and counts.</p>
+
+<h2 id="desktop">Use the desktop app</h2>
+<p>A native Windows desktop companion exists as a portable developer ZIP. Extract the ZIP and run <code>csv-desktop.exe</code>. No COM registration is needed.</p>
+<p>The app is a bounded, read-only paged browser. It has cross-page literal search. It is not an editable spreadsheet.</p>
+<p>The app ships six themes: Paper, Ink, PC-98, Doloris, Sumimi and Marigold.</p>
+<p>The <a href="https://github.com/mariyaholic/csv-viewer/blob/main/docs/LARGE-FILE-BROWSING.md">large-file guide</a> gives the browsing and search limits. The <a href="https://github.com/mariyaholic/csv-viewer/blob/main/docs/STANDALONE-USAGE.md">standalone usage guide</a> gives the run and build instructions, the limits and the remaining native acceptance. The <a href="https://github.com/mariyaholic/csv-viewer/blob/main/design/system/README.md">six-theme design system</a> defines the themes and the component contracts for future features.</p>
+
+<h2 id="formats">Detect the encoding and dialect</h2>
+<p>The viewer detects the encoding and the dialect before it shows rows.</p>
+<ul>
+  <li>Encodings: UTF-8, UTF-16LE, UTF-16BE and Windows-1252.</li>
+  <li>Delimiters: comma, semicolon, tab and pipe.</li>
+  <li>Quoted fields and embedded newlines are read as one field.</li>
+</ul>
+<p>You can override each choice on the command line:</p>
+<pre><code>cargo run -p csv-viewer -- --render --delimiter ';' --encoding windows-1252 \
+  --header present path/to/file.csv</code></pre>
+
+<h2 id="explorer">Use the Explorer preview</h2>
+<p>The Explorer preview handler is an opt-in Windows feature. The handler reads the stream that Explorer supplies. It never assumes a filesystem path. It renders a text preview with the source cells unchanged. It supports <code>IInitializeWithStream</code> and <code>IPreviewHandler</code>.</p>
+<p>Registration is per-user, under <code>HKCU\Software\Classes</code> and <code>HKCU\Software\Microsoft\Windows\CurrentVersion\PreviewHandlers</code>.</p>
+<div class="notice" role="note"><span class="label">Note</span>
+<p>Registration warns before it changes a preview association. It removes only registry values that still point to this handler. Shared registry keys are never deleted. Empty keys are expected residue. The handler's exclusive CLSID tree could be deleted safely, but it is also left in place.</p></div>
+<p>The DLL, the worker and the COM implementation live in <code>crates/csv-preview</code> behind <code>cfg(windows)</code>. They need a 64-bit Windows build and real Explorer testing. Read the <a href="https://github.com/mariyaholic/csv-viewer/blob/main/docs/TESTING.md">testing notes</a> before you distribute the handler. The <a href="https://github.com/mariyaholic/csv-viewer/blob/main/STATUS.md">status document</a> gives the current state.</p>
+
+<h2 id="worker">The worker process</h2>
+<p>A separate <code>csv-worker</code> process reads the file. The host passes a path inside a private spool directory and an exact byte count. The protocol is versioned and length-prefixed, with a bounded frame size. Worker and request limits cap records, bytes and time.</p>
+
+<h2 id="market">Read market heuristics</h2>
+<p>The market heuristics are optional and off until you map the OHLC fields yourself. The viewer can then report a constant spread, an open equal to the previous close, return tails, price plausibility and missing data. Thresholds and sample sizes bound each report.</p>
+<div class="notice" role="note"><span class="label">Note</span>
+<p>Baseline comparison is unavailable unless you supply a dated, licensed, instrument-specific local baseline.</p></div>
+<p>The viewer writes nothing and calls no trading interface. A future market-data reader would be strictly read-only: no order placement, modification, closing or other trading calls.</p>
+<div class="notice" role="note"><span class="label">Note</span>
+<p>The market findings are heuristics. They are not proof of fraud or authenticity and not financial advice.</p></div>
+<p>MT5/MetaTrader integration is not included. CSV viewer and preview is not affiliated with MetaQuotes; MT5 is a MetaQuotes trademark.</p>
+
+<h2 id="terminal">Use the terminal viewer</h2>
+<p>The <code>csv-viewer</code> companion is a small cross-platform terminal viewer with a virtualized table, review notes, scan details and an About screen. The plain-text render is used automatically when stdout is not a terminal.</p>
+<pre><code># Plain-text preview
+cargo run -p csv-viewer -- --render path/to/file.csv
+
+# Interactive viewer
+cargo run -p csv-viewer -- path/to/file.csv</code></pre>
+<p>In the interactive viewer, the arrow keys scroll, <code>PgUp</code> and <code>PgDn</code> move by page, <code>w</code> shows warnings, <code>d</code> shows details, <code>a</code> shows About, <code>f</code> runs an explicit full scan and <code>q</code> quits.</p>
+<p>A complete scan with an explicit date range uses a 1-based column number:</p>
+<pre><code>cargo run -p csv-viewer -- --render --full \
+  --date-column 1 --date-format ymd path/to/file.csv</code></pre>
+
+<h2 id="settings">The settings file</h2>
+<p>Settings are a JSON file per user. On Windows, the file is <code>%APPDATA%\csv-viewer\settings.json</code>. On other systems, it is <code>$XDG_CONFIG_HOME/csv-viewer/settings.json</code> or <code>~/.config/csv-viewer/settings.json</code>.</p>
+<ul>
+  <li><code>CSV_VIEWER_SETTINGS</code> and <code>--settings</code> select an explicit file.</li>
+  <li><code>CSV_VIEWER_WORKER</code> overrides the worker path that embedders use. The COM handler looks for <code>csv-worker.exe</code> next to the DLL.</li>
+</ul>
+<p>Settings hold dialect overrides, the preview size and an optional market field mapping. They never contain credentials. Do not put any in them.</p>
+<div class="notice" role="note"><span class="label">Note</span>
+<p>These terminal and preview settings are separate from the desktop appearance preferences.</p></div>
 
 <h2 id="build">Build from source</h2>
 <p>To package for Windows x64 from a Unix-like host, install the Rust Windows GNU target, a MinGW-w64 cross compiler and linker, Python 3, <code>zip</code> and <code>sha256sum</code> first. Fetch the locked dependencies before you run the offline build script.</p>
@@ -53,10 +117,30 @@ cargo run -p csv-viewer -- --render path/to/file.csv
 rustup target add x86_64-pc-windows-gnu
 cargo fetch --locked --target x86_64-pc-windows-gnu
 bash scripts/build-desktop.sh --debug</code></pre>
+<p>The build needs Rust 1.85. No Windows target or cross-compiler is needed for the Linux build; the Windows module is excluded.</p>
+<p>To type-check the Windows-only module on a non-Windows host, with no link and no run:</p>
+<pre><code>RUSTFLAGS='--cfg csvview_windows_check' cargo check -p csv-preview</code></pre>
+
+<h2 id="windows-builds">Build for Windows</h2>
+<p>Run <code>scripts/build-windows.ps1</code> on Windows with the x64 MSVC Rust target. Run <code>scripts/build-windows.sh</code> on Linux with the x64 GNU target and MinGW. Both produce the viewer, the worker, the DLL and <code>SHA256SUMS</code> in <code>dist/</code>. Set <code>DIST_DIR</code> to choose another output directory for the shell script.</p>
+<p>Both scripts use the last commit timestamp for <code>SOURCE_DATE_EPOCH</code> and remap the source paths. To verify reproducibility, use the same toolchain, dependencies, source and environment.</p>
 
 <h2 id="limits">Limits</h2>
 <div class="notice" role="note"><span class="label">Note</span>
 <p>No public release exists. Keep the worker executable, fonts, help and licences next to the desktop executable in a portable folder. Explorer registration stays optional.</p></div>
+<ul>
+  <li>Preview head: 256 KiB, 200 rows by default. The preview cell text is capped at 1 MiB per report, so the worker frame stays bounded.</li>
+  <li>Full scan: 100,000,000 records, 4 GiB source and 120 s by default. Fields are capped at 4,096 display characters and columns at 1,024. A reached limit makes the result partial.</li>
+  <li>Spool: a private temporary directory with a 4 GiB cap. If the source is larger, the spool is truncated and the scans are partial. The source itself is untouched.</li>
+  <li>Partial byte coverage is estimated at record boundaries. For multi-byte encodings, it is interpolated, not an exact byte count. Record counts are exact for the records parsed. A complete scan has an exact byte total.</li>
+  <li>The source is opened read-only. Labels are treated as text: formulas are never evaluated and links are never opened.</li>
+  <li>No network access, no telemetry, no uploads. Network use is not required at runtime.</li>
+</ul>
+
+<h2 id="status">Release status</h2>
+<p>The first planned public beta is the standalone Windows x64 desktop only. No public release is available yet.</p>
+<p>The <a href="https://github.com/mariyaholic/csv-viewer/blob/main/docs/RELEASE-CHECKLIST.md">release checklist</a> tracks the remaining clean-machine, accessibility, privacy and distribution gates. Explorer integration stays a separate opt-in developer feature.</p>
+<p>The <a href="https://github.com/mariyaholic/csv-viewer/blob/main/ROADMAP.md">roadmap</a> lists the deliberately deferred work. The <a href="https://github.com/mariyaholic/csv-viewer/blob/main/THIRD_PARTY.md">third-party document</a> holds the dependency inventory.</p>
 
 <h2 id="changes">Release changes</h2>
 <h3>0.1.0, unreleased source</h3>
@@ -73,15 +157,31 @@ bash scripts/build-desktop.sh --debug</code></pre>
   <li><a href="https://github.com/mariyaholic/csv-viewer/blob/main/docs/LARGE-FILE-BROWSING.md">docs/LARGE-FILE-BROWSING.md</a></li>
   <li><a href="https://github.com/mariyaholic/csv-viewer/blob/main/docs/DEVELOPMENT.md">docs/DEVELOPMENT.md</a></li>
   <li><a href="https://github.com/mariyaholic/csv-viewer/blob/main/docs/TESTING.md">docs/TESTING.md</a></li>
+  <li><a href="https://github.com/mariyaholic/csv-viewer/blob/main/docs/README.md">docs/README.md</a></li>
+  <li><a href="https://github.com/mariyaholic/csv-viewer/blob/main/docs/RELEASE-CHECKLIST.md">docs/RELEASE-CHECKLIST.md</a></li>
+  <li><a href="https://github.com/mariyaholic/csv-viewer/blob/main/design/system/README.md">design/system/README.md</a></li>
+  <li><a href="https://github.com/mariyaholic/csv-viewer/blob/main/ROADMAP.md">ROADMAP.md</a></li>
+  <li><a href="https://github.com/mariyaholic/csv-viewer/blob/main/STATUS.md">STATUS.md</a></li>
+  <li><a href="https://github.com/mariyaholic/csv-viewer/blob/main/THIRD_PARTY.md">THIRD_PARTY.md</a></li>
 </ul>
-<p class="meta">Last checked 7 November 2026 against source commit <code>44d2ce8</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
+<p class="meta">Last checked 17 November 2026 against source commit <code>012f28d</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
 </main>
 
 <nav class="toc" aria-labelledby="toc-h"><h2 id="toc-h">On this page</h2><ol>
   <li><a href="#open">Open a CSV file</a></li>
   <li><a href="#use">Search and read the scan coverage</a></li>
+  <li><a href="#notes">Read the review notes</a></li>
+  <li><a href="#desktop">Use the desktop app</a></li>
+  <li><a href="#formats">Detect the encoding and dialect</a></li>
+  <li><a href="#explorer">Use the Explorer preview</a></li>
+  <li><a href="#worker">The worker process</a></li>
+  <li><a href="#market">Read market heuristics</a></li>
+  <li><a href="#terminal">Use the terminal viewer</a></li>
+  <li><a href="#settings">The settings file</a></li>
   <li><a href="#build">Build from source</a></li>
+  <li><a href="#windows-builds">Build for Windows</a></li>
   <li><a href="#limits">Limits</a></li>
+  <li><a href="#status">Release status</a></li>
   <li><a href="#changes">Release changes</a></li>
   <li><a href="#reference">Reference</a></li>
 </ol></nav>
