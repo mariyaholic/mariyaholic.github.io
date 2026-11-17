@@ -25,7 +25,7 @@
   <dt>Platform</dt><dd>Windows 10 or later</dd>
   <dt>Latest release</dt><dd><!--ver:mh-ticker--><a href="https://github.com/mariyaholic/mh-ticker/releases/tag/v1.2.3">v1.2.3</a><!--/ver-->, 16 October 2026</dd>
   <dt>Source version</dt><dd>1.9.0, commit <code>efde053</code></dd>
-  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/mh-ticker">mariyaholic/mh-ticker</a></dd>
+  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/mh-ticker">mariyaholic/mh-ticker</a>, commit <code>5acd701</code></dd>
   <dt>License</dt><dd>MIT</dd>
 </dl>
 
@@ -44,7 +44,8 @@
     <tr><th scope="row">Memory after 1 minute</th><td class="num">≈ 5.7 MB</td><td class="num">≈ 5.8 MB</td></tr>
   </tbody>
 </table></div>
-<p class="meta">Memory values were measured on 1.7.1.</p>
+<p class="meta">Memory values were measured on 1.7.1, not yet on 1.8.</p>
+<p>Everything in the release changes that is not a theme, a picker or an alert is in both programs.</p>
 
 <h2 id="install">Install MH Ticker</h2>
 <div class="notice caution" role="note"><span class="label">Caution</span>
@@ -65,6 +66,23 @@
   <li><strong>Copy a price:</strong> right-click a card and select <strong>Copy</strong>.</li>
 </ul>
 <p>Each card shows the price, the change for the day in percent and in points, the range for the day, the 52-week range, and the age of the price. A dim price is not current.</p>
+<p>The right-click menu has <strong>Settings...</strong>, <strong>Expand view</strong>, <strong>Refresh now</strong>, <strong>Copy all prices</strong>, <strong>Undo the last ...</strong>, <strong>Show strip</strong>, a status line, and <strong>Quit</strong>. A card's right-click menu adds that card's entries. Select <strong>Open config folder</strong> on the <strong>About</strong> page of the settings window.</p>
+<p>Untick <strong>Show strip</strong> to keep only the tray icon. The tray tooltip still shows every price. A click still opens the panel.</p>
+<p>The app hides itself while a fullscreen program is in front.</p>
+<p>The tray icon is green when the prices are live, amber when some prices are not fresh, and red when the app is offline.</p>
+
+<h2 id="cards">Read the cards</h2>
+<p>Each card shows the price, its currency, the day change in percent and in points, and the previous close. A range bar under the line shows where the price sits between the session low and high. The card also shows the 52-week range with the date of its high, and the volume where CNBC sends one.</p>
+<p>The card shows where the price comes from and how old it is. The last hour of prices is on the card the moment the app starts. It comes from the 1-minute bars of CNBC. The line then keeps moving forward while the app runs. The colour of the line is the direction of the day, so it matches the percent beside it. A symbol that is up 1 % on the day stays green while the last hour ticks down.</p>
+<p>Point at the line to read the price at that moment, for example <code>-12m  4,155.24</code>. A dotted crosshair marks the pointer. The session high and low sit as small dashes where the line turned. A faint line marks the day's open.</p>
+<p>Click a card to open the symbol on CNBC. Right-click a card and select <strong>Copy XAU 4,155.24</strong> to copy its price. In Ultra, a click locks the card instead. <strong>Open on CNBC</strong> is a button on the locked card.</p>
+
+<h2 id="manage">Manage the cards</h2>
+<p><strong>Pin to strip:</strong> right-click a card and select <strong>Pin to strip</strong> or <strong>Unpin from strip</strong>. The strip then shows only the pinned symbols, and the panel still shows all of them. <strong>Show all on strip</strong> on the <strong>Symbols</strong> page pins every card again. The last pinned card cannot be unpinned. A settings file from before this version shows every card.</p>
+<p><strong>Rename a card:</strong> right-click a card and select <strong>Rename...</strong>. Its alerts and its lock follow the new label. <strong>Reset name</strong> goes back to the symbol's own name. <strong>Decimals</strong> sets how many digits the price shows, from 0 to 6, or <strong>Auto</strong>. <strong>Auto</strong> uses the symbol's own count, or a count worked out from its price.</p>
+<p><strong>Order the cards:</strong> on the <strong>Symbols</strong> page, <strong>Order the cards (once)</strong> sorts them by day move with the biggest first, by name, or back to the default order. It changes the saved order one time. It does not keep sorting.</p>
+<p><strong>Undo:</strong> the main menu has an <strong>Undo the last ...</strong> line that says what it would undo. It can undo a removal, a move, a sort, a pin change or an alert clear. <kbd>Ctrl</kbd>+<kbd>Z</kbd> does the same on Ultra. It steps back one change. It does not bring back a removed webhook. The undo is gone when you quit.</p>
+<p><strong>Copy all prices:</strong> right-click and select <strong>Copy all prices</strong>, or select <strong>Startup & system</strong> &gt; <strong>Now</strong>. The whole board goes on the clipboard, one symbol per line, tab-separated. In the open Ultra panel, <kbd>Ctrl</kbd>+<kbd>C</kbd> copies the locked card's line, or every price when nothing is locked.</p>
 
 <h2 id="symbols">Select symbols</h2>
 <ol class="steps">
@@ -72,8 +90,11 @@
   <li>Select <strong>Symbols</strong>.</li>
   <li>Select the symbols to show. You can show up to 24 symbols. The strip changes immediately.</li>
 </ol>
-<p>To add a symbol that is not in the list, select <strong>Symbols &gt; Add symbol...</strong> and type a CNBC symbol, for example <code>AAPL</code> or <code>EUR=</code>. The app sends one request to CNBC to check the symbol. If CNBC does not know the symbol, the app does not add it.</p>
+<p>To add a symbol that is not in the list, select <strong>Symbols &gt; Add symbol...</strong> and type a CNBC symbol, for example <code>AAPL</code>, <code>EUR=</code> or <code>@GC.1</code>. The app sends one request to CNBC to check the symbol. The name and the first price come from CNBC. If CNBC does not know the symbol, the app does not add it.</p>
 <p>To return to the six default symbols, select <strong>Symbols &gt; Reset to default</strong>.</p>
+
+<p>The list has 23 symbols: metals, crypto, US futures, oil, gas, copper, FX, the dollar index, US yields, VIX, Nikkei, DAX, FTSE and Hang Seng. In Ultra, the button left of the minimize cross opens a picker strip inside the panel. Click a chip to add the symbol, and click it again to drop it. It is the same list as the <strong>Symbols</strong> page, with the whole list visible at once.</p>
+<p>To remove a symbol you added, select <strong>Remove a symbol I added</strong> on the <strong>Symbols</strong> page. This also removes its alerts.</p>
 
 <h2 id="position">Change the position</h2>
 <ol class="steps">
@@ -90,8 +111,90 @@
   </li>
 </ol>
 
+<p><strong>Auto</strong> uses the left of Start while there is room there. Otherwise the strip sits next to the tray. If the taskbar has no room at all, for example with auto-hide or a vertical taskbar, the strip goes to the bottom right corner just above the taskbar. The strip moves along with the icons as you open and close apps.</p>
+
+<h2 id="look">Change the look</h2>
+<p>The <strong>Display</strong> page sets the rows in the taskbar: 1, 2 or 3, only while the strip is docked. It also sets the text size (small, default, large, larger) and the opacity (100 down to 60 %). Changes apply at once.</p>
+<p>In Ultra, <strong>Theme and font</strong> offers 26 themes in four groups. <strong>Basic</strong> is one solid colour: midnight, ink, slate, moss, oxblood, taupe, paper, sand, mono. <strong>Gradients</strong> ramp from top to bottom: graphite, aurora (the same violet-to-rose as the app icon), dusk, ocean, ember, glass. <strong>Animated</strong> themes drift on a 9-second loop: drift, pulse, vaporwave, aurora-live, sunset. They only animate while the panel is open, so a collapsed strip costs nothing. <strong>Retro</strong> themes are chunky, scanlined and drawn in a bitmap face: ega, amber-crt, phosphor, gameboy, c64, pc98 (the PC-98 palette with the gold accent). A theme change applies immediately, with no restart.</p>
+<p>The <strong>Font</strong> rows offer 22 faces in 4 groups: system, mono, serif and bitmap. A font applies to the panel only, so the strip keeps its own size and still fits a taskbar gap. The retro themes pick a bitmap face themselves. The app refuses an unknown font name in the config. A face this machine does not have is greyed in the settings window, not silently substituted.</p>
+<p>In Ultra you can resize the panel: drag any edge or corner. The window is the layout: a wider frame adds card columns, up to six, instead of stretching the cards. The app remembers the size, so expanding the panel again comes back where you left it. There is no native border. The frame is drawn by the app.</p>
+<p>In Ultra, the name Windows shows in Alt+Tab and on the taskbar thumbnail carries the locked card as a sentence, for example <code>Gold 4,012.30, up 0.4 percent - MH Ticker Ultra</code>. The name adds <code>stale</code> when the price is stale. With nothing locked, it reads the count of symbols up and down. The Classic window name never changes.</p>
+
+<h2 id="accessibility">Use accessibility options</h2>
+<p>Open <strong>Settings</strong> &gt; <strong>Display</strong> &gt; <strong>Accessibility</strong>. The first two ticks below are in both builds. Both start off on Classic.</p>
+<ul>
+  <li><strong>Contrast theme</strong> follows the Windows contrast theme. With a Windows contrast theme on, Ultra draws in the system's colours, and shows direction by shape and sign as well as colour. Up candles are hollow, and the sign says which way the price moved. Ultra follows the theme by default.</li>
+  <li><strong>Animation</strong> follows the Windows animation setting. With Windows animations off, the panel opens and closes in one step. Ultra follows the setting by default.</li>
+  <li><strong>Hollow up candles</strong> on <strong>Chart</strong> (Ultra): up candles are outlines.</li>
+  <li><strong>Up and down colours</strong> on <strong>Chart</strong> (Ultra): <strong>Green up, red down</strong> (as before), <strong>Red up, green down</strong>, or <strong>Blue up, orange down</strong>. Only the two direction colours change. If the secondary text is too faint for you, the Windows contrast theme is the answer.</li>
+  <li><strong>Panel size</strong> (Ultra): 75, 90, 100, 125 or 150 %. It scales the panel's text, cards and chart. The strip keeps its size.</li>
+</ul>
+<p>Classic has the two first ticks off, so Classic looks as it always did until you tick them.</p>
+
+<h2 id="chart">Read the candle chart</h2>
+<p><strong>Lock a card (Ultra):</strong> click a card and it stays locked, with an accent outline. The candle pane follows the locked card. Nothing changes when you move the mouse, so you can travel to the chart while it stays. Click the same card again to unlock it. On the locked card, CNBC is one explicit button, <strong>Open on CNBC</strong>. Right-click &gt; <strong>Open ... on CNBC</strong> still works on any card.</p>
+<p><strong>Open the pane:</strong> the candle button in the panel header opens a candle pane down the right side. It charts the locked card, and it locks the first card when nothing is locked. The bars are one-minute bars from the same CNBC request that the hour lines use, folded to 5, 15, 30 or 60 minutes on a narrow pane, so a candle is never a one-pixel scratch. Candles are whole-pixel and uniform. Gridlines sit on round prices. A tag on the price axis marks where the price last traded.</p>
+<p>The time axis is on your local clock. The <code>local</code> / <code>UTC</code> word in the header switches it, and the app saves the choice. Opening the pane on a narrow window widens the frame to fit both. Closing the pane glides the window back to the size and spot it came from, centred again unless you dragged the edge yourself. The picker and the chart take turns, because they want the same space.</p>
+<p><strong>Read a candle:</strong> move the pointer over a candle. A line in the header then shows its time, open, high, low, close and change, with a crosshair and the price on the axis. The previous close is a dashed line marked <code>prev</code>. The day's high and low are small ticks on the right edge. A faint dotted line marks where the market was shut. The day's change sits beside the last price.</p>
+<p><strong>Old data:</strong> the chart's second header line can say <code>as of 14:05</code>. That means the data is past its refresh time and the refresh has not come back, so it is older than the chart looks. When the data is nearly a day old, the note shows the date too. Daily and longer ranges say <code>check dates</code> when their dates do not fall on the day boundary. That can mean the feed's dates are off. Neither note shows while a candle is under the pointer. The 1D range has no such note.</p>
+<p><strong>Ranges:</strong> the tabs on the second header line are <code>1D 5D 1M 6M 1Y 5Y</code>. <code>1D</code> is today. The others load the first time you click them, or when you press <kbd>R</kbd> on the chart, for the locked card. They refresh themselves when they get old. A range that fails says so and tries again after 30 seconds. <code>1M</code> and <code>6M</code> are daily bars trimmed to a month or half a year. Daily and longer bars keep the exchange's own dates for everyone, so they have no local/UTC switch. The chart opens on the range you used last. The header shows the change over the range on screen, for example <code>5Y +182 %</code>, in place of the day's change, except on 1D. The range's high and low are marked.</p>
+<p><strong>Volume:</strong> where CNBC sends volume, a strip of volume bars sits under the candles. FX, yields and spot metals have no volume from CNBC, so there is no strip for them.</p>
+<p><strong>Alert levels on the chart:</strong> an alert level inside the chart's price range is a dashed line with its price at the right end. A level outside the range is a marker on the nearest edge. Right-click the chart for <strong>Alert at...</strong> or <strong>More...</strong>, which opens the main menu.</p>
+
+<h2 id="alerts">Set alerts</h2>
+<ol class="steps">
+  <li>Open <strong>Settings</strong> &gt; <strong>Alerts</strong>.</li>
+  <li>Pick a symbol under <strong>Alerts for a symbol</strong>.</li>
+  <li>Select a preset or <strong>at a price...</strong> for an exact level.</li>
+</ol>
+<p>The presets are above or below 0.5, 1, 2 or 5 % of the current price, past today's high or low, the previous close, and a day move of ±1, 2, 3 or 5 %. <strong>at a price...</strong> takes an exact level, like <code>4,200.50</code>.</p>
+<p>An alert gives you a tray balloon and, when you set a webhook, a message in Discord, Slack or ntfy. It fires once per cooldown, and it never fires on a stale price. A market that sits closed at a level would otherwise stay on the alert forever.</p>
+<p><strong>Repeat</strong> is one choice: <strong>Every cooldown</strong> (the default), <strong>Fire once, then clear</strong>, or <strong>Each crossing</strong>. A crossing alert fires when the price crosses its level, and it fires again only after the price has gone back past the level by 0.1 %. When the first fresh price is already past the level, it fires once. A stale or fallback price fires nothing in any of the three.</p>
+<p><strong>Fast move:</strong> an alert can watch for a move of 1 % in 5 minutes, 2 % in 15 minutes or 3 % in 60 minutes. The app works this out from the prices it already holds. It needs fresh prices over the whole window, with no gap longer than three polls. A window it cannot cover fires nothing.</p>
+<p><strong>At a glance</strong> on the <strong>Alerts</strong> page lists everything you set, with its distance, like <code>XAU above 4,200.00, 1.2 % away</code>, or <code>reached, 2.3 % past</code>. A level whose symbol is not on the strip says that it cannot fire. <strong>Clear all alerts...</strong> asks first. A card with a level has a small amber dot.</p>
+<p><strong>Not checked:</strong> when no alert on a shown symbol has a fresh price for longer than 5 minutes, or ten polls when that is longer, the tray tooltip says so. The <strong>Recent</strong> list gets a line like <code>02:10 to 02:31 not checked (no fresh price)</code>. After a sleep it says <code>no checks ran, the PC slept</code>.</p>
+<p>The <strong>Alert gaps</strong> tick on the <strong>Alerts</strong> page sends one message to the webhook when checking is back. It is off by default. The message never has a price in it. It is not sent while alerts are muted or in quiet hours.</p>
+<p><strong>Typed levels:</strong> in <strong>at a price...</strong>, a comma only groups thousands, so <code>4,200.50</code> works. <code>4200,5</code>, <code>4,20</code> and <code>,500</code> are refused, and the menu says why. A level more than 20 % away from the price asks first, and the question repeats the level and the price, so a slip like <code>42,005</code> for 4200.5 gets caught. A level within 20 % is set at once.</p>
+<p><strong>Mute:</strong> <strong>Mute</strong> on the <strong>Alerts</strong> page silences alerts for 1 hour, 8 hours, or until you turn it back on. <strong>Quiet hours</strong> is off, or a window of 22:00 to 07:00, 23:00 to 08:00, or 00:00 to 09:00, by your PC's clock. A muted or quiet alert is still checked, and it shows up in <strong>Recent</strong>, but it makes no balloon and sends nothing to the webhook. When the mute or the quiet hours end, one balloon says how many alerts came in meanwhile, like <code>3 alerts while muted. See Alerts &gt; Recent.</code> When there were none, there is no balloon.</p>
+<p><strong>Typed values on the Alerts page:</strong> <strong>Type hours...</strong> takes a span such as <code>22:30-06:45</code>. It can run past midnight, and equal ends mean off. <strong>Until a time...</strong> takes a 24-hour time, and it ends the mute the next time the clock reads it. <strong>cooldown...</strong> takes <code>90s</code>, <code>15m</code> or <code>2h</code>, from 30 seconds to 24 hours. A bare number is minutes. A bad entry is refused with a sentence that says what to type, and nothing is changed.</p>
+<p><strong>Fire once:</strong> tick it to clear a level after it fires.</p>
+
+<h2 id="webhook">Send alerts to a webhook</h2>
+<div class="notice warning" role="note"><span class="label">Warning</span>
+<p>The webhook URL is the password for that channel. The app never shows or logs all of it. Do not paste it anywhere public.</p></div>
+<ol class="steps">
+  <li>Copy the webhook URL from your Discord, Slack or ntfy channel.</li>
+  <li>On the <strong>Alerts</strong> page, select <strong>Paste URL from clipboard</strong>.</li>
+  <li>The app checks the URL and asks before it saves. The page shows only its host.</li>
+  <li>Select <strong>Send a test alert</strong> to check that it works.</li>
+</ol>
+<p><strong>Remove</strong> deletes the webhook. A POST that fails with a network error or a 5xx is tried once more after 3 seconds. The log says <code>sent on retry</code> when that works. A 4xx is never retried. Quitting waits up to 2 seconds for a POST that is still on its way.</p>
+
+<h2 id="keys">Use the keys</h2>
+<p>In the open Ultra panel:</p>
+<ul>
+  <li>The arrow keys move the lock between cards. <kbd>Enter</kbd> opens the locked card on CNBC.</li>
+  <li><kbd>C</kbd> opens the chart. <kbd>S</kbd> opens the symbol picker. <kbd>Delete</kbd> takes the locked card off the strip.</li>
+  <li><kbd>Ctrl</kbd>+<kbd>Left</kbd> and <kbd>Ctrl</kbd>+<kbd>Right</kbd> move the locked card one place.</li>
+  <li><kbd>/</kbd> opens a prompt that finds a card by its label or name. <kbd>Home</kbd> and <kbd>End</kbd> lock the first and last card.</li>
+  <li><kbd>Ctrl</kbd>+<kbd>Z</kbd> undoes the last removal, move, sort, pin change or alert clear.</li>
+  <li>The card menu also has <strong>Move left</strong>, <strong>Move right</strong>, <strong>Move first</strong> and <strong>Remove from strip</strong>.</li>
+  <li>A click on a symbol on a docked Ultra strip locks that card and opens the panel on it.</li>
+</ul>
+<p>With the chart open:</p>
+<ul>
+  <li><kbd>Shift</kbd>+<kbd>Left</kbd> and <kbd>Shift</kbd>+<kbd>Right</kbd> move the crosshair from candle to candle. It snaps to the candle's close. The plain arrows still move the lock.</li>
+  <li><kbd>R</kbd> changes the range. <kbd>Z</kbd> flips the zone. <kbd>A</kbd> sets an alert at the crosshair price, through the prompt.</li>
+  <li>The menu key opens the card menu. <kbd>F10</kbd> opens the main menu. <kbd>F1</kbd> lists every key.</li>
+  <li>A pointer move takes the crosshair back.</li>
+</ul>
+
+<h2 id="startup">Start with Windows and set a hotkey</h2>
+<p><strong>Start with Windows:</strong> open <strong>Settings</strong> &gt; <strong>Startup & system</strong> and tick <strong>Start with Windows</strong>. The app then starts when you sign in. Untick it to stop this. It is a <code>Run</code> entry for your own account, with no admin needed. The window reads the tick each time it opens. If Task Manager or Windows Settings has turned the app off in its startup list, the tick shows off. Ticking it on clears that setting.</p>
+<p><strong>Hotkey:</strong> open <strong>Settings</strong> &gt; <strong>Startup & system</strong> &gt; <strong>Hotkey</strong>. Choose <strong>Off</strong>, one of the four presets (<code>Ctrl+Alt+M</code>, <code>Ctrl+Alt+T</code>, <code>Ctrl+Shift+F12</code>, <code>Ctrl+Alt+Space</code>), or <strong>Type a hotkey...</strong> for a custom one. The key opens and closes the panel from anywhere. If another app already has the combination, the entry says so.</p>
+
 <h2 id="poll">Set the update interval</h2>
-<p>Right-click the strip and select <strong>Poll every</strong>. The range is 1 to 60 seconds. A shorter interval uses more network data.</p>
+<p>Right-click the strip and select <strong>Poll every</strong>. The range is 1 to 60 seconds. At 1 second, the data use is about three times as much, and the feel is genuinely live. At 60 seconds, the app barely touches the network.</p>
 <p>Two options can decrease the number of requests:</p>
 <ul>
   <li><strong>Slow down when nothing moves</strong>: when no price changes for 10 minutes, the app polls each 15 seconds. After 30 minutes, it polls each 60 seconds.</li>
@@ -99,12 +202,58 @@
 </ul>
 <p>Ultra has the two options on by default. Classic has them off.</p>
 
+<p>While an alert is armed, the poll is never slower than 15 seconds. Any change, expanding the panel, the hotkey, an unlock, or <strong>Refresh now</strong> returns to the normal poll at once. A source that keeps failing still backs off as before, so the wait can be longer than 15 seconds while an alert is armed. In a scripted two-hour run, a market that moved for 5 minutes and then sat still made 2,400 polls at a 3 s setting. The same run made 465 polls with the governor, and 720 with an alert armed. The bytes were not measured on the live feed.</p>
+<p><strong>Refresh now:</strong> right-click and select <strong>Refresh now</strong>, or select <strong>Startup & system</strong> &gt; <strong>Now</strong>. It fetches every price and chart range at once, instead of waiting for the next poll. The backoff after a source that keeps failing still applies.</p>
+
+<h2 id="network">Control the network use</h2>
+<p>Every symbol on the strip is one more quote in each refresh, so the data grows with the number you show. The cost at 24 symbols has not been measured. The quotes go to CNBC, except for the optional fallback providers. One request to <code>api.github.com</code> checks for updates, and only when you click. The diagnostics report makes the same requests as <code>--probe</code>, once, to the same hosts, and only when you click. The poll governor can make fewer quote requests when nothing moves. It never makes more than the <strong>Poll every</strong> setting asks for. A webhook POST that fails with a network error or a 5xx is tried once more, and never after a 4xx.</p>
+<p><strong>Fallback sources:</strong> open <strong>Settings</strong> &gt; <strong>Startup & system</strong> &gt; <strong>Allow fallback sources</strong>. CNBC stays the primary source, and fallback is off by default. Switching it on asks for confirmation every time. When CNBC fails or a quote is stale, Gold API may supply USD gold and silver spot prices, and Kraken may supply BTC/USD from a different exchange. Other symbols have no fallback. Your device connects directly to those providers.</p>
+<p>Each alternate quote names its provider and shows <code>age unknown</code>, or <code>?</code> in the strip. Without a reliable observation timestamp it cannot trigger an alert. Alternate charts and day-change data are not available, rather than mixed with CNBC's data. Switching fallback off clears its prices and rejects results that are on their way. A request that was already queued at the switch may still connect or finish, but the app discards its result. Recovery depends on network timeouts and polling. Kraken requires prior permission for non-personal commercial use of its public API data. See the <a href="https://docs.kraken.com/api/docs/guides/global-intro">Kraken API notices</a>.</p>
+
+<h2 id="about">Use the About page</h2>
+<p><strong>Check for updates:</strong> open <strong>Settings</strong> &gt; <strong>About</strong> &gt; <strong>Updates</strong>. The app asks GitHub once for the latest release, and tells you whether it is newer. When it is, the app offers to open the download page. Nothing else from GitHub's answer is used. The app never checks by itself, only when you click. The request names the app <code>MH-Ticker</code> and nothing else about you.</p>
+<p><strong>Copy diagnostics report:</strong> open <strong>Settings</strong> &gt; <strong>About</strong> &gt; <strong>Diagnostics</strong>. It runs the same checks as <code>--probe</code> and puts the result on the clipboard as text: the app version, window and display details, the settings path with your user name taken out, the webhook as its host only, and the data meter. It is for pasting into a message when something looks wrong. The button says <code>checking...</code> while it runs, and a second click waits for the first one to finish.</p>
+<p><strong>Data meter:</strong> a line under the version on the <strong>About</strong> page shows how much the app has downloaded, like <code>Data: 3.1 MB this hour, 41 MB since start</code>. It counts what the app reads after compression is undone, so it is a little more than the network carried. Request headers are not counted.</p>
+
 <h2 id="settings">Settings file</h2>
-<p>The app keeps its settings in <code>%LOCALAPPDATA%\MH_Ticker\config.json</code>. Ultra uses <code>config_ultra.json</code> in the same folder. To open the folder, select <strong>Open config folder</strong> in the menu.</p>
+<p>The app keeps its settings in <code>%LOCALAPPDATA%\MH_Ticker\config.json</code>. It makes the file with the default settings the first time it runs. Ultra uses <code>config_ultra.json</code> in the same folder. To open the folder, select <strong>Open config folder</strong> in the menu.</p>
 <p>The menus apply changes immediately. If you edit the file manually, restart the app.</p>
 <p>If the app cannot read the file, it does not overwrite it. It renames the file to <code>config.bad.json</code> and starts with the default settings.</p>
 <div class="notice warning" role="note"><span class="label">Warning</span>
 <p>The <code>webhook</code> value in Ultra is a secret. Anyone with the URL can send messages to your channel. Do not share the settings file or a <code>config.bad.json</code> file before you remove this value.</p></div>
+
+<p>Select <strong>Settings...</strong> in the menu, or the cog in the Ultra panel header. One themed window opens with a sidebar of sections: <strong>Symbols</strong>, <strong>Display</strong>, <strong>Chart</strong> (Ultra), <strong>Alerts</strong> (Ultra), <strong>Startup & system</strong>, and <strong>About</strong>. <kbd>Esc</kbd> closes it, and only one settings window is open at a time. While the panel is open, the window sits above the panel. The <strong>Card settings</strong> block on <strong>Symbols</strong> applies to the card picked in that block. A card's own right-click menu keeps its per-card entries. Anything the menus and the settings window change takes effect at once, with no restart.</p>
+<p>If the file will not load, because it is not UTF-8 text or not valid JSON, the app does not overwrite it. It renames the file beside the new one as <code>config.bad.json</code>, or <code>config_ultra.bad.json</code> for Ultra, and after that <code>config.bad-2.json</code> and so on. The bytes stay unchanged, and the app loads the defaults. The short menu and the <strong>About</strong> page name the kept file.</p>
+<p>If the settings cannot be written, for example in a read-only folder, the menu shows a greyed line that says so. It clears when a later save works.</p>
+<h3>What is in the file</h3>
+<div class="table-wrap"><table>
+  <thead><tr><th scope="col">Name</th><th scope="col">Builds</th><th scope="col">Meaning</th></tr></thead>
+  <tbody>
+    <tr><td><code>rows</code></td><td>Both</td><td>The symbols that show. Each row has a <code>label</code>, the CNBC <code>symbol</code>, <code>digits</code> and an optional <code>name</code>.</td></tr>
+    <tr><td><code>catalog</code></td><td>Both</td><td>The list that the <strong>Symbols</strong> page shows, with the same fields. Any symbol that CNBC's quote pages have works, for example <code>AUD=</code> for AUD/USD or <code>@SI.1</code> for silver futures.</td></tr>
+    <tr><td><code>fallback_enabled</code></td><td>Both</td><td>Consent for the fallback sources. <code>false</code> by default. Use the settings window to change it.</td></tr>
+    <tr><td><code>poll_s</code></td><td>Both</td><td>Seconds between price requests. The poll governor only waits longer than this, never shorter.</td></tr>
+    <tr><td><code>slow_when_quiet</code>, <code>rest_when_locked</code></td><td>Ultra</td><td>The two ticks of the poll governor. Leave both out and Ultra has them on, Classic has them off. A written <code>true</code> or <code>false</code> wins.</td></tr>
+    <tr><td><code>stale_after_s</code>, <code>delayed_grace_s</code></td><td>Both</td><td>When a price gets dimmed.</td></tr>
+    <tr><td><code>placement</code>, <code>monitor</code></td><td>Both</td><td><code>placement</code> is <code>auto</code>, <code>taskbar_left</code>, <code>taskbar_right</code>, <code>floating</code>, <code>top_right</code>, <code>bottom_right</code>, <code>top_left</code> or <code>bottom_left</code>. <code>monitor</code> is a name like <code>\.\DISPLAY2</code>, empty for the main screen.</td></tr>
+    <tr><td><code>dock_rows</code>, <code>dock_font_pt</code></td><td>Both</td><td>The grid when the strip is in the taskbar.</td></tr>
+    <tr><td><code>font</code>, <code>font_pt</code>, <code>opacity</code>, <code>topmost</code></td><td>Both</td><td>The panel face, its size, its opacity and the always-on-top flag.</td></tr>
+    <tr><td><code>x</code>, <code>y</code></td><td>Both</td><td>Where the strip was left in Floating.</td></tr>
+    <tr><td><code>panel</code></td><td>Ultra</td><td>The panel's last frame as <code>[x, y, w, h]</code>. Leave it out and the panel sizes itself to its cards and centres. This is what every config written before the panel could be resized does.</td></tr>
+    <tr><td><code>theme</code></td><td>Ultra</td><td>Any name from THEMES.md, for example <code>midnight</code>, <code>aurora</code>, <code>vaporwave</code> or <code>pc98</code>.</td></tr>
+    <tr><td><code>theme_font</code></td><td>Ultra</td><td>A panel face from <code>theme::FACES</code>, for example <code>Georgia</code> or <code>Terminal</code>. Empty means the theme's own face.</td></tr>
+    <tr><td><code>alerts</code></td><td>Ultra</td><td>One object per alert: <code>label</code>, <code>above</code>, <code>below</code>, <code>day_move</code>, <code>once</code>, <code>cooldown_s</code>, <code>last</code>, <code>crossing</code>, <code>fast</code>. <code>label</code> is the row label. <code>above</code> and <code>below</code> are absolute prices, not percent. <code>day_move</code> is a percent day change that fires the alert, or missing. <code>once</code> clears the level after it fires. <code>cooldown_s</code> is floored at 30 seconds. <code>last</code> is the last fire time, so a restart does not fire again at once. <code>crossing</code> missing means off. <code>fast</code> missing means 0. The values 1, 2 and 3 are the 1 % in 5 min, 2 % in 15 min and 3 % in 60 min fast moves.</td></tr>
+    <tr><td><code>alert_crossing</code>, <code>gap_notice</code></td><td>Ultra</td><td><code>alert_crossing</code> <code>true</code> sets <strong>Each crossing</strong> for every alert. <strong>Fire once</strong> wins when both are set. <code>gap_notice</code> <code>true</code> sends the "could not be checked" webhook notice. Both are off when missing, which is the default.</td></tr>
+    <tr><td><code>alert_once</code>, <code>alerts_muted</code>, <code>alerts_mute_until</code>, <code>quiet_hours</code></td><td>Ultra</td><td>What the <strong>Alerts</strong> page sets for <strong>Fire once</strong>, <strong>Mute</strong> and <strong>Quiet hours</strong>. <code>alerts_mute_until</code> is seconds since 1970, UTC. <code>quiet_hours</code> is <code>[from, to]</code> in minutes of the local day, or missing.</td></tr>
+    <tr><td><code>updown</code></td><td>Ultra</td><td><code>red_green</code> or <code>blue_orange</code>. Left out means green up and red down, as before.</td></tr>
+    <tr><td><code>hollow_up</code></td><td>Ultra</td><td><code>true</code> draws up candles as outlines.</td></tr>
+    <tr><td><code>contrast</code>, <code>animate</code></td><td>Both</td><td><code>true</code> or <code>false</code>. Left out means Ultra follows Windows, and Classic has both ticks off.</td></tr>
+    <tr><td><code>panel_zoom</code></td><td>Ultra</td><td>75, 90, 100, 125 or 150. Any other value is 100.</td></tr>
+    <tr><td><code>webhook</code></td><td>Ultra</td><td>A URL that also receives the alerts as POST. This value is a secret. Set it from <strong>Alerts</strong> &gt; <strong>Paste URL from clipboard</strong>, or here. The app never prints it. The menus, the settings window and <code>--probe</code> show the host at most.</td></tr>
+    <tr><td><code>chart_utc</code></td><td>Ultra</td><td><code>true</code> puts the chart's time axis on UTC. The <code>local</code> / <code>UTC</code> word in the chart header sets it.</td></tr>
+    <tr><td><code>hotkey</code></td><td>Both</td><td>The global key to open and close the panel, as text like <code>Ctrl+Alt+M</code>, or <code>null</code> for none. The keys are letters, digits, <code>F1</code> to <code>F24</code>, <code>Space</code>, <code>Home</code>, <code>End</code>, <code>Insert</code>, <code>Delete</code>, <code>PageUp</code> and <code>PageDown</code>, with at least one of <code>Ctrl</code>, <code>Alt</code> or <code>Win</code>. The presets under <strong>Hotkey</strong> are the usual choice.</td></tr>
+  </tbody>
+</table></div>
 
 <h2 id="probe">Check the price feed</h2>
 <p>Use <code>--probe</code> to check that the price feed operates correctly. The app reads the settings but does not change them.</p>
@@ -119,11 +268,29 @@
   </tbody>
 </table></div>
 
+<h2 id="dump">Save the probe answers</h2>
+<pre><code>MH_Ticker --probe --dump &lt;folder&gt;</code></pre>
+<p>It does the same as <code>--probe</code>, and it also saves the raw answers into that folder as files: the quotes, the unknown-symbol answer, the day files, the range files and the release answer. The folder is for making test fixtures. The app creates the folder when it is missing. It never writes the settings or the webhook. It only works from the command line. It needs both the folder and <code>--probe</code>; without them it exits with 2 and says why.</p>
+
 <h2 id="build">Build from source</h2>
 <p>Requirements: Windows 10 or later and the latest stable Rust.</p>
 <pre><code>cargo test
 cargo build --release</code></pre>
 <p>The build makes <code>target/release/MH_Ticker.exe</code> and <code>target/release/MH_Ticker_Ultra.exe</code>.</p>
+
+<p>Both exes come from one library (<code>src/</code>) with two small entry points (<code>src/bin/</code>). A change in the library reaches both programs. Copy either exe next to the readme if you want to double-click it from there.</p>
+<p>To put the build somewhere else, for example on another drive, set <code>CARGO_TARGET_DIR</code>, or keep an untracked <code>.cargo/config.toml</code> with <code>[build] target-dir = "..."</code>.</p>
+<p>The app is plain win32/GDI, with no GUI toolkit, no webview and no GPU code. It uses about 5.7 MB of memory and about 0.4 % of one CPU core.</p>
+<p>To see every theme rendered by the app's own painter, run:</p>
+<pre><code>cargo run --release --example shots --features shots -- shots/</code></pre>
+<p>It writes <code>shots/*.png</code>, three frames for each animated theme, and prints the path of each. The PNG encoder sits behind the <code>shots</code> feature, so neither shipped exe links it. The binaries are byte-for-byte what you download.</p>
+
+<h2 id="closed">Closed markets</h2>
+<p>Gold, silver and some other markets stop trading at weekends and on holidays. The CNBC quotes for them stop moving then. The app handles this for the candles and for the quotes.</p>
+<p><strong>Candles:</strong> the app drops the bars of closed days when the data arrives. On a daily or longer chart it drops each bar whose open, high, low and close are the same price. If half or more of the bars have that shape, it keeps every bar. On an intraday chart it drops a run of bars that repeat the close before them. It only does this when the run follows a break of more than 10 bars, and it drops the bars from the first break inside the run onward. No exchange calendar is used. A 24/7 market such as BTC is unchanged. A daily chart shows no break marker. An intraday chart shows the dotted session-break line where the market reopens.</p>
+<p><strong>Quotes:</strong> a CNBC quote that has stopped moving, with a time the app can read, shows as calm. Its age is dimmed, and the card does not yet say closed. The stale limit is 90 seconds by default, or twice the governed poll interval when that is longer. After 15 minutes without a new price, or when the 1D bars show a weekend re-stamp of the price, the card reads <code>closed since Fri 17:00</code> in local time. The header dot and name, the Ultra card tag, the Classic strip, the tray tooltip, the spoken line, the summary and the alert overview use the same rule. A dead feed, a missing quote, a fallback-provider quote and a quote with an unknown time keep the fault look. A futures quote is read on its settle date, because a Saturday stamp carries Saturday's date with Friday's clock. A quote time more than 300 seconds ahead of the clock counts as unknown.</p>
+<p>A closed market does not open an "alerts could not be checked" gap. An alert cannot fire on a weekend re-stamp of an unchanged price. When every shown market is closed, the poll waits 60 seconds with <strong>Slow when quiet</strong> on, which Ultra turns on by default. An armed alert still caps the wait at 15 seconds.</p>
+<p><strong>The limit:</strong> a quiet open market looks calm with its age. One symbol whose feed stalled while the other symbols update looks calm too. After 15 minutes it reads <code>closed</code>. The app cannot tell these cases apart from a closed market.</p>
 
 <h2 id="limits">Limits</h2>
 <ul>
@@ -150,14 +317,19 @@ cargo build --release</code></pre>
   <li><a href="https://github.com/mariyaholic/mh-ticker/blob/main/THEMES.md">Themes</a></li>
   <li><a href="https://github.com/mariyaholic/mh-ticker/blob/main/ARCHITECTURE.md">Architecture</a></li>
 </ul>
-<p class="meta">Last checked 14 November 2026 against source commit <code>efde053</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
+<p class="meta">Last checked 17 November 2026 against source commit <code>5acd701</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
 </main>
 
 <nav class="toc" aria-labelledby="toc-h"><h2 id="toc-h">On this page</h2><ol>
   <li><a href="#builds">Builds</a></li><li><a href="#install">Install</a></li><li><a href="#use">Use the panel</a></li>
-  <li><a href="#symbols">Symbols</a></li><li><a href="#position">Position</a></li><li><a href="#poll">Update interval</a></li>
-  <li><a href="#settings">Settings</a></li><li><a href="#probe">Check the feed</a></li><li><a href="#build">Build</a></li>
-  <li><a href="#limits">Limits</a></li><li><a href="#changes">Changes</a></li><li><a href="#reference">Reference</a></li>
+  <li><a href="#cards">Cards</a></li><li><a href="#manage">Manage cards</a></li><li><a href="#symbols">Symbols</a></li>
+  <li><a href="#position">Position</a></li><li><a href="#look">Look</a></li><li><a href="#accessibility">Accessibility</a></li>
+  <li><a href="#chart">Chart</a></li><li><a href="#alerts">Alerts</a></li><li><a href="#webhook">Webhook</a></li>
+  <li><a href="#keys">Keys</a></li><li><a href="#startup">Startup and hotkey</a></li><li><a href="#poll">Update interval</a></li>
+  <li><a href="#network">Network use</a></li><li><a href="#about">About page</a></li><li><a href="#settings">Settings</a></li>
+  <li><a href="#probe">Check the feed</a></li><li><a href="#dump">Probe answers</a></li><li><a href="#build">Build</a></li>
+  <li><a href="#closed">Closed markets</a></li><li><a href="#limits">Limits</a></li><li><a href="#changes">Changes</a></li>
+  <li><a href="#reference">Reference</a></li>
 </ol></nav>
 </div>
 
