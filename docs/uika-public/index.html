@@ -24,17 +24,19 @@
 <dl class="facts">
   <dt>Status</dt><dd>0.1.0 source preview</dd>
   <dt>Runtime</dt><dd>Node.js 22 or later, no npm dependencies</dd>
-  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/uika-public">mariyaholic/uika-public</a>, commit <code>89b46db</code></dd>
+  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/uika-public">mariyaholic/uika-public</a>, commit <code>80cbc86</code></dd>
   <dt>License</dt><dd>MIT</dd>
 </dl>
 
 <div class="notice caution" role="note"><span class="label">Caution</span>
-<p>The npm package is not published. Do not use <code>npm i -g uika</code> or <code>npx uika</code>. Run Uika from a source checkout, or from a package file that you make from the source.</p></div>
+<p>The npm package is not published. Source publication and an npm release are separate steps. Do not use <code>npm i -g uika</code> or <code>npx uika</code>. Run Uika from a source checkout, or from a package file that you make from the source.</p></div>
 
 <h2 id="concepts">Concepts</h2>
 <dl>
   <dt><strong>Estate</strong></dt>
   <dd>The directory that holds your configuration: <code>estate.json</code>, your rules file and your skills. Uika finds it from <code>--root</code>, then from <code>UIKA_ESTATE_HOME</code>, then from the current directory.</dd>
+  <dt><strong>Canonical pair</strong></dt>
+  <dd>Two sources are canonical: <code>estate.json</code> (the machine manifest: posture, harnesses, targets, registries) and the estate lawbook. Everything agent-facing downstream is generated from these two.</dd>
   <dt><strong>Law block</strong></dt>
   <dd>A marked section that Uika writes into the <code>AGENTS.md</code> file of a repository. It has a SHA-256 fingerprint. Do not edit the text between the markers.</dd>
   <dt><strong>Skill</strong></dt>
@@ -43,7 +45,25 @@
   <dd>A six-line entry in <code>WORKSTACK.md</code> that records what a session did and what to do next.</dd>
 </dl>
 <div class="notice" role="note"><span class="label">Note</span>
-<p>Configuration files keep the names of environment variables only. They do not keep the values of keys or tokens.</p></div>
+<p>Configuration files keep the names of environment variables only. They do not keep the values of keys or tokens. For example, the manifest contains <code>secretEnv: "GITHUB_MCP_TOKEN"</code>, not the token value.</p></div>
+
+<h2 id="why">Why an estate layer</h2>
+<p>Agent harnesses such as Claude Code, Codex, OpenCode, Cline, Gemini CLI, DSH and Hermes run across many repositories. Without an estate layer, each one drifts. Hand-maintained <code>AGENTS.md</code> files go stale. Instructions get pasted between repositories. A skill exists in one harness home but not in another, and nothing tells a session what changed since the last one.</p>
+<p>Uika makes the agent-facing layer generated, versioned, fingerprinted and drift-audited instead of hand-copied. The flow is:</p>
+<pre><code>estate.json + AGENTS.md (canonical, hand-written)
+        │  uika adopt / docs render / deploy
+        ▼
+law blocks (uika:law:begin … sha256 fingerprint) in every managed repo
+skill placement into each harness's skill home
+freshness scan + WORKSTACK.md handoff protocol at session start/end</code></pre>
+<p>Uika writes the law block in a marked, versioned block:</p>
+<pre><code>&lt;!-- uika:law:begin --&gt;
+## Estate law (generated — do not edit inside the markers)
+...
+&lt;!-- uika:generated from estate.json; edit the source, not this file --&gt;
+&lt;!-- uika:docs v1 · sha256:54b31598afc2 --&gt;
+&lt;!-- uika:law:end --&gt;</code></pre>
+<p><code>uika docs check</code> audits drift. <code>uika lint</code> warns when an always-loaded file passes its budget (200 lines or 32 KiB per harness cap), or when a block goes stale.</p>
 
 <h2 id="install">Install from source</h2>
 <ol class="steps">
@@ -58,6 +78,37 @@ cd uika-public</code></pre></li>
 npm install -g ./uika-0.1.0.tgz</code></pre></li>
 </ol>
 
+<h2 id="run">Choose the estate root</h2>
+<p>Uika runs against an estate directory. The order is: <code>--root &lt;dir&gt;</code>, then <code>UIKA_ESTATE_HOME</code>, then the current directory.</p>
+<pre><code># A: the tool lives inside the estate (monorepo pattern): the checkout IS the estate root
+node bin/uika.mjs lint
+
+# B: the CLI against a separate estate directory (public tool / private estate)
+UIKA_ESTATE_HOME=~/estate node bin/uika.mjs docs version
+# or: node bin/uika.mjs docs version --root ~/estate</code></pre>
+<p>The tool carries zero personal data. Your estate is your own directory: your registries, targets and archives. The source holds synthetic starting points in <code>examples/</code>.</p>
+
+<h2 id="requirements">Check what you need</h2>
+<ul>
+  <li>Node.js 22 or later. Uika has zero npm runtime dependencies. It uses Node built-ins only.</li>
+  <li>The included CI workflow targets Node 22 on Linux, Windows and macOS. Run <code>npm test</code> for the revision you use and check its CI results. A Linux test run alone does not verify native Windows or macOS behavior.</li>
+  <li>Optional media tools, provider setup and live harness integrations need separate checks in your environment.</li>
+  <li>No archive tool is needed. Version 0.1.0 does not pack skills into zips. The Windows-only <code>skills pack</code> leg was removed (see the manual, part 6).</li>
+</ul>
+<p>Git is needed only by some commands:</p>
+<div class="table-wrap"><table>
+  <thead><tr><th scope="col">Command</th><th scope="col">Git</th></tr></thead>
+  <tbody>
+    <tr><td><code>deploy status</code>, <code>deploy install</code>, <code>deploy uninstall</code>, <code>deploy auto …</code>, <code>deploy hook-run</code></td><td>Required. They read commits, install hooks and set <code>init.templateDir</code>.</td></tr>
+    <tr><td><code>deploy targets</code>, <code>deploy adopt</code>, <code>deploy forget</code></td><td>Not used</td></tr>
+    <tr><td><code>find</code></td><td>Optional. It uses <code>git ls-files</code> in Git roots and walks the tree otherwise.</td></tr>
+    <tr><td><code>lint</code></td><td>Optional. The branch-name check is skipped outside a Git repository.</td></tr>
+    <tr><td><code>docs check</code></td><td>Optional. Git tells tracked from untracked link targets.</td></tr>
+    <tr><td><code>check</code></td><td>Optional. It probes for Git and reports its version, or that it is missing.</td></tr>
+    <tr><td>All other commands</td><td>Not used</td></tr>
+  </tbody>
+</table></div>
+
 <h2 id="estate">Make an estate</h2>
 <ol class="steps">
   <li>Make a new estate:
@@ -69,6 +120,11 @@ node ../bin/uika.mjs lint</code></pre></li>
   <li>Validate the skills:
 <pre><code>node ../bin/uika.mjs skills validate --strict</code></pre></li>
 </ol>
+<p>The bootstrap creates an estate scaffold. Its ledger starts unclaimed, and it does not copy the bundled skills into your estate. Read the bundled <code>skills/</code> from the checkout or installed package, then choose the skills to copy into your estate's <code>skills/</code> directory. Record your real harness handoff in <code>WORKSTACK.md</code> before you treat a session as complete.</p>
+<p>For example, from the checkout, this is the small operating set for a new estate:</p>
+<pre><code>node -e "const fs = require('node:fs'); for (const name of ['freshness-scan', 'handoff-protocol', 'principle-prove-it-works', 'wrap-checklist']) fs.cpSync('skills/' + name, 'my-estate/skills/' + name, {recursive: true, force: false, errorOnExist: true});"
+node bin/uika.mjs skills validate --root my-estate --strict</code></pre>
+<p>The copy refuses existing destinations, so local skill edits are preserved. For a tarball installation, use its packaged <code>skills/</code> folder as the source. Strict validation fails if no skills were discovered. Ordinary validation reports the empty library explicitly.</p>
 
 <h2 id="apply">Write changes</h2>
 <div class="notice caution" role="note"><span class="label">Caution</span>
@@ -79,26 +135,70 @@ node ../bin/uika.mjs lint</code></pre></li>
   <li><code>session check --stop</code> writes a one-byte marker file.</li>
 </ul>
 <p>If you use <code>--apply</code> and <code>--dry-run</code> together, the command stops with an error before it does anything.</p>
+<p>Commands that write files (<code>video sheet|frame|structure --out</code>, <code>figure render</code>, <code>eval run</code>) are also dry runs until you pass <code>--apply</code>.</p>
+
+<h2 id="session">Keep a session honest</h2>
+<p>Uika defines a session protocol, not folklore:</p>
+<ol class="steps">
+  <li>At the start, run a freshness scan. It lists files by modification time, newest first. Ask the estate if the files matter before you explore further.</li>
+  <li>Read <code>WORKSTACK.md</code> in the repository root, if it is present.</li>
+  <li>At the end, run the wrap checklist. It runs the checks, updates the ledger and stops.</li>
+  <li>Record the handoff in <code>WORKSTACK.md</code> as a six-line entry: from, to, done, next, files, verify, blockers.</li>
+</ol>
+<p><code>uika session check</code> enforces this protocol.</p>
+<div class="notice" role="note"><span class="label">Note</span>
+<p><code>session check --stop</code> records a one-byte, once-per-session sentinel. It goes inside an existing <code>.git/</code> directory, or the OS temp directory. A Stop hook then blocks at most once per session.</p></div>
 
 <h2 id="commands">Commands</h2>
 <div class="table-wrap"><table>
   <thead><tr><th scope="col">Command</th><th scope="col">Function</th><th scope="col">Git</th></tr></thead>
   <tbody>
-    <tr><td><code>init</code></td><td>Makes a new estate.</td><td>Not used</td></tr>
+    <tr><td><code>init</code></td><td>Makes a new estate. Flags: <code>[dir]</code>, <code>--name n</code>, <code>--apply</code>.</td><td>Not used</td></tr>
     <tr><td><code>check</code></td><td>Shows runtimes, agent home folders and disk space.</td><td>Optional</td></tr>
-    <tr><td><code>lint</code></td><td>Checks file sizes, law-block changes and skills.</td><td>Optional</td></tr>
-    <tr><td><code>adopt</code></td><td>Writes the law block into a repository.</td><td>Not used</td></tr>
-    <tr><td><code>sync</code></td><td>Copies estate configuration into a clean repository.</td><td>Not used</td></tr>
-    <tr><td><code>skills</code></td><td>Validates skills and copies them into agent skill folders.</td><td>Not used</td></tr>
-    <tr><td><code>session check</code></td><td>Checks the hand-off and the end-of-session list.</td><td>Not used</td></tr>
-    <tr><td><code>docs</code></td><td>Checks, renders and repairs the Markdown files.</td><td>Optional</td></tr>
-    <tr><td><code>deploy</code></td><td>Distributes changes after a commit.</td><td>Required</td></tr>
-    <tr><td><code>find</code> / <code>where</code></td><td>Finds files and projects in the estate.</td><td>Optional</td></tr>
-    <tr><td><code>video</code>, <code>figure</code></td><td>Checks videos and makes figures. Needs external tools.</td><td>Not used</td></tr>
-    <tr><td><code>ref</code>, <code>eval</code></td><td>Reads the reference list. Runs your own test tasks.</td><td>Not used</td></tr>
+    <tr><td><code>lint</code></td><td>Checks always-loaded file lines, law-block changes and skill hygiene. Flag: <code>--strict</code>.</td><td>Optional</td></tr>
+    <tr><td><code>adopt</code></td><td>Writes the law block into a repository. Flags: <code>--apply</code>, <code>--dry-run</code>.</td><td>Not used</td></tr>
+    <tr><td><code>sync</code></td><td>Copies estate configuration into a clean repository. Flags: <code>--force</code>, <code>--apply</code>.</td><td>Not used</td></tr>
+    <tr><td><code>skills</code></td><td>Validates skills (<code>validate --strict</code>), places them into agent skill homes (<code>place</code>) and audits script bloat (<code>audit</code>).</td><td>Not used</td></tr>
+    <tr><td><code>session check</code></td><td>Checks freshness, the hand-off and the wrap gate.</td><td>Not used</td></tr>
+    <tr><td><code>docs</code></td><td>Checks, renders, inits, migrates and versions the Markdown files.</td><td>Optional</td></tr>
+    <tr><td><code>deploy</code></td><td>Commit-triggered distribution: <code>status</code>, <code>targets</code>, <code>adopt</code>, <code>forget</code>, <code>install</code>, <code>uninstall</code>, <code>auto</code>, <code>hook-run</code>.</td><td>Required</td></tr>
+    <tr><td><code>find</code> / <code>where</code></td><td>Finds files and projects by project and modification time, and resolves project nicknames.</td><td>Optional</td></tr>
+    <tr><td><code>path</code> / <code>layout</code></td><td>Shows where a file goes in a repository of the estate.</td><td>Not used</td></tr>
+    <tr><td><code>home</code></td><td><code>status</code> and <code>regen</code>: the harness home-law files, for example <code>~/.dsh/AGENTS.md</code> or <code>~/.hermes.md</code>.</td><td>Not used</td></tr>
+    <tr><td><code>video</code></td><td><code>ls</code>, <code>qa</code>, <code>sheet</code>, <code>frame</code>, <code>structure</code>, <code>diff</code>, <code>prompt lint</code>: find, check, sample and profile rendered films; lint a video prompt pack.</td><td>Not used</td></tr>
+    <tr><td><code>figure</code></td><td><code>check</code>, <code>render</code>, <code>ls</code>, <code>theme</code>: deterministic SVG and HTML figures from <code>*.figure.json</code> specs.</td><td>Not used</td></tr>
+    <tr><td><code>ref</code></td><td><code>ls</code>, <code>show</code>, <code>hash</code>, <code>check</code>: the reference registry and versioned content hashes.</td><td>Not used</td></tr>
+    <tr><td><code>eval</code></td><td><code>ls</code>, <code>run</code>, <code>compare</code>: your own grader tasks with train/test splits and a keep/revert verdict.</td><td>Not used</td></tr>
   </tbody>
 </table></div>
-<p>For the full list of 19 commands, see the <a href="https://github.com/mariyaholic/uika-public/blob/main/docs/manual.md">manual</a>.</p>
+<p>More detail on the media and data commands:</p>
+<ul>
+  <li><code>video</code> needs <code>ffmpeg</code> and <code>ffprobe</code> on <code>PATH</code>, or <code>UIKA_FFMPEG</code> and <code>UIKA_FFPROBE</code>, for everything except <code>ls</code>, <code>diff</code> and <code>prompt lint</code>.</li>
+  <li><code>figure</code> renders with guards and a provenance manifest. PNG and PDF output needs Playwright, which is not bundled.</li>
+  <li><code>ref hash &lt;id&gt; --json</code> prints a read-only baseline for review.</li>
+  <li><code>eval</code> reads tasks from <code>labs/eval/tasks/*.json</code>. No model API is called by uika.</li>
+  <li><code>docs migrate [repo] [--apply]</code> repairs legacy repositories. It strips pasted law, folds a hand-written <code>CLAUDE.md</code> into <code>AGENTS.md</code> and keeps <code>.bak-&lt;date&gt;</code> backups.</li>
+</ul>
+<p>The dispatcher registers 19 commands. Not bundled (see the roadmap): usage tracker, MCP/model/prompt registries, supply layer, <code>creative</code> ledger/deck/divergence commands, backup, limiter, mt5. For the full list, see the <a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/docs/manual.md">manual</a>.</p>
+
+<h2 id="skills">Use the skills library</h2>
+<p><code>skills/</code> contains 39 estate-authored skills in the <a href="https://agentskills.io">Agent Skills</a> format: one folder, one <code>SKILL.md</code>. Seventeen are the original operating and principle skills. Twenty-two are ports that cover creative work, media, figures, evaluation and workflow templates.</p>
+<p>Third-party skills are not vendored. See <a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/NOTICE">NOTICE</a> and the <a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/docs/SKILL_PORT_AUDIT.md">skills scope and provenance audit</a>.</p>
+<p>Six ports are templates with <code>MANUAL.md</code> setup guides. Media kits and raster export need optional tools that the CLI package does not install. Read each skill's requirements before you run its helpers.</p>
+<p>To copy your estate's selected skills into its configured harness skill homes, run <code>uika skills place --apply</code>.</p>
+
+<h2 id="layout">See where things live</h2>
+<div class="table-wrap"><table>
+  <thead><tr><th scope="col">Path</th><th scope="col">Contents</th></tr></thead>
+  <tbody>
+    <tr><td><code>bin/uika.mjs</code></td><td>The CLI entry point.</td></tr>
+    <tr><td><code>src/</code></td><td>Command modules and their <code>node:test</code> suites (<code>*.test.mjs</code>).</td></tr>
+    <tr><td><code>skills/</code></td><td>The estate skills library.</td></tr>
+    <tr><td><code>templates/</code>, <code>schema/</code>, <code>examples/</code></td><td>Scaffolding, JSON schemas and synthetic starting points.</td></tr>
+    <tr><td><code>docs/</code></td><td>The manual, the harness matrix, the agent guide and the roadmap.</td></tr>
+    <tr><td><code>tools/</code></td><td>Maintainer tools (the privacy scrub). Not packed.</td></tr>
+  </tbody>
+</table></div>
 
 <h2 id="verify">Verify a checkout</h2>
 <p>Run these commands from the root of the checkout. All of them must pass.</p>
@@ -106,11 +206,13 @@ node ../bin/uika.mjs lint</code></pre></li>
 npm run scrub
 node bin/uika.mjs lint --strict
 node bin/uika.mjs docs check --strict</code></pre>
+<p>The test suite includes package-content checks and an isolated tarball install.</p>
 
 <h2 id="limits">Limits</h2>
 <ul>
-  <li>The commands, the <code>estate.json</code> fields and the law-block format can change before version 1.0.</li>
-  <li>Uika does not run a model. The agent tool runs the model and controls access.</li>
+  <li>The commands, the <code>estate.json</code> fields, the law-block format and the harness mappings can change before version 1.0.</li>
+  <li>Version 0.1.0 is a developer preview. Uika supplies the estate, the skills and the session layer. The harness provides model execution, tool access and its own authorization controls.</li>
+  <li>Uika does not run a model. The agent tool runs the model and controls access. Provider setup and live harness integrations need separate verification.</li>
   <li>A test run on Linux does not verify Windows or macOS.</li>
   <li>Do not put real agent home folders or credentials in examples.</li>
 </ul>
@@ -124,19 +226,22 @@ node bin/uika.mjs docs check --strict</code></pre>
 
 <h2 id="reference">Reference</h2>
 <ul>
-  <li><a href="https://github.com/mariyaholic/uika-public/blob/main/README.md">README</a></li>
-  <li><a href="https://github.com/mariyaholic/uika-public/blob/main/docs/manual.md">Manual</a></li>
-  <li><a href="https://github.com/mariyaholic/uika-public/blob/main/docs/harness-matrix.md">Agent tool matrix</a></li>
-  <li><a href="https://github.com/mariyaholic/uika-public/blob/main/SECURITY.md">Security</a></li>
-  <li><a href="https://github.com/mariyaholic/uika-public/blob/main/CHANGELOG.md">Changelog</a></li>
-  <li><a href="https://github.com/mariyaholic/uika-public/blob/main/CONTRIBUTING.md">Contributing</a></li>
+  <li><a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/README.md">README</a></li>
+  <li><a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/docs/manual.md">Manual</a></li>
+  <li><a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/docs/harness-matrix.md">Agent tool matrix</a></li>
+  <li><a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/docs/roadmap.md">Roadmap</a></li>
+  <li><a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/SECURITY.md">Security</a></li>
+  <li><a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/CHANGELOG.md">Changelog</a></li>
+  <li><a href="https://github.com/mariyaholic/uika-public/blob/chore/public-preview/CONTRIBUTING.md">Contributing</a></li>
 </ul>
-<p class="meta">Last checked 14 November 2026 against source commit <code>89b46db</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
+<p class="meta">Last checked 17 November 2026 against source commit <code>80cbc86</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
 </main>
 
 <nav class="toc" aria-labelledby="toc-h"><h2 id="toc-h">On this page</h2><ol>
-  <li><a href="#concepts">Concepts</a></li><li><a href="#install">Install</a></li><li><a href="#estate">Make an estate</a></li>
-  <li><a href="#apply">Write changes</a></li><li><a href="#commands">Commands</a></li><li><a href="#verify">Verify</a></li>
+  <li><a href="#concepts">Concepts</a></li><li><a href="#why">Why an estate layer</a></li><li><a href="#install">Install</a></li>
+  <li><a href="#run">Choose the estate root</a></li><li><a href="#requirements">Check what you need</a></li><li><a href="#estate">Make an estate</a></li>
+  <li><a href="#apply">Write changes</a></li><li><a href="#session">Keep a session honest</a></li><li><a href="#commands">Commands</a></li>
+  <li><a href="#skills">Use the skills library</a></li><li><a href="#layout">Layout</a></li><li><a href="#verify">Verify</a></li>
   <li><a href="#limits">Limits</a></li><li><a href="#changes">Changes</a></li><li><a href="#reference">Reference</a></li>
 </ol></nav>
 </div>
