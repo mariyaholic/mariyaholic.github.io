@@ -76,6 +76,7 @@
 <p>Browser videos use only the thumbnail the browser supplies through the Windows media controls. Browser titles are never matched against music catalogs. Discord's servers cannot read the local dashboard art cache, so a browser card can appear on Discord without a large image.</p>
 <p>The priority list is a total order over the six sources: <code>applemusic</code>, <code>spotify</code>, <code>spotifyapi</code>, <code>youtubemusic</code>, <code>browser</code> and <code>generic</code>. If the top source stops, the next source that is on takes over. The order saves to <code>sources.order</code> in <code>cadence.toml</code> together with the source switches. The panel drops unknown or duplicate entries on load.</p>
 <p>The tray menu is built each time it opens. The first row is greyed and names the current track, or says <strong>Nothing playing</strong>. YouTube, Twitch and <strong>Background Edge tabs</strong> appear below a separator, checked as saved.</p>
+<p>YouTube Music is a dedicated source, on by default, for its browser app and supported desktop apps. It always uses a Listening card with a fixed YouTube Music symbol, without catalog lookups or a listen button. A custom app filter such as <code>msedge</code> still blocks it; its own switch cannot override a filter.</p>
 
 <h2 id="spotify">Connect the Spotify Web API</h2>
 <p>The desktop Spotify app works with no setup. The Spotify Web API source adds exact artwork and track links. You need a free Spotify developer app.</p>
@@ -86,6 +87,7 @@
 </ol>
 <p>The flow is Authorization Code with PKCE (S256). The code verifier stays in memory and expires after 10 minutes. The <code>state</code> value is random, is checked in constant time and works once, so a replayed or forged callback is refused without contacting Spotify. Tokens and codes are never logged or shown. Selecting <strong>Disconnect</strong> stops the polling, deletes the token and sets <code>spotify.mode</code> back to <code>system</code>.</p>
 <p>The panel picks a free port each run. Spotify checks the redirect URI against the ones registered for the app, so set a fixed port in <code>[server] port</code> if you reconnect often. An existing connection keeps working whatever the port.</p>
+<p>The terminal <code>setup</code> command also connects Spotify, for scripted installs. It asks for the client ID only, prints the sign-in address and opens it in your browser, and waits on <code>http://127.0.0.1:8977/spotify/callback</code> for up to 10 minutes. Add that exact Redirect URI to your Spotify app first. Earlier versions asked for a client secret and stored it in Credential Manager; nothing reads it now, and a successful <code>setup</code> deletes the old entry. If you connected through the old terminal flow, run <code>setup</code> again to get a working token.</p>
 
 <h2 id="card">Shape the Discord card</h2>
 <p>The <strong>Discord card</strong> section of the panel edits the card settings. <strong>Apply changes</strong> saves all at once or not at all, <strong>Discard changes</strong> goes back to what is saved, and <strong>Reset to defaults</strong> fills the form for you. Yozora picks the change up on its next update.</p>
@@ -172,7 +174,7 @@
 </table></div>
 <p>The panel and the tray menu come in English and Japanese. <strong>Follow Windows</strong> uses the Windows display language, <strong>English</strong> and <strong>日本語</strong> fix one. Product and service names stay in Latin script, and the Discord card is not translated: its text comes from your own template settings.</p>
 <p>With a Windows contrast theme on, the panel uses the system colours, so nothing depends on the theme's own colours.</p>
-<p>Colours are copied from each source palette. Where a colour would fall below 4.5:1 as text, a lighter or darker value is used instead and marked <code>derived</code> in <code>internal/server/ui.html</code>. Each theme's faces ship inside the binary (Latin subsets, about 370 KB, under the SIL Open Font License) and the panel serves them itself, so nothing is fetched from the network. Night sky uses Segoe UI and Confluence uses Georgia and Consolas, which Windows already has.</p>
+<p>Colours are copied from each source palette. Where a colour would fall below 4.5:1 as text, a lighter or darker value is used instead and marked <code>derived</code> in <code>internal/server/ui.html</code>. Each theme's faces ship inside the binary (Latin subsets, about 370 KB, under the SIL Open Font License) and the panel serves them itself, so nothing is fetched from the network. Night sky uses Segoe UI and Confluence uses Georgia and Consolas, which Windows already has. The theme faces cover Latin only, so Japanese text uses Windows' own Yu Gothic UI or Meiryo; Mariyaholic-98 uses MS Gothic for the closest match to its bitmap look.</p>
 
 <h2 id="pause">Pause sharing</h2>
 <p>A pause removes your Discord card in approximately five seconds. Yozora continues to find media, but it does not send it to Discord.</p>
@@ -221,7 +223,7 @@ check = false</code></pre>
 
 <h2 id="performance">Speed</h2>
 <p>With media playing, Yozora checks the Windows media sessions every <code>sources.poll_ms</code> (default 1000 ms) and updates its state every 250 ms. After a minute with no media session and nothing on your Discord profile, it slows to one session check every 5 seconds and one update every 2 seconds. It returns to full speed as soon as any session appears.</p>
-<p>A newly started track shows in Yozora within about 5.25 seconds at worst, and on Discord after the usual <code>presence.track_debounce_ms</code> (default 500 ms) on top. While a card is still on your profile, Yozora stays at full speed so the clear is not delayed. A <code>poll_ms</code> of 5000 or more is left as it is.</p>
+<p>A newly started track shows in Yozora within about 5.25 seconds at worst, and on Discord after the usual <code>presence.track_debounce_ms</code> (default 500 ms) on top. While a card is still on your profile, Yozora stays at full speed so the clear is not delayed. A <code>poll_ms</code> of 5000 or more is left as it is. Discord sends stay at least five seconds apart, so fast detection is not a promise of an immediate Discord-visible update. Artwork can arrive as a later update.</p>
 
 <h2 id="logs">Logs</h2>
 <p>The background process writes <code>%LOCALAPPDATA%\uika-resonance\logs\uika-resonance.log</code>. Past 5 MB the file is renamed to <code>uika-resonance.log.1</code> and a new file starts, so the logs never take more than about 10 MB.</p>
@@ -229,6 +231,7 @@ check = false</code></pre>
 level = "info"   # debug, info, warn, error or off</code></pre>
 <p><code>debug</code> adds the source file and line to each entry and <code>off</code> writes no log file. The log lines carry no severity yet, so <code>warn</code> and <code>error</code> currently write the same lines as <code>info</code>. An unknown value is logged and treated as <code>info</code>.</p>
 <p><strong>Copy report</strong> under Diagnostics copies a plain-text report for bug reports: version, Windows build, source, artwork route, Discord state, last error, enabled sources and theme. It never contains track titles, artists, tokens, client IDs or file paths with your user name. <strong>Save report</strong> downloads the same report as <code>yozora-diagnostics.txt</code>. If the browser refuses clipboard access, the text is shown in a box to select by hand.</p>
+<p><strong>Recent</strong>, just below Diagnostics, lists the last 20 distinct tracks Yozora published this run, newest first, with a thumbnail, title, artist and how long ago. It stays in memory only: nothing is written to disk and it is empty after a restart.</p>
 
 <h2 id="build">Build from source</h2>
 <p>Requirements: Windows and Go 1.27.1 or later.</p>
@@ -261,6 +264,11 @@ go build -ldflags=-H=windowsgui -o Yozora.exe ./cmd/yozora
   <li>The Spotify connect flow is tested against a local fake token endpoint. It has not yet been tried against Spotify itself.</li>
   <li>Native WebView2 download handling still needs a Windows smoke test for the report download in this build.</li>
 </ul>
+<p>The browser regression check runs on Linux with Node.js:</p>
+<pre><code>npm install --prefix /tmp/yozora-ui-tools --no-save --no-package-lock playwright@1.62.1
+/tmp/yozora-ui-tools/node_modules/.bin/playwright install chromium
+NODE_PATH=/tmp/yozora-ui-tools/node_modules node scripts/check-ui.cjs</code></pre>
+<p>To use an existing Chromium installation, set <code>CHROMIUM_PATH</code> to its executable instead of installing Playwright's browser. Screenshots and <code>results.json</code> are written to the system temporary directory under <code>yozora-ui-check</code>; set <code>UI_EVIDENCE_DIR</code> to choose another location.</p>
 
 <h2 id="repo">Repository and release</h2>
 <p>A merge to <code>main</code> that changes what ships builds and publishes a release automatically. What ships: Go sources (not <code>_test.go</code> files), <code>go.mod</code>/<code>go.sum</code>, the icon resources, the installer, the embedded panel or the workflow itself. Documentation, scripts and test-only merges do not cut a release. The version is <code>&lt;series&gt;.N</code>: the latest tag of the series plus one, starting at <code>.0</code> for a new series. The series (<code>0.2</code> now) is set by hand in the workflow and raised for a big change. Use the “Run workflow” button on the release workflow to republish without a code change.</p>
