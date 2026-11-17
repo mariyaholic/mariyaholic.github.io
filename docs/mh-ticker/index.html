@@ -44,7 +44,7 @@
     <tr><th scope="row">Memory after 1 minute</th><td class="num">≈ 5.7 MB</td><td class="num">≈ 5.8 MB</td></tr>
   </tbody>
 </table></div>
-<p class="meta">Memory values were measured on 1.7.1.</p>
+<p class="meta">Memory values were measured on 1.7.1, not yet on 1.8.</p>
 <p>Everything in the release changes that is not a theme, a picker or an alert is in both programs.</p>
 
 <h2 id="install">Install MH Ticker</h2>
@@ -90,7 +90,7 @@
   <li>Select <strong>Symbols</strong>.</li>
   <li>Select the symbols to show. You can show up to 24 symbols. The strip changes immediately.</li>
 </ol>
-<p>To add a symbol that is not in the list, select <strong>Symbols &gt; Add symbol...</strong> and type a CNBC symbol, for example <code>AAPL</code> or <code>EUR=</code>. The app sends one request to CNBC to check the symbol. If CNBC does not know the symbol, the app does not add it.</p>
+<p>To add a symbol that is not in the list, select <strong>Symbols &gt; Add symbol...</strong> and type a CNBC symbol, for example <code>AAPL</code>, <code>EUR=</code> or <code>@GC.1</code>. The app sends one request to CNBC to check the symbol. The name and the first price come from CNBC. If CNBC does not know the symbol, the app does not add it.</p>
 <p>To return to the six default symbols, select <strong>Symbols &gt; Reset to default</strong>.</p>
 
 <p>The list has 23 symbols: metals, crypto, US futures, oil, gas, copper, FX, the dollar index, US yields, VIX, Nikkei, DAX, FTSE and Hang Seng. In Ultra, the button left of the minimize cross opens a picker strip inside the panel. Click a chip to add the symbol, and click it again to drop it. It is the same list as the <strong>Symbols</strong> page, with the whole list visible at once.</p>
@@ -194,7 +194,7 @@
 <p><strong>Hotkey:</strong> open <strong>Settings</strong> &gt; <strong>Startup & system</strong> &gt; <strong>Hotkey</strong>. Choose <strong>Off</strong>, one of the four presets (<code>Ctrl+Alt+M</code>, <code>Ctrl+Alt+T</code>, <code>Ctrl+Shift+F12</code>, <code>Ctrl+Alt+Space</code>), or <strong>Type a hotkey...</strong> for a custom one. The key opens and closes the panel from anywhere. If another app already has the combination, the entry says so.</p>
 
 <h2 id="poll">Set the update interval</h2>
-<p>Right-click the strip and select <strong>Poll every</strong>. The range is 1 to 60 seconds. A shorter interval uses more network data.</p>
+<p>Right-click the strip and select <strong>Poll every</strong>. The range is 1 to 60 seconds. At 1 second, the data use is about three times as much, and the feel is genuinely live. At 60 seconds, the app barely touches the network.</p>
 <p>Two options can decrease the number of requests:</p>
 <ul>
   <li><strong>Slow down when nothing moves</strong>: when no price changes for 10 minutes, the app polls each 15 seconds. After 30 minutes, it polls each 60 seconds.</li>
@@ -216,7 +216,7 @@
 <p><strong>Data meter:</strong> a line under the version on the <strong>About</strong> page shows how much the app has downloaded, like <code>Data: 3.1 MB this hour, 41 MB since start</code>. It counts what the app reads after compression is undone, so it is a little more than the network carried. Request headers are not counted.</p>
 
 <h2 id="settings">Settings file</h2>
-<p>The app keeps its settings in <code>%LOCALAPPDATA%\MH_Ticker\config.json</code>. Ultra uses <code>config_ultra.json</code> in the same folder. To open the folder, select <strong>Open config folder</strong> in the menu.</p>
+<p>The app keeps its settings in <code>%LOCALAPPDATA%\MH_Ticker\config.json</code>. It makes the file with the default settings the first time it runs. Ultra uses <code>config_ultra.json</code> in the same folder. To open the folder, select <strong>Open config folder</strong> in the menu.</p>
 <p>The menus apply changes immediately. If you edit the file manually, restart the app.</p>
 <p>If the app cannot read the file, it does not overwrite it. It renames the file to <code>config.bad.json</code> and starts with the default settings.</p>
 <div class="notice warning" role="note"><span class="label">Warning</span>
