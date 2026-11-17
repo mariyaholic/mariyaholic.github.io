@@ -59,13 +59,13 @@ cd mariyaholic.github.io</code></pre></li>
   <thead><tr><th scope="col">Path</th><th scope="col">Contents</th></tr></thead>
   <tbody>
     <tr><td><code>*.html</code> (root)</td><td>One file for each page. <code>404.html</code> uses root paths, for example <code>/css/site.css</code>.</td></tr>
-    <tr><td><code>css/site.css</code></td><td>The main look: a PC-98 desktop in 16 colours.</td></tr>
+    <tr><td><code>css/site.css</code></td><td>The main look, revision 8, named <code>mariyaholic-98</code>: a PC-98 desktop in 16 colours.</td></tr>
     <tr><td><code>css/plain.css</code></td><td>The gray document look for documentation and papers.</td></tr>
     <tr><td><code>js/site.js</code></td><td>The desktop, boot screen, windows, sound and music for the main look.</td></tr>
     <tr><td><code>docs/</code></td><td>Project documentation. <code>docs/WRITING.md</code> gives the writing rules.</td></tr>
     <tr><td><code>papers/</code></td><td>Academic papers. One folder for each paper.</td></tr>
-    <tr><td><code>fonts/</code></td><td>Local web fonts and their licences.</td></tr>
-    <tr><td><code>img/98/</code></td><td>Pictures dithered to the site palette. The originals are in <code>img/</code>.</td></tr>
+    <tr><td><code>fonts/</code></td><td>Subset web fonts with their OFL licence texts. See <code>fonts/SOURCES.md</code> and the Credits section on <code>colophon.html</code>.</td></tr>
+    <tr><td><code>img/98/</code></td><td>Pictures Bayer-dithered to the site palette. The originals are in <code>img/</code>.</td></tr>
     <tr><td><code>.nojekyll</code></td><td>Tells GitHub Pages to serve the files without changes.</td></tr>
   </tbody>
 </table></div>
@@ -73,15 +73,17 @@ cd mariyaholic.github.io</code></pre></li>
 <h2 id="looks">Two looks</h2>
 <p>The site uses two stylesheets. Use one stylesheet on each page. Do not use the two together.</p>
 <ul>
-  <li><strong>Main look</strong> (<code>site.css</code> and <code>site.js</code>): portfolio, programs, games and personal pages. Each top-level <code>&lt;section&gt;</code> in <code>&lt;main&gt;</code> is a window. Give it <code>class="win"</code> and <code>data-win="FOLDER\NAME.TXT"</code>.</li>
+  <li><strong>Main look</strong> (<code>site.css</code> and <code>site.js</code>): portfolio, programs, games and personal pages. Each top-level <code>&lt;section&gt;</code> in <code>&lt;main&gt;</code> is a window. Give it <code>class="win"</code> and <code>data-win="FOLDER\NAME.TXT"</code>. <code>site.js</code> draws the desktop: a palette-cycling dither with drifting stars. It plays the boot screen on a first visit. It drags the home-page windows. It runs the app sketches and the step sequences.</li>
   <li><strong>Document look</strong> (<code>plain.css</code> only): documentation and papers. It uses system fonts and no JavaScript. Documentation pages use the dark theme (<code>theme-docs</code>). Paper pages use the light, wiki-like theme (<code>theme-paper</code>).</li>
 </ul>
+<p>The <strong>SOUND</strong> button in the status bar gives synthesized FM sound effects for windows, links, hovers on the main controls, the boot and the 404. The <strong>MUSIC</strong> button beside it plays <code>DESKTOP.MID</code>, a chip-style loop in <code>js/site.js</code>, through a small four-voice player. Both buttons are off by default, and the site remembers the choice. There are no audio files. The music starts again on the next page at the same beat.</p>
 
 <h2 id="options">Address options for the main look</h2>
 <div class="table-wrap"><table>
   <thead><tr><th scope="col">Option</th><th scope="col">Result</th></tr></thead>
   <tbody>
     <tr><td><code>?motion=off</code></td><td>Stops the desktop animation and the boot screen.</td></tr>
+    <tr><td>Reduced motion in the browser settings</td><td>The desktop is still and there is no boot. This is the same as <code>?motion=off</code>.</td></tr>
     <tr><td><code>?boot</code></td><td>Shows the boot screen again.</td></tr>
     <tr><td><code>index.html#w-vivy</code></td><td>Opens the home page with that window at the front.</td></tr>
   </tbody>
@@ -101,7 +103,7 @@ cd mariyaholic.github.io</code></pre></li>
   <li><a href="https://github.com/mariyaholic/mariyaholic.github.io/blob/main/docs/WRITING.md">Writing rules for documentation</a></li>
   <li><a href="../../colophon.html">Colophon</a></li>
 </ul>
-<p class="meta">Last checked 14 November 2026.</p>
+<p class="meta">Last checked 17 November 2026 against source commit <code>afb53e2</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
 </main>
 
 <nav class="toc" aria-labelledby="toc-h"><h2 id="toc-h">On this page</h2><ol>
