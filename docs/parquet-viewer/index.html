@@ -25,7 +25,7 @@
   <dt>Platform</dt><dd>Windows x64 for the desktop app and Explorer; Linux and macOS for the headless command-line tool</dd>
   <dt>Runtime</dt><dd>Rust 1.85 or later</dd>
   <dt>Status</dt><dd>0.1.0 source preview, no release</dd>
-  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/parquet-viewer">mariyaholic/parquet-viewer</a>, commit <code>a512fd5</code></dd>
+  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/parquet-viewer">mariyaholic/parquet-viewer</a>, commit <code>7553228</code></dd>
   <dt>License</dt><dd>Apache-2.0</dd>
 </dl>
 
@@ -43,6 +43,67 @@
 <div class="notice" role="note"><span class="label">Note</span>
 <p>Read the footer totals as file metadata. They are not an independent full row count.</p></div>
 
+<h2 id="scope">What the viewer shows</h2>
+<p>The Explorer preview is a per-user Windows preview handler for <code>.parquet</code> files. v1 gives you these things:</p>
+<ul>
+  <li>A footer with the schema, the row-group list and a row count from the metadata. Counts and statistics are explicitly labelled until a complete scan verifies them.</li>
+  <li>Date and timestamp bounds for each column. Each bound has <code>complete</code>, <code>partial</code> or <code>unavailable</code> coverage, and it gives a reason.</li>
+  <li>A virtualized, bounded sample. It renders nested structs, lists, maps, decimals, dates, timestamps and binary values safely.</li>
+  <li>An optional full decoded scan with row, decoded-byte, compressed-byte and time budgets. A cancelled or skipped scan never claims exactness.</li>
+  <li>An About dialog. Push <strong>F1</strong> in the preview pane. It shows "Made by Maria" and the free and open source (Apache-2.0) notice.</li>
+</ul>
+<p>Market-data heuristics are also part of v1. See <a href="#market">Turn on market diagnostics</a>.</p>
+
+<h2 id="headless">Use the headless command-line tool</h2>
+<p>The CLI is for development, diagnostics and non-Windows verification. The <code>--rows</code> form is in <a href="#open">Open a Parquet file</a>. These commands are from the source:</p>
+<pre><code>cargo run -p parquet-preview-cli -- tests/fixtures/trades.parquet --scan
+cargo run -p parquet-preview-cli -- tests/fixtures/trades.parquet --json
+cargo run -p parquet-preview-cli -- --about</code></pre>
+
+<h2 id="market">Turn on market diagnostics</h2>
+<p>The heuristics are opt-in, and they stay that way. They check for a constant spread, an open equal to the previous close, return tails and price plausibility. Each report carries an explicit field mapping and the sample coverage. The check can also use an optional local dated reference-price baseline.</p>
+<ol class="steps">
+  <li>Create a settings file with the fields below.</li>
+  <li>Point the worker at the file with the <code>PARQUET_PREVIEW_SETTINGS</code> environment variable.</li>
+</ol>
+<pre><code>{
+  "market_profile": {
+    "time_field": "time",
+    "open_field": "open",
+    "high_field": "high",
+    "low_field": "low",
+    "close_field": "close",
+    "spread_field": "spread",
+    "instrument": "EURUSD"
+  },
+  "baseline": {
+    "path": "C:\\Users\\me\\baseline.csv",
+    "instrument": "EURUSD",
+    "licence": "internal research licence 2026"
+  }
+}</code></pre>
+<p>The baseline is a local CSV file. It has <code>date,price</code> columns and an optional <code>instrument</code> column. The file must name the licence or the terms under which it is used.</p>
+<div class="notice" role="note"><span class="label">Note</span>
+<p>Without a dated, instrument-specific, explicitly licensed baseline, the viewer reports the price comparison as unavailable.</p></div>
+<p>The heuristics are warnings. They are not proof of fraud, authenticity or integrity, and they are not financial advice.</p>
+
+<h2 id="register">Register the Explorer preview handler</h2>
+<p>Releases are published as <code>parquet-preview-&lt;version&gt;-x64.zip</code>. The archive holds the binaries, the licence documents and the registration scripts.</p>
+<ol class="steps">
+  <li>Extract the zip archive.</li>
+  <li>In the extracted folder, run:
+<pre><code>powershell -ExecutionPolicy Bypass -File install.ps1</code></pre></li>
+  <li>Restart Explorer. The preview pane then opens <code>.parquet</code> files.</li>
+</ol>
+<div class="notice caution" role="note"><span class="label">Caution</span>
+<p>Releases are not code-signed yet, so SmartScreen may show a warning.</p></div>
+<p>To remove the registration, run <code>powershell -ExecutionPolicy Bypass -File uninstall.ps1</code> from the extracted folder.</p>
+<p><code>install.ps1</code> and <code>uninstall.ps1</code> are the conventional entry points. They are thin wrappers over <code>Register-ParquetPreview.ps1</code>, which holds the logic. The scripts warn before they change <code>.parquet</code> associations, and they back up the previous handler. The uninstaller restores the association only if it still belongs to this viewer.</p>
+<p>Registration is under <code>HKCU\Software\Classes</code>. No elevation is required.</p>
+<div class="notice" role="note"><span class="label">Note</span>
+<p>The handler and the worker must be version-matched and live in the same directory: <code>parquet_preview_windows.dll</code> and <code>parquet-preview-worker.exe</code>.</p></div>
+<p>The script details are in <a href="https://github.com/mariyaholic/parquet-viewer/blob/main/installer/README.md">installer/README.md</a>.</p>
+
 <h2 id="build">Build from source</h2>
 <p>To package for Windows x64 from a Unix-like host, install the Rust Windows GNU target, a MinGW-w64 cross compiler and linker, Python 3, <code>zip</code> and <code>sha256sum</code> first. Fetch the locked dependencies before you run the offline build script.</p>
 <pre><code>cargo build --workspace --locked
@@ -51,10 +112,55 @@ cargo run -p parquet-preview-cli -- tests/fixtures/trades.parquet --rows 20
 rustup target add x86_64-pc-windows-gnu
 cargo fetch --locked --target x86_64-pc-windows-gnu
 bash scripts/build-desktop.sh --debug</code></pre>
+<p>Rust 1.85 or later and a normal Cargo toolchain are enough for a plain build and test. No Windows target is required for these commands:</p>
+<pre><code>cargo build --workspace
+cargo test --workspace</code></pre>
+<p>The Win32/COM module is behind <code>#[cfg(windows)]</code>. On Linux you can type-check it, but you cannot test it:</p>
+<pre><code>cargo check -p parquet-preview-windows --features win-check</code></pre>
+<p>For native Windows releases, run <code>scripts/build-windows.ps1</code>. On Linux, run <code>scripts/build-windows.sh</code> with the Windows GNU target and MinGW installed. The Linux script also needs <code>zip</code>.</p>
+<p>Both scripts produce <code>dist/</code> with the binaries, the licence documents, the registration scripts and <code>SHA256SUMS</code>. They also produce one release archive, <code>dist/parquet-preview-&lt;version&gt;-x64.zip</code>. The scripts use the last commit timestamp and remap source paths. Reproducibility also depends on identical toolchains and dependency inputs.</p>
+<p>See <a href="https://github.com/mariyaholic/parquet-viewer/blob/main/docs/TESTING.md">docs/TESTING.md</a> for everything that still requires real Windows.</p>
+
+<h2 id="workspace">Look inside the workspace</h2>
+<p>The repository is a Cargo workspace with seven crates:</p>
+<div class="table-wrap"><table>
+  <caption>Workspace crates</caption>
+  <thead><tr><th scope="col">Crate</th><th scope="col">Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><code>crates/core</code></td><td>Read-only Parquet inspection, summary, sample, scan, diagnostics, rendering</td></tr>
+    <tr><td><code>crates/protocol</code></td><td>Versioned, size-capped worker protocol</td></tr>
+    <tr><td><code>crates/worker</code></td><td>Isolated worker process and private stream spool</td></tr>
+    <tr><td><code>crates/client</code></td><td>Cross-platform worker process client</td></tr>
+    <tr><td><code>crates/windows</code></td><td>COM preview handler, registry registration, Win32 glue</td></tr>
+    <tr><td><code>crates/cli</code></td><td>Headless preview/diagnostic tool</td></tr>
+    <tr><td><code>crates/fixtures</code></td><td>Deterministic Parquet fixture generator</td></tr>
+  </tbody>
+</table></div>
+<p>These documents describe the inside of the product:</p>
+<ul>
+  <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/docs/ARCHITECTURE.md">docs/ARCHITECTURE.md</a> — the product architecture</li>
+  <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/docs/PROTOCOL.md">docs/PROTOCOL.md</a> — the worker protocol</li>
+  <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/docs/TESTING.md">docs/TESTING.md</a> — how the source is verified</li>
+</ul>
+<p>The desktop companion has its own documents: <a href="https://github.com/mariyaholic/parquet-viewer/blob/main/docs/STANDALONE-USAGE.md">docs/STANDALONE-USAGE.md</a> for run and build instructions, limits and native acceptance, and <a href="https://github.com/mariyaholic/parquet-viewer/blob/main/design/system/README.md">design/system/README.md</a> for the six-theme design system and the component contracts.</p>
 
 <h2 id="limits">Limits</h2>
 <div class="notice" role="note"><span class="label">Note</span>
 <p>No public release exists. Keep the worker executable, fonts, help and licences together. Run separate checks for native Windows accessibility and integration.</p></div>
+<h3>What the viewer does not do</h3>
+<ul>
+  <li>There is no SQL and no full-file editing. The Explorer and CLI inspection pipeline is separate from the standalone desktop app.</li>
+  <li>There is no data-network access, no uploads and no telemetry.</li>
+  <li>MT5/MetaTrader support, if configured later, is strictly read-only. This project places no orders and makes no trading calls. It is not affiliated with MetaQuotes; MetaTrader 5 and MT5 are trademarks of MetaQuotes Ltd.</li>
+</ul>
+<h3>Known limitations</h3>
+<ul>
+  <li>Encrypted Parquet files, corrupt files and unsupported logical types are reported, not decoded. v1 handles the codecs that the <code>parquet</code> crate enables: Snappy, Gzip, Zstd, Brotli and LZ4_RAW.</li>
+  <li>Nested date/timestamp leaves are excluded from the top-level date-bounds report. The report states this limitation.</li>
+  <li>Footer counts and statistics come from the file. They are not an integrity check. A full scan is required to claim exact counts.</li>
+  <li>The preview handler targets 64-bit Windows. Store/MSIX packaging, signing, ARM64 and page-index-based virtual scrolling are not part of v1.</li>
+  <li>The worker enforces budgets and is assigned to a job object. A job object is not a security sandbox.</li>
+</ul>
 
 <h2 id="changes">Release changes</h2>
 <h3>0.1.0, source changelog</h3>
@@ -65,20 +171,30 @@ bash scripts/build-desktop.sh --debug</code></pre>
 <h2 id="reference">Reference</h2>
 <ul>
   <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/README.md">README.md</a></li>
+  <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/docs/README.md">docs/README.md</a></li>
   <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/docs/USER-GUIDE.md">docs/USER-GUIDE.md</a></li>
   <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/docs/STANDALONE-USAGE.md">docs/STANDALONE-USAGE.md</a></li>
   <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/docs/STANDALONE-ARCHITECTURE.md">docs/STANDALONE-ARCHITECTURE.md</a></li>
   <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/docs/LARGE-FILE-BROWSING.md">docs/LARGE-FILE-BROWSING.md</a></li>
   <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/docs/DEVELOPMENT.md">docs/DEVELOPMENT.md</a></li>
+  <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/docs/ARCHITECTURE.md">docs/ARCHITECTURE.md</a></li>
   <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/docs/PROTOCOL.md">docs/PROTOCOL.md</a></li>
+  <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/docs/TESTING.md">docs/TESTING.md</a></li>
+  <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/installer/README.md">installer/README.md</a></li>
+  <li><a href="https://github.com/mariyaholic/parquet-viewer/blob/main/design/system/README.md">design/system/README.md</a></li>
 </ul>
-<p class="meta">Last checked 7 November 2026 against source commit <code>a512fd5</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
+<p class="meta">Last checked 17 November 2026 against source commit <code>7553228</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
 </main>
 
 <nav class="toc" aria-labelledby="toc-h"><h2 id="toc-h">On this page</h2><ol>
   <li><a href="#open">Open a Parquet file</a></li>
   <li><a href="#use">Use the viewer</a></li>
+  <li><a href="#scope">What the viewer shows</a></li>
+  <li><a href="#headless">Headless CLI</a></li>
+  <li><a href="#market">Market diagnostics</a></li>
+  <li><a href="#register">Register</a></li>
   <li><a href="#build">Build from source</a></li>
+  <li><a href="#workspace">Workspace</a></li>
   <li><a href="#limits">Limits</a></li>
   <li><a href="#changes">Release changes</a></li>
   <li><a href="#reference">Reference</a></li>
