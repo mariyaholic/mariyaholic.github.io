@@ -2,17 +2,12 @@
 
 These rules apply to pages that use the document look (`css/plain.css`): project documentation in `docs/` and papers in `papers/`. The main site look (`css/site.css`) does not use these rules.
 
-## Pilot status
+## Page status
 
 | Page | Look |
 |---|---|
-| `docs/yozora/` | Document look |
-| `docs/mh-ticker/` | Document look |
-| `docs/uika-public/` | Document look |
-| `docs/mariyaholic.github.io/` | Document look |
-| `papers/` and `papers/<paper>/` | Document look |
-| `docs/index.html` (the hub) | Document look |
-| All other `docs/` pages | Main look (not changed yet). The hub marks them "Older layout". |
+| Every page in `docs/` | Document look (`css/plain.css`, `theme-docs`) |
+| `papers/` and `papers/<paper>/` | Document look (`theme-paper`) |
 
 To move a page to the document look, copy the page template below and move the content into it. Then rewrite the text with the language rules.
 
