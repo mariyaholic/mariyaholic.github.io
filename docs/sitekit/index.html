@@ -24,7 +24,7 @@
 <dl class="facts">
   <dt>Runtime</dt><dd>Node.js 22 or later; Python 3.13 or later with Playwright for the browser audit</dd>
   <dt>Status</dt><dd>0.1.0 source preview, no release</dd>
-  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/sitekit">mariyaholic/sitekit</a>, commit <code>088c3cf</code></dd>
+  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/sitekit">mariyaholic/sitekit</a>, commit <code>13c87e7</code></dd>
   <dt>License</dt><dd>Apache-2.0</dd>
 </dl>
 
@@ -38,6 +38,8 @@
   <li>Run the builder:
 <pre><code>node build.mjs</code></pre></li>
 </ol>
+<p>The builder writes <code>dist/</code> from the example catalog <code>examples/room-catalog/catalog.json</code>. The file <code>requirements-dev.txt</code> contains the exact reviewed Python versions.</p>
+<p>To run the build and the freshness check together, run <code>./scripts/build.sh</code>. On Windows, run <code>scripts/build.ps1</code>. The generated <code>dist/</code> and <code>audit-report.json</code> are local outputs. The repository does not track them.</p>
 
 <h2 id="check">Check the build</h2>
 <ol class="steps">
@@ -47,12 +49,76 @@
   <li>Run the test suite:
 <pre><code>npm test</code></pre></li>
 </ol>
+<p>The audit checks the room and item counts, the navigation, the details interaction, the reduced-motion behaviour, the theme tokens and the horizontal overflow. It checks at narrow and wide viewports.</p>
 <div class="notice" role="note"><span class="label">Note</span>
 <p>The builder implements a narrow room-catalogue contract and a limited subset of JSON Schema. Read the contract before you add fields.</p></div>
+
+<h2 id="commands">Command reference</h2>
+<div class="table-wrap"><table>
+  <caption>Commands</caption>
+  <thead><tr><th scope="col">Command</th><th scope="col">Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><code>node build.mjs</code></td><td>Render the example catalog into <code>dist/</code>.</td></tr>
+    <tr><td><code>node build.mjs --check</code></td><td>Verify that <code>dist/</code> is byte-identical. The command never writes. Exit code <code>1</code> means stale output.</td></tr>
+    <tr><td><code>node build.mjs --catalog &lt;file&gt; --out &lt;dir&gt;</code></td><td>Build another compatible catalog.</td></tr>
+    <tr><td><code>node build.mjs --warn-unsupported</code></td><td>Warn instead of fail on unsupported schema keywords.</td></tr>
+    <tr><td><code>.venv/bin/python audit.py</code></td><td>Audit <code>dist/</code> against the catalog on a loopback server.</td></tr>
+    <tr><td><code>python3 audit.py --browser chromium --no-report</code></td><td>Name the browser and write no report file.</td></tr>
+    <tr><td><code>npm test</code></td><td>Run the Node unit and golden tests plus the Python pytest suite.</td></tr>
+  </tbody>
+</table></div>
+<div class="table-wrap"><table>
+  <caption>Exit codes</caption>
+  <thead><tr><th scope="col">Tool</th><th scope="col">Code</th><th scope="col">Meaning</th></tr></thead>
+  <tbody>
+    <tr><td>Builder</td><td><code>0</code></td><td>Success</td></tr>
+    <tr><td>Builder</td><td><code>1</code></td><td>Invalid input or stale output</td></tr>
+    <tr><td>Builder</td><td><code>2</code></td><td>Usage or input/output error</td></tr>
+    <tr><td>Audit</td><td><code>0</code></td><td>All checks pass</td></tr>
+    <tr><td>Audit</td><td><code>1</code></td><td>A check failed</td></tr>
+    <tr><td>Audit</td><td><code>2</code></td><td>Setup failed (missing Playwright, browser or config)</td></tr>
+  </tbody>
+</table></div>
+<p>The audit fails when the browser is missing. It never passes silently.</p>
+
+<h2 id="config">Configure the audit</h2>
+<p>The audit reads the file <code>audit.config.json</code>. Pass the file with <code>--config audit.config.json</code>. CLI flags override the values in the file.</p>
+<p>The file sets the audit viewports, the tokens and the paths. The example file sets a narrow and a wide viewport, and the token selectors under <code>--sk-</code>. See <a href="https://github.com/mariyaholic/sitekit/blob/main/docs/CONTRACT.md">docs/CONTRACT.md</a> for details.</p>
+
+<h2 id="contract">Use the catalog contract</h2>
+<p>The builder validates a catalog against a documented subset of JSON Schema. The subset has six keywords: <code>type</code>, <code>properties</code>, <code>required</code>, <code>items</code>, <code>enum</code> and <code>additionalProperties</code>.</p>
+<p>An unsupported keyword in a supported subschema fails the build by default. Without this default, partial validation could look like full JSON Schema support.</p>
+<p>A room id maps to a fixed asset path: <code>assets/rooms/&lt;id&gt;.svg</code>.</p>
+<p><a href="https://github.com/mariyaholic/sitekit/blob/main/docs/CONTRACT.md">docs/CONTRACT.md</a> documents the page contract, the ARIA wiring and the audit report shape. <a href="https://github.com/mariyaholic/sitekit/blob/main/ROADMAP.md">ROADMAP.md</a> lists what stays out of scope.</p>
+
+<h2 id="layout">Project layout</h2>
+<div class="table-wrap"><table>
+  <caption>Repository layout</caption>
+  <thead><tr><th scope="col">Path</th><th scope="col">Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><code>build.mjs</code></td><td>Builder CLI</td></tr>
+    <tr><td><code>src/</code></td><td>Argument parsing, subset validator, renderer, freshness check</td></tr>
+    <tr><td><code>audit.py</code></td><td>Audit CLI</td></tr>
+    <tr><td><code>sitekit_audit/</code></td><td>Config merging, expectations, server, browser checks, report</td></tr>
+    <tr><td><code>examples/room-catalog/</code></td><td>Example catalog, schema, CSS/JS and room illustrations</td></tr>
+    <tr><td><code>tests/node/</code></td><td>Node test unit and CLI tests</td></tr>
+    <tr><td><code>tests/python/</code></td><td>Pytest config, server, report and browser tests</td></tr>
+    <tr><td><code>tests/golden/</code></td><td>Recorded golden HTML and Markdown</td></tr>
+    <tr><td><code>docs/CONTRACT.md</code></td><td>Supported v1 contract</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="privacy">Keep everything local</h2>
+<p>The builder never uses the network.</p>
+<p>The audit starts a loopback HTTP server on <code>127.0.0.1</code> with a random port. The server serves the local built site. Playwright drives a local browser. Nothing is uploaded and there is no telemetry.</p>
+<p>You install Playwright and its browser one time. This is a developer step.</p>
 
 <h2 id="limits">Limits</h2>
 <div class="notice" role="note"><span class="label">Note</span>
 <p>Sitekit is a source tool. It is not a general-purpose site generator and not a verified npm release.</p></div>
+<p>Sitekit is in early development with the v1 scope. Sitekit is not affiliated with MetaQuotes. MetaTrader 5 (MT5) is a MetaQuotes trademark, and sitekit contains no MT5 integration.</p>
+<p>This project ships source only. It does not ship Windows binaries. Windows binaries, if someone produces them in future, are not code-signed yet. Windows SmartScreen may warn when they are downloaded or run.</p>
+<p>The Python requirement files pin the reviewed runtime and test dependencies exactly. See <a href="https://github.com/mariyaholic/sitekit/blob/main/THIRD_PARTY.md">THIRD_PARTY.md</a> for the dependency licence policy and asset provenance. For test guidance, see <a href="https://github.com/mariyaholic/sitekit/blob/main/docs/TESTING.md">docs/TESTING.md</a>.</p>
 
 <h2 id="changes">Release changes</h2>
 <h3>0.1.0, unreleased source</h3>
@@ -65,13 +131,21 @@
   <li><a href="https://github.com/mariyaholic/sitekit/blob/main/README.md">README.md</a></li>
   <li><a href="https://github.com/mariyaholic/sitekit/blob/main/docs/CONTRACT.md">docs/CONTRACT.md</a></li>
   <li><a href="https://github.com/mariyaholic/sitekit/blob/main/docs/TESTING.md">docs/TESTING.md</a></li>
+  <li><a href="https://github.com/mariyaholic/sitekit/blob/main/ROADMAP.md">ROADMAP.md</a></li>
+  <li><a href="https://github.com/mariyaholic/sitekit/blob/main/THIRD_PARTY.md">THIRD_PARTY.md</a></li>
+  <li><a href="https://github.com/mariyaholic/sitekit/blob/main/LICENSE">LICENSE</a> and <a href="https://github.com/mariyaholic/sitekit/blob/main/NOTICE">NOTICE</a></li>
 </ul>
-<p class="meta">Last checked 7 November 2026 against source commit <code>088c3cf</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
+<p class="meta">Last checked 17 November 2026 against source commit <code>13c87e7</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
 </main>
 
 <nav class="toc" aria-labelledby="toc-h"><h2 id="toc-h">On this page</h2><ol>
   <li><a href="#build">Build a room catalogue</a></li>
   <li><a href="#check">Check the build</a></li>
+  <li><a href="#commands">Commands</a></li>
+  <li><a href="#config">Configure the audit</a></li>
+  <li><a href="#contract">Catalog contract</a></li>
+  <li><a href="#layout">Project layout</a></li>
+  <li><a href="#privacy">Keep everything local</a></li>
   <li><a href="#limits">Limits</a></li>
   <li><a href="#changes">Release changes</a></li>
   <li><a href="#reference">Reference</a></li>
