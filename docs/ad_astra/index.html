@@ -24,7 +24,7 @@
 <dl class="facts">
   <dt>Runtime</dt><dd>Python 3.10 or later; hosted runs use 3.12</dd>
   <dt>Status</dt><dd>0.1.0 source preview, no release</dd>
-  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/ad_astra">mariyaholic/ad_astra</a>, commit <code>33b3354</code></dd>
+  <dt>Source</dt><dd><a href="https://github.com/mariyaholic/ad_astra">mariyaholic/ad_astra</a>, commit <code>728f327</code></dd>
   <dt>License</dt><dd>Apache-2.0</dd>
 </dl>
 
@@ -44,11 +44,69 @@
 </ol>
 <div class="notice" role="note"><span class="label">Note</span>
 <p>These commands use the macOS and Linux form. On Windows, replace <code>.venv/bin/python</code> with <code>.venv\Scripts\python.exe</code>.</p></div>
+<div class="notice" role="note"><span class="label">Note</span>
+<p>A run takes 1 to 5 minutes. A run is resumable: run the same command again after a failure.</p></div>
+<p>The full procedure, with the review rules every lead has to pass, is in <a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/AGENT_RUNBOOK.md">docs/AGENT_RUNBOOK.md</a>.</p>
 
 <h2 id="use">How a run is recorded</h2>
 <p>Each run records provenance and writes a sky record.</p>
 <div class="notice" role="note"><span class="label">Note</span>
 <p>Evidence labels state the strength of the checks. They do not state a confirmed discovery.</p></div>
+<p>The evidence levels describe the evidence. They do not say how exciting a target is:</p>
+<ul>
+  <li><em>Unverified lead</em>: an observed feature with an unfinished artifact audit.</li>
+  <li><em>Vetted candidate</em>: it survived every test available.</li>
+  <li><em>Independently supported</em>: other data back it up.</li>
+  <li><em>Established</em>: community confirmation.</li>
+</ul>
+
+<h2 id="pick">Pick a target</h2>
+<p>The normal loop claims the top target of the queue. You can select a different target in three ways:</p>
+<ul>
+  <li><code>new --from-queue TOI-2423.01</code> claims a named target from the queue.</li>
+  <li><code>new --planet "WASP-12 b"</code> builds a campaign for any known planet. Every predicted transit becomes a positive control.</li>
+  <li><code>new --manual NAME --tic N --ra DEG --dec DEG --t0 BJD --source "..."</code> builds a campaign for anything else.</li>
+</ul>
+<div class="notice" role="note"><span class="label">Note</span>
+<p>Do not edit the numbers of a generated specification by hand. If a value is wrong, fix the source and generate the specification again.</p></div>
+<p><code>python -m cygnus.batch</code> drives the same loop for tens to hundreds of targets. Every campaign it makes is identical to a campaign made by hand.</p>
+
+<h2 id="colab">Run on Colab</h2>
+<p>The notebooks in <code>notebooks/</code> run the tiered lead pursuit and the reusable second stage on Google Colab. The index files <code>docs/colab_runs/</code> and <code>storage/locations.jsonl</code> list the finished runs.</p>
+
+<h2 id="publish">Publish results</h2>
+<p>Only the files in <code>publish/collections/*.json</code> become public.</p>
+<ol class="steps">
+  <li>Make the collection file in <code>publish/collections/</code>.</li>
+  <li>Run <code>python -m cygnus.publish check</code>.</li>
+  <li>Run <code>python -m cygnus.publish build</code>. The site appears in <code>build/</code>.</li>
+</ol>
+<div class="notice caution" role="note"><span class="label">Caution</span>
+<p>Do not edit the templates to add content. The publication boundary is described in <a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/PUBLISHING.md">docs/PUBLISHING.md</a>.</p></div>
+
+<h2 id="map">Rebuild the sky map</h2>
+<p>The interactive sky explorer is the public site's home page. To rebuild it, run:</p>
+<pre><code>python design-system/mockups/build_explorer.py</code></pre>
+<p>New catalogue fetches go through <code>fetch_sky_data.py</code>. It records the provenance of each fetch.</p>
+
+<h2 id="settings">Settings</h2>
+<p>No credentials are needed. MAST, NASA Exoplanet Archive, VizieR, SIMBAD and the other services are public and anonymous. You can set:</p>
+<ul>
+  <li><code>CYGNUS_SCRATCH</code> sets where light curves and other downloads go. The default is <code>~/.cache/cygnus/scratch</code>. A TESS sector for one target uses about 2 MB. It is always safe to delete this folder.</li>
+  <li><code>CYGNUS_LEDGER</code> sets the SQLite provenance ledger. The default is <code>state/ledger.sqlite</code>, which is made on first use. On a machine other than the main workstation, use your own ledger. Name the run IDs in your report, so the runs can be merged later.</li>
+  <li><code>campaigns/&lt;id&gt;.yaml</code> holds the parameters of one analysis. The steps are ledgered and resumable. Each analysis regenerates the <code>sky_record.json</code>, and the tests fail without it.</li>
+  <li><code>python -m cygnus.storage where</code> shows how the current machine reaches the shared Drive storage. Every harness gets there its own way.</li>
+</ul>
+
+<h2 id="build">Build from source</h2>
+<p>You need Python 3.10 or newer. The hosted runs use 3.12. On Windows, the venv python is <code>.venv\Scripts\python</code>.</p>
+<pre><code>git clone https://github.com/mariyaholic/ad_astra && cd ad_astra
+python -m venv .venv
+.venv/bin/python -m pip install -e ".[test,site,campaign]"
+.venv/bin/python -m pytest -q</code></pre>
+<p>The science extras are <code>mast</code>, <code>timing</code>, <code>imaging</code>, <code>moving</code> and <code>analysis</code>. Install them if you want more than the campaign runner. The list is in <code>pyproject.toml</code>.</p>
+<p>The tests run offline by default. <code>-m network</code> runs the live archive probes.</p>
+<p>Bulk archive data, the ledger (<code>state/</code>), scratch downloads and credentials stay out of the repository (<code>.gitignore</code>). The Tier-1 data products live in private cloud storage. This repository holds their manifests and checksums, so every product can be fetched again from its public archive.</p>
 
 <h2 id="tests">Run the tests</h2>
 <p>Run the test suite from the source checkout:
@@ -57,6 +115,50 @@
 <h2 id="limits">Limits</h2>
 <div class="notice warning" role="note"><span class="label">Warning</span>
 <p>Use public or synthetic inputs for examples. Keep personal storage paths and credentials out of reports.</p></div>
+
+<h2 id="repo">Repository layout</h2>
+<div class="table-wrap"><table>
+  <caption>What is where</caption>
+  <thead><tr><th scope="col">Directory</th><th scope="col">Contents</th></tr></thead>
+  <tbody>
+    <tr><td><code>src/cygnus/</code></td><td>Python package: ledger, candidate records, ingest, analysis, reporting, publish (site)</td></tr>
+    <tr><td><code>tests/</code></td><td>pytest suite (offline by default; <code>-m network</code> for live archive probes)</td></tr>
+    <tr><td><code>campaigns/</code></td><td>campaign specs and small campaign runs</td></tr>
+    <tr><td><code>reports/</code></td><td>campaign reports, search logs and derived outputs</td></tr>
+    <tr><td><code>docs/tier1_pack/</code></td><td>Tier-1 baseline pack manifests, name resolutions, search log</td></tr>
+    <tr><td><code>publish/</code></td><td>curated publication manifests for the public site</td></tr>
+    <tr><td><code>design-system/</code></td><td>Ad Astra design system source and the sky explorer</td></tr>
+    <tr><td><code>notebooks/</code></td><td>Colab reanalysis, batch and tiered lead notebooks; completed runs indexed in <code>docs/colab_runs/</code></td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="docs">Documents in the repository</h2>
+<div class="table-wrap"><table>
+  <caption>Where to read more</caption>
+  <thead><tr><th scope="col">Read</th><th scope="col">For</th></tr></thead>
+  <tbody>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/AGENTS.md">AGENTS.md</a></td><td>The governing spec: principles, investigation protocol, evidence levels, dossier schema. Agents must follow it.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/STATUS.md">docs/STATUS.md</a></td><td>Current state, open decisions and known problems: the handoff note. Read second.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/ANALYSIS_STACK.md">ANALYSIS_STACK.md</a></td><td>Architecture and the module register (what is built vs. designed).</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/DATA_SOURCES.md">DATA_SOURCES.md</a></td><td>Verified free archives and access tiers.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/STORAGE.md">docs/STORAGE.md</a></td><td><strong>Where stored data lives</strong> (Drive folders, batch evidence, Colab runs): the committed index <code>storage/locations.jsonl</code> and <code>python -m cygnus.storage</code>, for every harness.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/TIERS.md">docs/TIERS.md</a></td><td><strong>Run a tier anywhere:</strong> one command per environment (local, cloud agent, Colab), tier contracts, verified handbacks and failure classes.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/CODEX_CLOUD.md">docs/CODEX_CLOUD.md</a></td><td><strong>Codex Cloud workflow:</strong> CPU setup, target selection, notebook-style T0–T3 gates/checkpoints and the Luna/xhigh task brief.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/CLOUD_SCOUTING.md">docs/CLOUD_SCOUTING.md</a></td><td><strong>Before T0:</strong> fresh public-archive scouting, bounded downloads, source coverage and input/review queues.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/COLAB_SYNC.md">docs/COLAB_SYNC.md</a></td><td><strong>Canonical Windows scheduler</strong> for Colab tier marks and automatic repo notes. Reuse <code>\Cygnus-Colab-Sync</code>; do not create redundant schedules.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/HIGHER_TIERS_COLAB.md">docs/HIGHER_TIERS_COLAB.md</a></td><td><strong>Reusable second-stage notebook:</strong> discover first-stage exports, select earned T2 targets, reuse exact products and resume by source/revision. No manual target list or automatic promotion.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/ANALYSIS_SUITE.md">docs/ANALYSIS_SUITE.md</a></td><td>Scope and limits of <code>src/cygnus/analysis/</code>.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/SUITE_EXPANSION.md">docs/SUITE_EXPANSION.md</a></td><td>2026-09-26 inventory: adapter data the pipeline discards, code no test exercises, and the expanded desired suite (L0–L3 + new record checks).</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/TEST_ARCHITECTURE_PLAN_DRAFT.md">docs/TEST_ARCHITECTURE_PLAN_DRAFT.md</a></td><td>Working-draft test plan and known gaps.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/PUBLISHING.md">docs/PUBLISHING.md</a></td><td>The public repository site and its publication boundary.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/AUTONOMY_STUDY.md">docs/AUTONOMY_STUDY.md</a></td><td>Historical autonomy study, with a current capability note. See STATUS and COLAB_SYNC for operations.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/AGENT_RUNBOOK.md">docs/AGENT_RUNBOOK.md</a></td><td><strong>Running a target through the pipeline</strong> (any agent, any machine): five commands and the review rules; <strong>batches</strong> of many targets with <code>python -m cygnus.batch</code>.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/CAMPAIGNS.md">docs/CAMPAIGNS.md</a></td><td>Campaign specs and the runner: how analyses are run, ledgered and calibrated.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/SKY_RECORDS.md">docs/SKY_RECORDS.md</a></td><td>The <code>sky_record.json</code> every analysis must leave (enforced by tests).</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/design-system/mockups/README.md">design-system/mockups/README.md</a></td><td>The interactive sky explorer, the public site's home page: build, run, rules.</td></tr>
+    <tr><td><a href="https://github.com/mariyaholic/ad_astra/blob/main/design-system/project/README.md">design-system/project/README.md</a></td><td>The Ad Astra design system (site look and copy rules).</td></tr>
+  </tbody>
+</table></div>
 
 <h2 id="changes">Release changes</h2>
 <h3>Source snapshot, 7 November 2026</h3>
@@ -75,14 +177,22 @@
   <li><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/TIERS.md">docs/TIERS.md</a></li>
   <li><a href="https://github.com/mariyaholic/ad_astra/blob/main/docs/PUBLISHING.md">docs/PUBLISHING.md</a></li>
 </ul>
-<p class="meta">Last checked 7 November 2026 against source commit <code>33b3354</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
+<p class="meta">Last checked 17 November 2026 against source commit <code>728f327</code>. The commands are from the source. This page does not claim that they ran on every system.</p>
 </main>
 
 <nav class="toc" aria-labelledby="toc-h"><h2 id="toc-h">On this page</h2><ol>
   <li><a href="#run">Run a campaign</a></li>
   <li><a href="#use">How a run is recorded</a></li>
+  <li><a href="#pick">Pick a target</a></li>
+  <li><a href="#colab">Run on Colab</a></li>
+  <li><a href="#publish">Publish results</a></li>
+  <li><a href="#map">Rebuild the sky map</a></li>
+  <li><a href="#settings">Settings</a></li>
+  <li><a href="#build">Build from source</a></li>
   <li><a href="#tests">Run the tests</a></li>
   <li><a href="#limits">Limits</a></li>
+  <li><a href="#repo">Repository layout</a></li>
+  <li><a href="#docs">Documents</a></li>
   <li><a href="#changes">Release changes</a></li>
   <li><a href="#reference">Reference</a></li>
 </ol></nav>
