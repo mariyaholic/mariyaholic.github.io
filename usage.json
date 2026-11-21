@@ -1,0 +1,183 @@
+{
+  "schema": 1,
+  "class": "aggregated",
+  "caption": "Local capture from the owner's PC, rounded to 2 significant figures, updated hourly while the PC is awake. Windows are 7 and 30 days; a session counts whole on the UTC day it started. Spend counts only tools that record a cost, so $0 means not recorded, not free.",
+  "generated_at": "2026-11-21T18:00:00Z",
+  "stale_after_min": 240,
+  "rounding": "2 significant figures",
+  "totals": {
+    "tokens_7d": 460000000,
+    "tokens_30d": 6100000000,
+    "spend_usd_30d": 14,
+    "mix_pct": {
+      "fresh_input": 0,
+      "cache_read": 97,
+      "cache_write": 2,
+      "output": 1
+    }
+  },
+  "harnesses": [
+    {
+      "id": "claude-code",
+      "tokens_7d": 32000000,
+      "tokens_30d": 4400000000,
+      "share_pct": 73,
+      "spend_usd_30d": 0
+    },
+    {
+      "id": "opencode",
+      "tokens_7d": 430000000,
+      "tokens_30d": 1200000000,
+      "share_pct": 19,
+      "spend_usd_30d": 14
+    },
+    {
+      "id": "codex",
+      "tokens_7d": 0,
+      "tokens_30d": 330000000,
+      "share_pct": 5,
+      "spend_usd_30d": 0
+    },
+    {
+      "id": "dsh",
+      "tokens_7d": 0,
+      "tokens_30d": 110000000,
+      "share_pct": 2,
+      "spend_usd_30d": 0
+    },
+    {
+      "id": "freebuff",
+      "tokens_7d": 0,
+      "tokens_30d": 58000000,
+      "share_pct": 1,
+      "spend_usd_30d": 0
+    },
+    {
+      "id": "cline",
+      "tokens_7d": 0,
+      "tokens_30d": 1600000,
+      "share_pct": 0,
+      "spend_usd_30d": 0
+    },
+    {
+      "id": "workbuddy",
+      "tokens_7d": 0,
+      "tokens_30d": 1300000,
+      "share_pct": 0,
+      "spend_usd_30d": 0
+    }
+  ],
+  "weekly_index": [
+    37,
+    82,
+    82,
+    86,
+    90,
+    79,
+    100,
+    23,
+    69,
+    25,
+    38,
+    11
+  ],
+  "models": [
+    {
+      "id": "claude-opus-5-5",
+      "tokens_7d": 31000000,
+      "tokens_30d": 2900000000,
+      "share_pct": 57
+    },
+    {
+      "id": "claude-sonnet-5-5",
+      "tokens_7d": 840000,
+      "tokens_30d": 790000000,
+      "share_pct": 16
+    },
+    {
+      "id": "glm-5.3-flash",
+      "tokens_7d": 0,
+      "tokens_30d": 670000000,
+      "share_pct": 13
+    },
+    {
+      "id": "deepseek-v4.1-flash",
+      "tokens_7d": 410000000,
+      "tokens_30d": 530000000,
+      "share_pct": 10
+    },
+    {
+      "id": "claude-haiku-5-5",
+      "tokens_7d": 0,
+      "tokens_30d": 100000000,
+      "share_pct": 2
+    },
+    {
+      "id": "beam-free",
+      "tokens_7d": 0,
+      "tokens_30d": 44000000,
+      "share_pct": 1
+    },
+    {
+      "id": "deepseek-v4.1-flash-1017",
+      "tokens_7d": 0,
+      "tokens_30d": 44000000,
+      "share_pct": 1
+    },
+    {
+      "id": "hy4-flash-free",
+      "tokens_7d": 13000000,
+      "tokens_30d": 13000000,
+      "share_pct": 0
+    }
+  ],
+  "quota": [
+    {
+      "id": "argon",
+      "label": "Argon (OpenCode Go)",
+      "kind": "estimate",
+      "basis": "recorded charge ÷ published OpenCode Go limit ($12 per 5 h, $30 per week, $60 per month)",
+      "note": "Estimate. Argon's own charge against the whole plan limit; the plan row counts every Go model.",
+      "windows": [
+        {
+          "id": "5h",
+          "pct": 0,
+          "below_one": false
+        },
+        {
+          "id": "week",
+          "pct": 0,
+          "below_one": false
+        },
+        {
+          "id": "month",
+          "pct": 0,
+          "below_one": false
+        }
+      ],
+      "plan_windows": [
+        {
+          "id": "5h",
+          "pct": 0,
+          "below_one": false
+        },
+        {
+          "id": "week",
+          "pct": 0,
+          "below_one": false
+        },
+        {
+          "id": "month",
+          "pct": 0,
+          "below_one": false
+        }
+      ]
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini (Google AI Pro)",
+      "kind": "pending",
+      "note": "Quota probe pending; no token counts exist on disk for Gemini or Antigravity."
+    }
+  ]
+}
